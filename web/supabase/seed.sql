@@ -17,8 +17,8 @@ insert into public.site_settings (
   'All-day dining at Grand Mercure Bengaluru — global flavours, indoors and out.',
   'Grand Mercure Bangalore, 12th Main Road, Koramangala 3rd Block, Bengaluru 560034',
   'https://share.google/4REskNYKgssYDIUQS',
-  -- TODO confirm: listings show +91 90083 00446 (Zomato),
-  -- +91 96116 11772 (magicpin) and +91 80 4512 1212 (hotel reception).
+  -- Hotel reception, the number published on Accor's own site. Chosen over
+  -- the Zomato (+91 90083 00446) and magicpin (+91 96116 11772) listings.
   '+918045121212',
   null,
   null,
@@ -61,16 +61,28 @@ insert into public.menu_categories (name, slug, description, sort_order) values
 on conflict (slug) do nothing;
 
 -- ---------------------------------------------------------------------
--- The one price public sources agree on: Sunday Brunch.
--- Prices are ex-tax as advertised; stored in paise.
+-- Bookable buffet sittings. Run schema_buffet.sql before this section.
+--
+-- Prices are ex-tax, as advertised. Only the Sunday Brunch price is
+-- public and consistent across sources; the daily buffet prices are
+-- TODO and are seeded inactive so nothing wrong can be sold.
+--
+-- capacity 0 means "no online cap" -- set the real covers per sitting
+-- before launch, otherwise the site will never show as sold out.
 -- ---------------------------------------------------------------------
-insert into public.menu_items (category_id, name, description, price_paise, is_veg, sort_order)
-select
-  c.id, v.name, v.description, v.price_paise, v.is_veg, v.sort_order
-from public.menu_categories c
-join (values
-  ('Sunday Brunch',              'Sunday, 1:00 PM - 4:00 PM. Price excludes taxes.',              239900, true, 1),
-  ('Sunday Brunch with alcohol', 'Sunday, 1:00 PM - 4:00 PM. Price excludes taxes.',              389900, true, 2)
-) as v(name, description, price_paise, is_veg, sort_order) on true
-where c.slug = 'buffet-brunch'
-  and not exists (select 1 from public.menu_items m where m.name = v.name);
+insert into public.buffet_sessions
+  (name, description, day_of_week, start_time, end_time, price_paise, child_price_paise, capacity, is_active, sort_order)
+select v.*
+from (values
+  ('Sunday Brunch', 'Our flagship Sunday spread. Price excludes taxes.',
+   7::smallint, '13:00'::time, '16:00'::time, 239900, null::integer, 0, true, 1),
+  ('Sunday Brunch with alcohol', 'Sunday Brunch including alcoholic beverages. Price excludes taxes.',
+   7, '13:00', '16:00', 389900, null, 0, true, 2),
+  -- TODO price: not published anywhere. Inactive until the restaurant confirms.
+  ('Breakfast Buffet', 'Served daily.', null, '06:30', '10:30',      0, null, 0, false, 3),
+  ('Lunch Buffet',     'Served daily.', null, '12:30', '15:30',      0, null, 0, false, 4),
+  ('Dinner Buffet',    'Served daily.', null, '19:00', '23:00',      0, null, 0, false, 5)
+) as v(name, description, day_of_week, start_time, end_time, price_paise, child_price_paise, capacity, is_active, sort_order)
+where not exists (
+  select 1 from public.buffet_sessions s where s.name = v.name
+);

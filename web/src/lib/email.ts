@@ -2,7 +2,15 @@ import 'server-only';
 
 import { Resend } from 'resend';
 
-import { formatINR, type Enquiry, type Order, type OrderItem, type Reservation } from '@/lib/types';
+import {
+  formatINR,
+  type BuffetBooking,
+  type BuffetSession,
+  type Enquiry,
+  type Order,
+  type OrderItem,
+  type Reservation,
+} from '@/lib/types';
 
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 
@@ -155,6 +163,63 @@ export async function sendOrderEmails(
         shell(
           `Thanks, ${order.customer_name}!`,
           `<p style="font-size:14px;line-height:1.6">Your payment went through and the kitchen is on it.</p>${summary}`,
+        ),
+      ),
+    );
+  }
+
+  await Promise.all(tasks);
+}
+
+export async function sendBuffetBookingEmails(
+  booking: BuffetBooking,
+  session: Pick<BuffetSession, 'name' | 'start_time' | 'end_time'>,
+  restaurantName: string,
+) {
+  const date = new Intl.DateTimeFormat('en-IN', {
+    dateStyle: 'full',
+    timeZone: 'Asia/Kolkata',
+  }).format(new Date(`${booking.booking_date}T00:00:00+05:30`));
+
+  const sitting = session.start_time
+    ? `${session.name}, ${session.start_time.slice(0, 5)}–${session.end_time.slice(0, 5)}`
+    : session.name;
+
+  const guests = booking.children
+    ? `${booking.adults} adults, ${booking.children} children`
+    : `${booking.adults} ${booking.adults === 1 ? 'guest' : 'guests'}`;
+
+  const details = table(
+    row('Booking', booking.booking_number) +
+      row('Sitting', sitting) +
+      row('Date', date) +
+      row('Guests', guests) +
+      row('Name', booking.customer_name) +
+      row('Phone', booking.customer_phone) +
+      row('Notes', booking.notes) +
+      row('Paid', formatINR(booking.total_paise)),
+  );
+
+  const tasks: Promise<void>[] = [];
+
+  if (RESTAURANT_INBOX) {
+    tasks.push(
+      send(
+        RESTAURANT_INBOX,
+        `Buffet booking ${booking.booking_number} — ${guests} on ${date}`,
+        shell('New prepaid buffet booking', details),
+      ),
+    );
+  }
+
+  if (booking.customer_email) {
+    tasks.push(
+      send(
+        booking.customer_email,
+        `Booking ${booking.booking_number} confirmed — ${restaurantName}`,
+        shell(
+          `See you soon, ${booking.customer_name}!`,
+          `<p style="font-size:14px;line-height:1.6">Your table is confirmed and paid for. Show this booking number when you arrive.</p>${details}`,
         ),
       ),
     );

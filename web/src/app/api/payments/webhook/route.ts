@@ -1,8 +1,7 @@
 import { NextResponse } from 'next/server';
 
-import { sendOrderEmails } from '@/lib/email';
+import { markPaymentFailed, settlePayment } from '@/lib/payments';
 import { verifyWebhookSignature } from '@/lib/razorpay';
-import { createAdminClient } from '@/lib/supabase/admin';
 
 export const runtime = 'nodejs';
 // The signature is computed over the exact bytes Razorpay sent, so this route
@@ -29,54 +28,19 @@ export async function POST(request: Request) {
   }
 
   const payment = event.payload?.payment?.entity;
-  if (!payment?.order_id) {
-    return NextResponse.json({ ok: true, ignored: true });
-  }
-
-  const supabase = createAdminClient();
-  const { data: order } = await supabase
-    .from('orders')
-    .select('*')
-    .eq('razorpay_order_id', payment.order_id)
-    .maybeSingle();
-
-  // Always 200 on unknown orders -- retrying will not help Razorpay.
-  if (!order) return NextResponse.json({ ok: true, ignored: true });
+  if (!payment?.order_id) return NextResponse.json({ ok: true, ignored: true });
 
   if (event.event === 'payment.captured') {
-    if (order.payment_status === 'paid') return NextResponse.json({ ok: true, duplicate: true });
+    // Always 200, even for unknown records -- a retry would not help Razorpay.
+    const result = await settlePayment(payment.order_id, payment.id ?? null);
+    return NextResponse.json({
+      ok: true,
+      ...(result.found ? { kind: result.kind, duplicate: result.alreadyPaid } : { ignored: true }),
+    });
+  }
 
-    await supabase
-      .from('orders')
-      .update({
-        payment_status: 'paid',
-        razorpay_payment_id: payment.id ?? null,
-        status: order.status === 'placed' ? 'accepted' : order.status,
-      })
-      .eq('id', order.id);
-
-    const { data: items } = await supabase
-      .from('order_items')
-      .select('name_snapshot, quantity, unit_price_paise')
-      .eq('order_id', order.id);
-
-    const { data: settings } = await supabase
-      .from('site_settings')
-      .select('restaurant_name')
-      .eq('id', 1)
-      .maybeSingle();
-
-    await sendOrderEmails(
-      { ...order, payment_status: 'paid', razorpay_payment_id: payment.id ?? null },
-      items ?? [],
-      settings?.restaurant_name ?? 'our restaurant',
-    );
-  } else if (event.event === 'payment.failed') {
-    await supabase
-      .from('orders')
-      .update({ payment_status: 'failed' })
-      .eq('id', order.id)
-      .eq('payment_status', 'pending');
+  if (event.event === 'payment.failed') {
+    await markPaymentFailed(payment.order_id);
   }
 
   return NextResponse.json({ ok: true });

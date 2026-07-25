@@ -133,9 +133,31 @@ export type Database = {
       orders: Table<Order>;
       order_items: Table<OrderItem>;
       site_settings: Table<SiteSettings>;
+      buffet_sessions: Table<BuffetSession>;
+      buffet_bookings: Table<BuffetBooking>;
     };
     Views: { [_ in never]: never };
-    Functions: { [_ in never]: never };
+    Functions: {
+      create_buffet_booking: {
+        Args: {
+          p_session_id: string;
+          p_date: string;
+          p_adults: number;
+          p_children: number;
+          p_name: string;
+          p_phone: string;
+          p_email: string | null;
+          p_notes: string | null;
+          p_booking_number: string;
+          p_gst_rate: number;
+        };
+        Returns: BuffetBooking;
+      };
+      buffet_covers_taken: {
+        Args: { p_session_id: string; p_date: string };
+        Returns: number;
+      };
+    };
     Enums: { [_ in never]: never };
     CompositeTypes: { [_ in never]: never };
   };
@@ -149,3 +171,43 @@ export function formatINR(paise: number): string {
     maximumFractionDigits: paise % 100 === 0 ? 0 : 2,
   }).format(paise / 100);
 }
+
+export type BuffetBookingStatus = 'booked' | 'seated' | 'completed' | 'cancelled' | 'no_show';
+
+export type BuffetSession = {
+  id: string;
+  name: string;
+  description: string | null;
+  /** ISO weekday, 1 = Monday .. 7 = Sunday. Null means every day. */
+  day_of_week: number | null;
+  start_time: string;
+  end_time: string;
+  price_paise: number;
+  child_price_paise: number | null;
+  capacity: number;
+  is_active: boolean;
+  sort_order: number;
+  created_at: string;
+};
+
+export type BuffetBooking = {
+  id: string;
+  booking_number: string;
+  session_id: string;
+  booking_date: string;
+  adults: number;
+  children: number;
+  customer_name: string;
+  customer_phone: string;
+  customer_email: string | null;
+  notes: string | null;
+  subtotal_paise: number;
+  tax_paise: number;
+  total_paise: number;
+  status: BuffetBookingStatus;
+  payment_status: PaymentStatus;
+  razorpay_order_id: string | null;
+  razorpay_payment_id: string | null;
+  created_at: string;
+  updated_at: string;
+};

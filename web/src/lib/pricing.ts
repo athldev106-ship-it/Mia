@@ -21,12 +21,18 @@ export function priceOrder(subtotalPaise: number, fulfilment: 'takeaway' | 'deli
   };
 }
 
-/** Human-friendly, collision-resistant order reference, e.g. ORD-8F3K2A. */
-export function generateOrderNumber() {
+/** Human-friendly reference a guest can read out over the phone. */
+function reference(prefix: string) {
   const alphabet = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // no I/O/0/1
   let suffix = '';
   for (let i = 0; i < 6; i += 1) {
     suffix += alphabet[Math.floor(Math.random() * alphabet.length)];
   }
-  return `ORD-${suffix}`;
+  return `${prefix}-${suffix}`;
 }
+
+/** e.g. ORD-8F3K2A */
+export const generateOrderNumber = () => reference('ORD');
+
+/** e.g. BUF-9K2M4P */
+export const generateBookingNumber = () => reference('BUF');
