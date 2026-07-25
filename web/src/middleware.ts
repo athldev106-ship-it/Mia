@@ -9,9 +9,27 @@ import { createServerClient, type CookieOptions } from '@supabase/ssr';
 export async function middleware(request: NextRequest) {
   let response = NextResponse.next({ request });
 
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+  // Without credentials there is no session to read and no way to verify
+  // staff. Refuse entry to /admin rather than throwing -- a missing env var
+  // on the host must not be able to take the public site down with it.
+  if (!url || !anonKey) {
+    if (request.nextUrl.pathname.startsWith('/admin')) {
+      const target = request.nextUrl.clone();
+      target.pathname = '/admin/login';
+      target.searchParams.set('error', 'not_configured');
+      return request.nextUrl.pathname === '/admin/login'
+        ? response
+        : NextResponse.redirect(target);
+    }
+    return response;
+  }
+
   const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    url,
+    anonKey,
     {
       cookies: {
         getAll() {
@@ -62,6 +80,8 @@ export async function middleware(request: NextRequest) {
   return response;
 }
 
+// Only the dashboard needs a session. Public pages show no auth state, so
+// running this on every request would cost latency and buy nothing.
 export const config = {
-  matcher: ['/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|avif)$).*)'],
+  matcher: ['/admin/:path*'],
 };

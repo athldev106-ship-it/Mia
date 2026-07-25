@@ -1,0 +1,214 @@
+@import 'tailwindcss';
+
+/* =====================================================================
+   The Verandah — design tokens.
+
+   Palette and mood are taken from the walkthrough brief: earthy greens,
+   warm terracotta, natural wood, soft white. Dappled light over foliage
+   is the recurring motif, so surfaces are translucent and layered rather
+   than flat, and everything moves slowly.
+   ===================================================================== */
+@theme {
+  --color-forest: #16261c;
+  --color-forest-deep: #0d1712;
+  --color-moss: #3d5c45;
+  --color-fern: #6d9077;
+  --color-frond: #9dbca4;
+  --color-terracotta: #c4643c;
+  --color-clay: #a04a2a;
+  --color-wood: #6b4f33;
+  --color-rattan: #c9a227;
+  --color-sand: #e6dbc9;
+  --color-linen: #faf7f1;
+  --color-ink: #131810;
+
+  --font-display: 'Cormorant Garamond', 'Iowan Old Style', Georgia, 'Times New Roman', serif;
+  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+
+  --radius-glass: 1.25rem;
+  --ease-glide: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+/* ---------------------------------------------------------------------
+   Light is the default: the verandah is a daylight space.
+   --------------------------------------------------------------------- */
+:root {
+  --surface: var(--color-linen);
+  --surface-raised: #ffffff;
+  --text: var(--color-ink);
+  --text-muted: #5c6357;
+  --accent: var(--color-clay);
+  --hairline: color-mix(in srgb, var(--color-forest) 12%, transparent);
+
+  --glass-bg: color-mix(in srgb, #ffffff 62%, transparent);
+  --glass-border: color-mix(in srgb, #ffffff 70%, transparent);
+  --glass-shadow: 0 1px 2px rgb(19 24 16 / 0.04), 0 12px 32px -12px rgb(19 24 16 / 0.18);
+  --glass-sheen: color-mix(in srgb, #ffffff 85%, transparent);
+
+  color-scheme: light;
+}
+
+:root[data-theme='dark'],
+:root:not([data-theme='light']) {
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --surface: var(--color-forest-deep);
+    --surface-raised: var(--color-forest);
+    --text: #f2efe6;
+    --text-muted: #a8b2a1;
+    --accent: #e08a5f;
+    --hairline: color-mix(in srgb, #ffffff 12%, transparent);
+
+    --glass-bg: color-mix(in srgb, #1d3126 55%, transparent);
+    --glass-border: color-mix(in srgb, #ffffff 14%, transparent);
+    --glass-shadow: 0 1px 2px rgb(0 0 0 / 0.3), 0 16px 40px -16px rgb(0 0 0 / 0.6);
+    --glass-sheen: color-mix(in srgb, #ffffff 22%, transparent);
+
+    color-scheme: dark;
+  }
+}
+
+/* The viewer's theme toggle stamps data-theme and must win either way. */
+:root[data-theme='dark'] {
+  --surface: var(--color-forest-deep);
+  --surface-raised: var(--color-forest);
+  --text: #f2efe6;
+  --text-muted: #a8b2a1;
+  --accent: #e08a5f;
+  --hairline: color-mix(in srgb, #ffffff 12%, transparent);
+
+  --glass-bg: color-mix(in srgb, #1d3126 55%, transparent);
+  --glass-border: color-mix(in srgb, #ffffff 14%, transparent);
+  --glass-shadow: 0 1px 2px rgb(0 0 0 / 0.3), 0 16px 40px -16px rgb(0 0 0 / 0.6);
+  --glass-sheen: color-mix(in srgb, #ffffff 22%, transparent);
+
+  color-scheme: dark;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--surface);
+  color: var(--text);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--color-terracotta) 28%, transparent);
+}
+
+:where(a, button, [tabindex]):focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* =====================================================================
+   Liquid glass.
+
+   A frosted pane plus a specular top edge, so panels read as glass held
+   over foliage rather than as flat translucent boxes.
+   ===================================================================== */
+@utility glass {
+  position: relative;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-glass);
+  box-shadow: var(--glass-shadow);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  isolation: isolate;
+}
+
+/* The highlight that sells the material: a bright hairline along the top. */
+@utility glass-sheen {
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding-top: 1px;
+    background: linear-gradient(to bottom, var(--glass-sheen), transparent 42%);
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    z-index: -1;
+  }
+}
+
+/* Where backdrop-filter is unsupported, fall back to an opaque panel so
+   text never lands on unreadable transparency. */
+@supports not (backdrop-filter: blur(1px)) {
+  .glass {
+    background: var(--surface-raised);
+  }
+}
+
+/* =====================================================================
+   Motion: the brief's "constant slow forward glide".
+   Sections drift up and settle as they enter view.
+   ===================================================================== */
+/* Content is visible by default and only hidden once JavaScript has
+   confirmed it can reveal it again. Without this guard, a failed or slow
+   bundle -- or a crawler that does not run scripts -- would be served a
+   blank page, since the animation's start state is opacity 0. */
+.reveal {
+  opacity: 1;
+}
+
+[data-js] .reveal {
+  opacity: 0;
+  transform: translate3d(0, 24px, 0);
+  transition:
+    opacity 0.9s var(--ease-glide),
+    transform 0.9s var(--ease-glide);
+}
+
+[data-js] .reveal-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* Dappled light through leaves, as a slow ambient drift. */
+@keyframes dapple {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 0.5;
+  }
+  50% {
+    transform: translate3d(2%, -1.5%, 0) scale(1.06);
+    opacity: 0.75;
+  }
+}
+
+@utility dapple {
+  animation: dapple 18s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  [data-js] .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
