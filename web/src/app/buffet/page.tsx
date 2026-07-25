@@ -99,7 +99,7 @@ export default async function BuffetPage() {
                   </p>
                   <a
                     href={`tel:${SITE.phone}`}
-                    className="mt-6 inline-block rounded-full bg-[var(--accent)] px-6 py-3 text-sm font-medium text-white"
+                    className="mt-6 inline-block rounded-full bg-[var(--accent)] px-6 py-3 text-sm font-medium text-[var(--accent-ink)]"
                   >
                     Call {SITE.phoneDisplay}
                   </a>

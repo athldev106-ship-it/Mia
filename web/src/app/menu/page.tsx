@@ -59,7 +59,7 @@ export default async function MenuPage() {
                 <div className="mt-7 flex flex-wrap justify-center gap-3">
                   <a
                     href={`tel:${SITE.phone}`}
-                    className="rounded-full bg-[var(--accent)] px-6 py-3 text-sm font-medium text-white"
+                    className="rounded-full bg-[var(--accent)] px-6 py-3 text-sm font-medium text-[var(--accent-ink)]"
                   >
                     Call {SITE.phoneDisplay}
                   </a>

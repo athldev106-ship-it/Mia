@@ -96,7 +96,7 @@ export default function HomePage() {
             <div className="mt-10 flex flex-wrap gap-3">
               <Link
                 href="/menu"
-                className="rounded-full bg-[var(--accent)] px-6 py-3 text-sm font-medium text-white transition-transform duration-300 hover:-translate-y-0.5"
+                className="rounded-full bg-[var(--accent)] px-6 py-3 text-sm font-medium text-[var(--accent-ink)] transition-transform duration-300 hover:-translate-y-0.5"
               >
                 See the full menu
               </Link>
@@ -137,7 +137,7 @@ export default function HomePage() {
                   href={SITE.mapsUrl}
                   target="_blank"
                   rel="noreferrer noopener"
-                  className="rounded-full bg-[var(--accent)] px-6 py-3 text-center text-sm font-medium text-white transition-transform duration-300 hover:-translate-y-0.5"
+                  className="rounded-full bg-[var(--accent)] px-6 py-3 text-center text-sm font-medium text-[var(--accent-ink)] transition-transform duration-300 hover:-translate-y-0.5"
                 >
                   Get directions
                 </a>

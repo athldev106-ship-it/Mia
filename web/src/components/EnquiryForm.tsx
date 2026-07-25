@@ -114,7 +114,7 @@ export function EnquiryForm() {
       <button
         type="submit"
         disabled={status.state === 'submitting'}
-        className="w-full rounded-full bg-[var(--accent)] px-6 py-4 text-sm font-medium text-white transition-transform duration-300 hover:-translate-y-0.5 disabled:opacity-50 disabled:hover:translate-y-0"
+        className="w-full rounded-full bg-[var(--accent)] px-6 py-4 text-sm font-medium text-[var(--accent-ink)] transition-transform duration-300 hover:-translate-y-0.5 disabled:opacity-50 disabled:hover:translate-y-0"
       >
         {status.state === 'submitting' ? 'Sending…' : 'Send message'}
       </button>

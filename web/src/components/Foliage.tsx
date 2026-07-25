@@ -8,7 +8,18 @@
  */
 export function Foliage({ className = '' }: { className?: string }) {
   return (
-    <div aria-hidden className={`pointer-events-none absolute inset-0 overflow-hidden ${className}`}>
+    <div
+      aria-hidden
+      className={`pointer-events-none absolute inset-0 overflow-hidden ${className}`}
+      style={{
+        // Without this the layer stops dead at the section edge and reads
+        // as a band across the page.
+        maskImage:
+          'linear-gradient(to bottom, transparent, black 12%, black 85%, transparent)',
+        WebkitMaskImage:
+          'linear-gradient(to bottom, transparent, black 12%, black 85%, transparent)',
+      }}
+    >
       <div
         className="dapple absolute -top-1/4 left-[-10%] h-[70vh] w-[70vw] rounded-full blur-3xl"
         style={{

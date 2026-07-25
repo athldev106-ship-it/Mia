@@ -38,6 +38,7 @@
   --text: var(--color-ink);
   --text-muted: #5c6357;
   --accent: var(--color-clay);
+  --accent-ink: #ffffff;
   --hairline: color-mix(in srgb, var(--color-forest) 12%, transparent);
 
   --glass-bg: color-mix(in srgb, #ffffff 62%, transparent);
@@ -60,6 +61,7 @@
     --text: #f2efe6;
     --text-muted: #a8b2a1;
     --accent: #e08a5f;
+    --accent-ink: #2a1409;
     --hairline: color-mix(in srgb, #ffffff 12%, transparent);
 
     --glass-bg: color-mix(in srgb, #1d3126 55%, transparent);
@@ -78,6 +80,7 @@
   --text: #f2efe6;
   --text-muted: #a8b2a1;
   --accent: #e08a5f;
+  --accent-ink: #2a1409;
   --hairline: color-mix(in srgb, #ffffff 12%, transparent);
 
   --glass-bg: color-mix(in srgb, #1d3126 55%, transparent);
