@@ -4,14 +4,22 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-import { NAV, SITE } from '@/lib/site';
+import { NAV } from '@/lib/site';
 
 /**
  * Floating glass bar. It starts invisible over the hero so the opening
  * frame is uninterrupted, then fuses into a frosted pane once the page
  * scrolls -- the "glide indoors" moment from the walkthrough.
  */
-export function Nav() {
+export function Nav({
+  phone,
+  phoneDisplay,
+  name,
+}: {
+  phone: string;
+  phoneDisplay: string;
+  name: string;
+}) {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
@@ -38,7 +46,7 @@ export function Nav() {
             className="text-xl leading-none tracking-tight"
             style={{ fontFamily: 'var(--font-display)' }}
           >
-            {SITE.name}
+            {name}
           </span>
           <span className="hidden text-[10px] uppercase tracking-[0.2em] opacity-60 sm:inline">
             Grand Mercure
@@ -65,10 +73,10 @@ export function Nav() {
         </ul>
 
         <a
-          href={`tel:${SITE.phone}`}
+          href={`tel:${phone}`}
           className="hidden rounded-full border border-[var(--hairline)] px-4 py-2 text-sm transition-colors hover:bg-[var(--hairline)] lg:inline-block"
         >
-          {SITE.phoneDisplay}
+          {phoneDisplay}
         </a>
 
         <button
@@ -100,10 +108,10 @@ export function Nav() {
           ))}
           <li>
             <a
-              href={`tel:${SITE.phone}`}
+              href={`tel:${phone}`}
               className="block rounded-2xl px-4 py-3 text-sm hover:bg-[var(--hairline)]"
             >
-              Call {SITE.phoneDisplay}
+              Call {phoneDisplay}
             </a>
           </li>
         </ul>

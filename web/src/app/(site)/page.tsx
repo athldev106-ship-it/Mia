@@ -4,7 +4,7 @@ import { Foliage } from '@/components/Foliage';
 import { Hero } from '@/components/Hero';
 import { Reveal } from '@/components/Reveal';
 import { Reviews } from '@/components/Reviews';
-import { SITE, fullAddress } from '@/lib/site';
+import { getSiteContent } from '@/lib/data';
 
 /**
  * The homepage follows the walkthrough: verandah, then the glide indoors,
@@ -36,10 +36,12 @@ const DISHES = [
   { name: 'Sunday Brunch', note: 'Live grills, crab and prawn, cocktails' },
 ] as const;
 
-export default function HomePage() {
+export default async function HomePage() {
+  const site = await getSiteContent();
+
   return (
     <>
-      <Hero />
+      <Hero site={site} />
 
       {/* ---- The three scenes, told as a slow scroll ---- */}
       <section className="relative px-6 py-24">
@@ -127,14 +129,14 @@ export default function HomePage() {
                   Koramangala 3rd Block
                 </h2>
                 <address className="mt-5 not-italic leading-relaxed opacity-80">
-                  {fullAddress}
+                  {site.address}
                 </address>
-                <p className="mt-4 opacity-80">{SITE.hours}</p>
+                <p className="mt-4 opacity-80">{site.hours}</p>
               </div>
 
               <div className="flex flex-col justify-center gap-3">
                 <a
-                  href={SITE.mapsUrl}
+                  href={site.mapsUrl}
                   target="_blank"
                   rel="noreferrer noopener"
                   className="rounded-full bg-[var(--accent)] px-6 py-3 text-center text-sm font-medium text-[var(--accent-ink)] transition-transform duration-300 hover:-translate-y-0.5"
@@ -142,10 +144,10 @@ export default function HomePage() {
                   Get directions
                 </a>
                 <a
-                  href={`tel:${SITE.phone}`}
+                  href={`tel:${site.phone}`}
                   className="rounded-full border border-[var(--hairline)] px-6 py-3 text-center text-sm transition-colors hover:bg-[var(--hairline)]"
                 >
-                  Call {SITE.phoneDisplay}
+                  Call {site.phoneDisplay}
                 </a>
                 <Link
                   href="/reserve"

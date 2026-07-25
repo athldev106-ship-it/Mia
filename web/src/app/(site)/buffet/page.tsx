@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import { BuffetBooking } from '@/components/BuffetBooking';
 import { PageHeader } from '@/components/PageHeader';
 import { Reveal } from '@/components/Reveal';
-import { getBuffetSessions } from '@/lib/data';
+import { getSiteContent, getBuffetSessions } from '@/lib/data';
 import { WEEKDAYS, formatTime } from '@/lib/format';
 import { SITE } from '@/lib/site';
 import { formatINR } from '@/lib/types';
@@ -16,6 +16,8 @@ export const metadata: Metadata = {
 export const revalidate = 300;
 
 export default async function BuffetPage() {
+  const site = await getSiteContent();
+
   const sessions = await getBuffetSessions();
 
   return (
@@ -41,10 +43,10 @@ export default async function BuffetPage() {
                   <p className="leading-relaxed opacity-80">
                     Our buffet timings and prices are being confirmed. Please call us on{' '}
                     <a
-                      href={`tel:${SITE.phone}`}
+                      href={`tel:${site.phone}`}
                       className="underline underline-offset-4"
                     >
-                      {SITE.phoneDisplay}
+                      {site.phoneDisplay}
                     </a>{' '}
                     and we will be glad to help.
                   </p>
@@ -98,10 +100,10 @@ export default async function BuffetPage() {
                     please call us to reserve.
                   </p>
                   <a
-                    href={`tel:${SITE.phone}`}
+                    href={`tel:${site.phone}`}
                     className="mt-6 inline-block rounded-full bg-[var(--accent)] px-6 py-3 text-sm font-medium text-[var(--accent-ink)]"
                   >
-                    Call {SITE.phoneDisplay}
+                    Call {site.phoneDisplay}
                   </a>
                 </div>
               ) : (

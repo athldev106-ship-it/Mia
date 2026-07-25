@@ -3,14 +3,17 @@ import type { Metadata } from 'next';
 import { EnquiryForm } from '@/components/EnquiryForm';
 import { PageHeader } from '@/components/PageHeader';
 import { Reveal } from '@/components/Reveal';
-import { SITE, fullAddress } from '@/lib/site';
+import { getSiteContent } from '@/lib/data';
+import { SITE } from '@/lib/site';
 
 export const metadata: Metadata = {
   title: 'Contact',
   description: `Get in touch with ${SITE.name} at ${SITE.parent}, ${SITE.address.locality}, Bengaluru — enquiries, catering and private events.`,
 };
 
-export default function ContactPage() {
+export default async function ContactPage() {
+  const site = await getSiteContent();
+
   return (
     <>
       <PageHeader
@@ -28,11 +31,11 @@ export default function ContactPage() {
                   Visit
                 </h2>
                 <address className="mt-3 not-italic leading-relaxed opacity-75">
-                  {fullAddress}
+                  {site.address}
                 </address>
-                <p className="mt-3 opacity-75">{SITE.hours}</p>
+                <p className="mt-3 opacity-75">{site.hours}</p>
                 <a
-                  href={SITE.mapsUrl}
+                  href={site.mapsUrl}
                   target="_blank"
                   rel="noreferrer noopener"
                   className="mt-4 inline-block underline underline-offset-4"
@@ -48,10 +51,10 @@ export default function ContactPage() {
                   Call
                 </h2>
                 <a
-                  href={`tel:${SITE.phone}`}
+                  href={`tel:${site.phone}`}
                   className="mt-3 inline-block text-lg underline underline-offset-4"
                 >
-                  {SITE.phoneDisplay}
+                  {site.phoneDisplay}
                 </a>
                 <p className="mt-3 text-sm opacity-65">
                   {SITE.name} is the all-day dining restaurant at {SITE.parent}.

@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 import { PageHeader } from '@/components/PageHeader';
 import { Reveal } from '@/components/Reveal';
-import { getMenu } from '@/lib/data';
+import { getSiteContent, getMenu } from '@/lib/data';
 import { SITE } from '@/lib/site';
 import { formatINR } from '@/lib/types';
 
@@ -33,6 +33,8 @@ function VegMark({ isVeg }: { isVeg: boolean }) {
 }
 
 export default async function MenuPage() {
+  const site = await getSiteContent();
+
   const menu = await getMenu();
   const withItems = menu.filter((category) => category.items.length > 0);
 
@@ -58,10 +60,10 @@ export default async function MenuPage() {
                 </p>
                 <div className="mt-7 flex flex-wrap justify-center gap-3">
                   <a
-                    href={`tel:${SITE.phone}`}
+                    href={`tel:${site.phone}`}
                     className="rounded-full bg-[var(--accent)] px-6 py-3 text-sm font-medium text-[var(--accent-ink)]"
                   >
-                    Call {SITE.phoneDisplay}
+                    Call {site.phoneDisplay}
                   </a>
                   <Link
                     href="/buffet"

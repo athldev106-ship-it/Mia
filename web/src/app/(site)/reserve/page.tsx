@@ -3,14 +3,17 @@ import type { Metadata } from 'next';
 import { PageHeader } from '@/components/PageHeader';
 import { ReservationForm } from '@/components/ReservationForm';
 import { Reveal } from '@/components/Reveal';
-import { SITE, fullAddress } from '@/lib/site';
+import { getSiteContent } from '@/lib/data';
+import { SITE } from '@/lib/site';
 
 export const metadata: Metadata = {
   title: 'Reserve a table',
   description: `Reserve a table at ${SITE.name}, ${SITE.address.locality}, Bengaluru. Indoor and verandah seating, open daily.`,
 };
 
-export default function ReservePage() {
+export default async function ReservePage() {
+  const site = await getSiteContent();
+
   return (
     <>
       <PageHeader
@@ -28,11 +31,11 @@ export default function ReservePage() {
                   Where to find us
                 </h2>
                 <address className="mt-3 not-italic leading-relaxed opacity-75">
-                  {fullAddress}
+                  {site.address}
                 </address>
-                <p className="mt-3 opacity-75">{SITE.hours}</p>
+                <p className="mt-3 opacity-75">{site.hours}</p>
                 <a
-                  href={SITE.mapsUrl}
+                  href={site.mapsUrl}
                   target="_blank"
                   rel="noreferrer noopener"
                   className="mt-4 inline-block underline underline-offset-4"
@@ -66,10 +69,10 @@ export default function ReservePage() {
                   Prefer to call?
                 </h2>
                 <a
-                  href={`tel:${SITE.phone}`}
+                  href={`tel:${site.phone}`}
                   className="mt-3 inline-block text-lg underline underline-offset-4"
                 >
-                  {SITE.phoneDisplay}
+                  {site.phoneDisplay}
                 </a>
               </div>
             </Reveal>

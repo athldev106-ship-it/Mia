@@ -2,6 +2,7 @@ import Link from 'next/link';
 
 import { Foliage } from '@/components/Foliage';
 import { AGGREGATE } from '@/lib/reviews';
+import type { SiteContent } from '@/components/Footer';
 import { SITE } from '@/lib/site';
 
 /**
@@ -16,7 +17,7 @@ import { SITE } from '@/lib/site';
  */
 const HAS_WALKTHROUGH = false;
 
-export function Hero() {
+export function Hero({ site }: { site: SiteContent }) {
   return (
     <section className="relative flex min-h-[92vh] items-center overflow-hidden px-6 pt-28 pb-16">
       {HAS_WALKTHROUGH ? (
@@ -67,12 +68,12 @@ export function Hero() {
             className="mt-5 text-5xl leading-[1.05] tracking-tight sm:text-7xl"
             style={{ fontFamily: 'var(--font-display)' }}
           >
-            {SITE.name}
+            {site.name}
           </h1>
 
           <p className="mt-5 max-w-md text-base leading-relaxed opacity-80 sm:text-lg">
             A sunlit verandah under hanging ferns, a green-walled room within, and an open kitchen
-            between them. {SITE.tagline}.
+            between them. {site.tagline}.
           </p>
 
           <div className="mt-8 flex flex-wrap items-center gap-3">
@@ -100,7 +101,7 @@ export function Hero() {
                 on {AGGREGATE.source} · {AGGREGATE.count} reviews
               </span>
             </span>
-            <span className="opacity-60">{SITE.hours}</span>
+            <span className="opacity-60">{site.hours}</span>
           </div>
         </div>
       </div>
