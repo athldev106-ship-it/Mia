@@ -24,6 +24,7 @@ export const SITE = {
 
 export const NAV = [
   { href: '/menu', label: 'Menu' },
+  { href: '/order', label: 'Order' },
   { href: '/buffet', label: 'Buffet & Brunch' },
   { href: '/reserve', label: 'Reserve' },
   { href: '/contact', label: 'Contact' },
