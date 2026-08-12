@@ -38,7 +38,7 @@ export default async function SettingsPage() {
           Site settings
         </h1>
         {data && (
-          <p className="text-sm opacity-55">Last saved {formatISTDateTime(data.updated_at)}</p>
+          <p className="text-sm opacity-70">Last saved {formatISTDateTime(data.updated_at)}</p>
         )}
       </div>
 

@@ -44,7 +44,7 @@ export default async function MenuAdminPage() {
         <h1 className="text-3xl" style={{ fontFamily: 'var(--font-display)' }}>
           Menu
         </h1>
-        <p className="text-sm opacity-55">
+        <p className="text-sm opacity-70">
           {categories.length} categories · {items.length} dishes
         </p>
       </div>
@@ -78,7 +78,7 @@ export default async function MenuAdminPage() {
               actions={
                 <div className="flex flex-wrap items-center gap-2">
                   {!category.is_active && <Badge label="Hidden" tone="bad" />}
-                  <span className="text-xs opacity-45 tabular-nums">#{category.sort_order}</span>
+                  <span className="text-xs opacity-70 tabular-nums">#{category.sort_order}</span>
                 </div>
               }
             >
@@ -105,7 +105,7 @@ export default async function MenuAdminPage() {
                           <span className="min-w-0 flex-1 text-sm">
                             {item.name}
                             {item.description && (
-                              <span className="block text-xs opacity-55">{item.description}</span>
+                              <span className="block text-xs opacity-70">{item.description}</span>
                             )}
                           </span>
                           {item.spice_level > 0 && (
@@ -116,7 +116,7 @@ export default async function MenuAdminPage() {
                           <span className="w-24 shrink-0 text-right text-sm tabular-nums">
                             {formatINR(item.price_paise)}
                           </span>
-                          <span className="text-xs opacity-45">Edit</span>
+                          <span className="text-xs opacity-70">Edit</span>
                         </summary>
 
                         <div className="mt-4 rounded-xl border border-[var(--hairline)] p-4">

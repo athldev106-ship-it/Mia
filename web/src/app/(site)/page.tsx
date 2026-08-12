@@ -45,7 +45,7 @@ export default async function HomePage() {
         <Foliage className="opacity-40" />
         <div className="relative mx-auto max-w-6xl">
           <Reveal>
-            <p className="text-xs uppercase tracking-[0.28em] opacity-55">What lean means here</p>
+            <p className="text-xs uppercase tracking-[0.28em] opacity-70">What lean means here</p>
             <h2
               className="mt-4 max-w-xl text-4xl leading-tight sm:text-5xl"
               style={{ fontFamily: 'var(--font-display)' }}
@@ -77,7 +77,7 @@ export default async function HomePage() {
       <section className="tinted relative px-6 py-24">
         <div className="mx-auto max-w-6xl">
           <Reveal>
-            <p className="text-xs uppercase tracking-[0.28em] opacity-55">From the kitchen</p>
+            <p className="text-xs uppercase tracking-[0.28em] opacity-70">From the kitchen</p>
             <h2
               className="mt-4 max-w-lg text-4xl leading-tight sm:text-5xl"
               style={{ fontFamily: 'var(--font-display)' }}
@@ -141,7 +141,7 @@ export default async function HomePage() {
       <section className="tinted relative px-6 py-20">
         <div className="mx-auto max-w-4xl">
           <Reveal>
-            <p className="text-xs uppercase tracking-[0.28em] opacity-55">Delivery & pickup</p>
+            <p className="text-xs uppercase tracking-[0.28em] opacity-70">Delivery & pickup</p>
             <h2
               className="mt-4 mb-10 max-w-lg text-4xl leading-tight sm:text-5xl"
               style={{ fontFamily: 'var(--font-display)' }}
@@ -161,7 +161,7 @@ export default async function HomePage() {
           <Reveal>
             <div className="glass glass-sheen grid gap-8 p-8 sm:p-12 md:grid-cols-2">
               <div>
-                <p className="text-xs uppercase tracking-[0.28em] opacity-55">Find us</p>
+                <p className="text-xs uppercase tracking-[0.28em] opacity-70">Find us</p>
                 <h2
                   className="mt-4 text-4xl leading-tight"
                   style={{ fontFamily: 'var(--font-display)' }}

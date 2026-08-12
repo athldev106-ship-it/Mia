@@ -153,7 +153,7 @@ export function ReservationForm() {
         {status.state === 'submitting' ? 'Sending…' : 'Request a table'}
       </button>
 
-      <p className="text-center text-xs opacity-55">
+      <p className="text-center text-xs opacity-70">
         A reservation is confirmed once our team calls you back.
       </p>
     </form>

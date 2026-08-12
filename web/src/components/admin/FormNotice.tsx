@@ -8,7 +8,7 @@ export function FormNotice({ state }: { state: ActionState }) {
     <p
       role="status"
       aria-live="polite"
-      className={`text-xs ${state.status === 'error' ? 'text-[var(--alert)]' : 'opacity-60'}`}
+      className={`text-xs ${state.status === 'error' ? 'text-[var(--alert)]' : 'opacity-70'}`}
     >
       {state.message}
     </p>

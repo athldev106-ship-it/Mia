@@ -38,7 +38,7 @@ export function Panel({
                 {title}
               </h2>
             )}
-            {subtitle && <p className="mt-0.5 text-xs opacity-55">{subtitle}</p>}
+            {subtitle && <p className="mt-0.5 text-xs opacity-70">{subtitle}</p>}
           </div>
           {actions}
         </header>
@@ -61,11 +61,11 @@ export function Stat({
 }) {
   const body = (
     <>
-      <p className="text-xs uppercase tracking-[0.16em] opacity-55">{label}</p>
+      <p className="text-xs uppercase tracking-[0.16em] opacity-70">{label}</p>
       <p className="mt-2 text-3xl tabular-nums" style={{ fontFamily: 'var(--font-display)' }}>
         {value}
       </p>
-      {hint && <p className="mt-1 text-xs opacity-55">{hint}</p>}
+      {hint && <p className="mt-1 text-xs opacity-70">{hint}</p>}
     </>
   );
 
@@ -83,7 +83,7 @@ export function Stat({
 
 export function EmptyState({ children }: { children: ReactNode }) {
   return (
-    <p className="rounded-xl border border-dashed border-[var(--hairline)] px-4 py-8 text-center text-sm opacity-55">
+    <p className="rounded-xl border border-dashed border-[var(--hairline)] px-4 py-8 text-center text-sm opacity-70">
       {children}
     </p>
   );
@@ -102,7 +102,7 @@ export function Th({ children, className = '' }: { children?: ReactNode; classNa
   return (
     <th
       scope="col"
-      className={`border-b border-[var(--hairline)] px-2 py-2 text-left text-[11px] font-medium uppercase tracking-[0.14em] opacity-55 ${className}`}
+      className={`border-b border-[var(--hairline)] px-2 py-2 text-left text-[11px] font-medium uppercase tracking-[0.14em] opacity-70 ${className}`}
     >
       {children}
     </th>

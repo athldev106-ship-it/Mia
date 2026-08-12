@@ -39,8 +39,10 @@ export default async function AdminLoginPage({
   const configured = isConfigured();
 
   return (
-    <div className="mx-auto max-w-md pt-8">
-      <p className="text-xs uppercase tracking-[0.28em] opacity-50">{SITE.name}</p>
+    // A <main> landmark, so the page is not one unlabelled region to
+    // assistive tech. The dashboard proper gets one from its own layout.
+    <main className="mx-auto max-w-md pt-8">
+      <p className="text-xs uppercase tracking-[0.28em] opacity-70">{SITE.name}</p>
       <h1 className="mt-3 text-4xl leading-tight" style={{ fontFamily: 'var(--font-display)' }}>
         Staff sign in
       </h1>
@@ -60,6 +62,6 @@ export default async function AdminLoginPage({
       <div className="mt-6">
         <LoginForm next={safeNext(param(search, 'next'))} configured={configured} />
       </div>
-    </div>
+    </main>
   );
 }

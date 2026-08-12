@@ -64,7 +64,7 @@ export default async function AmbiencePage() {
         <Reveal>
           <AmbienceStrip />
         </Reveal>
-        <p className="mx-auto mt-4 max-w-6xl px-6 text-center text-xs opacity-55">
+        <p className="mx-auto mt-4 max-w-6xl px-6 text-center text-xs opacity-70">
           A continuous pass through the room. Swap these tiles for the cafe&rsquo;s own 360°
           photography when it is shot.
         </p>
@@ -144,7 +144,7 @@ export default async function AmbiencePage() {
           </div>
 
           {GALLERY_PHOTOS.length === 0 && (
-            <p className="mt-4 text-xs opacity-55">
+            <p className="mt-4 text-xs opacity-70">
               Placeholders. Drop the cafe&rsquo;s photography into <code>public/media/</code> and
               list it in <code>src/lib/media.ts</code>.
             </p>
@@ -158,7 +158,7 @@ export default async function AmbiencePage() {
           <Reveal>
             <div className="glass glass-sheen grid gap-8 p-8 sm:p-12 md:grid-cols-2">
               <div>
-                <p className="text-xs uppercase tracking-[0.28em] opacity-55">Come and sit</p>
+                <p className="text-xs uppercase tracking-[0.28em] opacity-70">Come and sit</p>
                 <h2
                   className="mt-4 text-3xl leading-tight sm:text-4xl"
                   style={{ fontFamily: 'var(--font-display)' }}

@@ -50,7 +50,7 @@ export default async function AdminOverviewPage() {
         <h1 className="text-3xl" style={{ fontFamily: 'var(--font-display)' }}>
           Today
         </h1>
-        <p className="text-sm opacity-55">{formatISTDate(today)} · Asia/Kolkata</p>
+        <p className="text-sm opacity-70">{formatISTDate(today)} · Asia/Kolkata</p>
       </div>
 
       <div className="grid gap-3 sm:grid-cols-3">
@@ -104,7 +104,7 @@ export default async function AdminOverviewPage() {
                   <Td className="tabular-nums">{formatISTClock(reservation.reserved_at)}</Td>
                   <Td>
                     {reservation.name}
-                    <span className="block text-xs opacity-55">{reservation.phone}</span>
+                    <span className="block text-xs opacity-70">{reservation.phone}</span>
                   </Td>
                   <Td className="text-right tabular-nums">{reservation.party_size}</Td>
                   <Td>{reservation.occasion ?? '—'}</Td>
@@ -137,7 +137,7 @@ export default async function AdminOverviewPage() {
               <li key={enquiry.id} className="flex items-baseline gap-3 py-2.5">
                 <span className="min-w-0 flex-1">
                   {enquiry.name}
-                  <span className="block text-xs opacity-55">
+                  <span className="block text-xs opacity-70">
                     {ENQUIRY_TYPE_LABELS[enquiry.type] ?? enquiry.type} ·{' '}
                     {formatISTDateTime(enquiry.created_at)}
                   </span>

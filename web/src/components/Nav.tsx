@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { LOGO } from '@/lib/media';
 import { NAV, ORDER_HREF } from '@/lib/site';
@@ -20,6 +20,8 @@ export function Nav({ name }: { name: string }) {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const toggleRef = useRef<HTMLButtonElement>(null);
+  const drawerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -31,15 +33,64 @@ export function Nav({ name }: { name: string }) {
   // A route change must never leave the mobile sheet hanging open.
   useEffect(() => setOpen(false), [pathname]);
 
-  // The drawer covers the page, so Escape has to close it.
+  /** Closing always hands focus back, so the keyboard never loses its place. */
+  const close = useCallback(() => {
+    setOpen(false);
+    toggleRef.current?.focus();
+  }, []);
+
+  /**
+   * While the drawer is open it owns the keyboard.
+   *
+   * Escape closes it, and Tab is wrapped between the drawer's first and
+   * last focusable elements. Without the wrap, tabbing walks straight out
+   * of the open sheet and into the page underneath it -- which is still
+   * there, just covered -- leaving a keyboard user operating links they
+   * cannot see.
+   */
   useEffect(() => {
     if (!open) return;
+
     const onKey = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') setOpen(false);
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        close();
+        return;
+      }
+      if (event.key !== 'Tab') return;
+
+      const drawer = drawerRef.current;
+      const toggle = toggleRef.current;
+      if (!drawer || !toggle) return;
+
+      // The toggle sits outside the drawer but belongs to the loop: it is
+      // how the sheet is closed again.
+      const focusable = [
+        toggle,
+        ...Array.from(
+          drawer.querySelectorAll<HTMLElement>(
+            'a[href], button:not([disabled]), input, select, textarea, [tabindex]:not([tabindex="-1"])',
+          ),
+        ),
+      ];
+      if (focusable.length === 0) return;
+
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      const active = document.activeElement;
+
+      if (event.shiftKey && (active === first || !focusable.includes(active as HTMLElement))) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && active === last) {
+        event.preventDefault();
+        first.focus();
+      }
     };
+
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [open]);
+  }, [open, close]);
 
   return (
     <header className="fixed inset-x-0 top-0 z-50 px-4 pt-4">
@@ -104,8 +155,9 @@ export function Nav({ name }: { name: string }) {
         </Link>
 
         <button
+          ref={toggleRef}
           type="button"
-          onClick={() => setOpen((value) => !value)}
+          onClick={() => (open ? close() : setOpen(true))}
           aria-expanded={open}
           aria-controls="mobile-nav"
           aria-label={open ? 'Close menu' : 'Open menu'}
@@ -132,7 +184,11 @@ export function Nav({ name }: { name: string }) {
       </nav>
 
       {open && (
-        <div id="mobile-nav" className="glass glass-sheen mx-auto mt-2 max-w-6xl p-3 lg:hidden">
+        <div
+          ref={drawerRef}
+          id="mobile-nav"
+          className="glass glass-sheen mx-auto mt-2 max-w-6xl p-3 lg:hidden"
+        >
           <ul className="space-y-1">
             {HEADER_NAV.map((item) => (
               <li key={item.href}>

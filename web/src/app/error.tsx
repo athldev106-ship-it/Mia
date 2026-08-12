@@ -27,7 +27,7 @@ export default function Error({
   return (
     <main className="flex min-h-screen items-center justify-center px-6 py-24">
       <div className="glass glass-sheen w-full max-w-lg p-9 text-center sm:p-12">
-        <p className="text-xs uppercase tracking-[0.28em] opacity-55">Something went wrong</p>
+        <p className="text-xs uppercase tracking-[0.28em] opacity-70">Something went wrong</p>
 
         <h1
           className="mt-5 text-4xl leading-tight sm:text-5xl"
@@ -57,7 +57,7 @@ export default function Error({
         </div>
 
         {error.digest && (
-          <p className="mt-8 border-t border-[var(--hairline)] pt-6 font-mono text-xs opacity-50">
+          <p className="mt-8 border-t border-[var(--hairline)] pt-6 font-mono text-xs opacity-70">
             Reference {error.digest}
           </p>
         )}

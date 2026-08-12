@@ -21,7 +21,7 @@ export function PageHeader({
         }}
       />
       <div className="relative mx-auto max-w-6xl">
-        <p className="text-xs uppercase tracking-[0.28em] opacity-50">{eyebrow}</p>
+        <p className="text-xs uppercase tracking-[0.28em] opacity-70">{eyebrow}</p>
         <h1
           className="mt-4 max-w-3xl text-5xl leading-[1.05] tracking-tight sm:text-6xl"
           style={{ fontFamily: 'var(--font-display)' }}

@@ -29,7 +29,7 @@ export default function AdminError({
         <p className="mt-4 text-sm leading-relaxed opacity-75">
           {error.message || 'Something went wrong while talking to the database.'}
         </p>
-        <p className="mt-2 text-xs opacity-50">
+        <p className="mt-2 text-xs opacity-70">
           If this keeps happening, check that your account is still on the staff list.
         </p>
         <div className="mt-6 flex flex-wrap gap-3">

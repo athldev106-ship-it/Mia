@@ -18,7 +18,7 @@ export function Reviews() {
     <section className="relative px-6 py-24">
       <div className="mx-auto max-w-6xl">
         <Reveal>
-          <p className="text-xs uppercase tracking-[0.28em] opacity-55">In their words</p>
+          <p className="text-xs uppercase tracking-[0.28em] opacity-70">In their words</p>
           <div className="mt-4 flex flex-wrap items-end justify-between gap-6">
             <h2
               className="max-w-md text-4xl leading-tight sm:text-5xl"

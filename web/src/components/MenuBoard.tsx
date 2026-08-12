@@ -95,7 +95,7 @@ function MenuCard({ item, slug }: { item: MenuItem; slug: string }) {
   return (
     <li
       className={`glass glass-sheen flex gap-4 p-5 transition-transform duration-300 hover:-translate-y-0.5 ${
-        item.is_available ? '' : 'opacity-55'
+        item.is_available ? '' : 'opacity-70'
       }`}
     >
       <ItemThumb name={item.name} slug={slug} />

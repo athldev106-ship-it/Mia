@@ -16,10 +16,10 @@ export default async function DashboardLayout({ children }: { children: ReactNod
     <div className="mx-auto max-w-6xl">
       <header className="glass glass-sheen mb-6 flex flex-wrap items-center gap-x-4 gap-y-3 p-3">
         <div className="mr-auto pl-1">
-          <p className="text-[11px] uppercase tracking-[0.2em] opacity-55">Staff dashboard</p>
+          <p className="text-[11px] uppercase tracking-[0.2em] opacity-70">Staff dashboard</p>
           <p className="text-sm">
             {profile.full_name ?? email}
-            <span className="ml-2 opacity-50">{profile.role}</span>
+            <span className="ml-2 opacity-70">{profile.role}</span>
           </p>
         </div>
         <AdminNav />
@@ -30,7 +30,7 @@ export default async function DashboardLayout({ children }: { children: ReactNod
         </form>
       </header>
 
-      {children}
+      <main>{children}</main>
     </div>
   );
 }

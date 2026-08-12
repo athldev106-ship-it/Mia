@@ -47,7 +47,7 @@ export default async function MenuPage() {
                 Reserve a table
               </Link>
             </div>
-            <p className="mt-8 text-center text-xs opacity-60">
+            <p className="mt-8 text-center text-xs opacity-70">
               All prices in ₹ and inclusive of taxes. Please tell us about any allergies — several
               dishes contain nuts. Ask us for the full macro breakdown on anything on this menu.
             </p>

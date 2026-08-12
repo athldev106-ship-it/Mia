@@ -37,7 +37,7 @@ export function Pager({
       aria-label="Pagination"
       className="mt-4 flex items-center justify-between gap-3 text-sm"
     >
-      <p className="text-xs opacity-55 tabular-nums">
+      <p className="text-xs opacity-70 tabular-nums">
         {from}–{to} of {total}
       </p>
       <div className="flex gap-2">

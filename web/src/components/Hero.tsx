@@ -62,7 +62,7 @@ export function Hero({ site }: { site: SiteContent }) {
 
       <div className="relative mx-auto w-full max-w-6xl">
         <div className="glass glass-sheen max-w-2xl p-8 sm:p-12">
-          <p className="text-xs uppercase tracking-[0.28em] opacity-60">
+          <p className="text-xs uppercase tracking-[0.28em] opacity-70">
             Healthy kitchen &amp; coffee · {SITE.address.locality}
           </p>
 

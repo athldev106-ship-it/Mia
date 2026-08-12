@@ -58,7 +58,7 @@ export default async function EnquiriesPage({
         <h1 className="text-3xl" style={{ fontFamily: 'var(--font-display)' }}>
           Enquiries
         </h1>
-        <p className="text-sm opacity-55">{count ?? 0} matching</p>
+        <p className="text-sm opacity-70">{count ?? 0} matching</p>
       </div>
 
       <Panel>
@@ -132,7 +132,7 @@ export default async function EnquiriesPage({
                         value={enquiry.status}
                       />
                     </div>
-                    <p className="mt-1 text-xs opacity-55">
+                    <p className="mt-1 text-xs opacity-70">
                       <a
                         href={`mailto:${enquiry.email}`}
                         className="underline underline-offset-2"

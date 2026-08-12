@@ -77,7 +77,7 @@ export default async function ReservationsPage({
         <h1 className="text-3xl" style={{ fontFamily: 'var(--font-display)' }}>
           Reservations
         </h1>
-        <p className="text-sm opacity-55">{count ?? 0} matching</p>
+        <p className="text-sm opacity-70">{count ?? 0} matching</p>
       </div>
 
       <Panel>
@@ -151,13 +151,13 @@ export default async function ReservationsPage({
                 <tr key={reservation.id}>
                   <Td className="whitespace-nowrap">
                     {formatISTDateTime(reservation.reserved_at)}
-                    <span className="block text-xs opacity-45">
+                    <span className="block text-xs opacity-70">
                       booked {formatISTDateTime(reservation.created_at)}
                     </span>
                   </Td>
                   <Td>
                     {reservation.name}
-                    <span className="block text-xs opacity-55">
+                    <span className="block text-xs opacity-70">
                       <a href={`tel:${reservation.phone}`} className="underline underline-offset-2">
                         {reservation.phone}
                       </a>
@@ -168,7 +168,7 @@ export default async function ReservationsPage({
                   <Td className="max-w-[20rem] text-xs opacity-70">
                     {reservation.occasion && <span className="block">{reservation.occasion}</span>}
                     {reservation.notes && <span className="block">{reservation.notes}</span>}
-                    {!reservation.occasion && !reservation.notes && <span className="opacity-50">—</span>}
+                    {!reservation.occasion && !reservation.notes && <span className="opacity-70">—</span>}
                   </Td>
                   <Td>
                     <StatusSelect

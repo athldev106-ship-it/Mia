@@ -9,7 +9,7 @@ import type { Option } from '@/lib/admin';
 function Pending() {
   const { pending } = useFormStatus();
   return (
-    <span aria-live="polite" className="text-[11px] opacity-55">
+    <span aria-live="polite" className="text-[11px] opacity-70">
       {pending ? 'Saving…' : ''}
     </span>
   );

@@ -15,7 +15,7 @@ export default function NotFound() {
   return (
     <main className="flex min-h-screen items-center justify-center px-6 py-24">
       <div className="glass glass-sheen w-full max-w-lg p-9 text-center sm:p-12">
-        <p className="text-xs uppercase tracking-[0.28em] opacity-55">Page not found</p>
+        <p className="text-xs uppercase tracking-[0.28em] opacity-70">Page not found</p>
 
         <h1
           className="mt-5 text-4xl leading-tight sm:text-5xl"

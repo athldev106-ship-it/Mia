@@ -42,7 +42,7 @@ export function FilterField({
     <div>
       <label
         htmlFor={htmlFor}
-        className="mb-1 block text-[11px] uppercase tracking-[0.14em] opacity-55"
+        className="mb-1 block text-[11px] uppercase tracking-[0.14em] opacity-70"
       >
         {label}
       </label>

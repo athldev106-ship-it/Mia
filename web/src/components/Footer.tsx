@@ -39,7 +39,7 @@ export function Footer({ site }: { site: SiteContent }) {
           </div>
 
           <div className="text-sm">
-            <h3 className="mb-3 text-xs uppercase tracking-[0.18em] opacity-55">Visit</h3>
+            <h3 className="mb-3 text-xs uppercase tracking-[0.18em] opacity-70">Visit</h3>
             <address className="not-italic leading-relaxed opacity-80">{site.address}</address>
             <p className="mt-3 opacity-80">{site.hours}</p>
             <a href={`tel:${site.phone}`} className="mt-3 inline-block underline underline-offset-4">
@@ -61,7 +61,7 @@ export function Footer({ site }: { site: SiteContent }) {
           </div>
 
           <div className="text-sm">
-            <h3 className="mb-3 text-xs uppercase tracking-[0.18em] opacity-55">Explore</h3>
+            <h3 className="mb-3 text-xs uppercase tracking-[0.18em] opacity-70">Explore</h3>
             <ul className="space-y-2">
               {NAV.map((item) => (
                 <li key={item.href}>
@@ -74,7 +74,7 @@ export function Footer({ site }: { site: SiteContent }) {
           </div>
 
           <div className="text-sm">
-            <h3 className="mb-3 text-xs uppercase tracking-[0.18em] opacity-55">Find us on</h3>
+            <h3 className="mb-3 text-xs uppercase tracking-[0.18em] opacity-70">Find us on</h3>
             <ul className="space-y-2">
               {SOCIALS.map((social) => (
                 <li key={social.key}>
@@ -92,7 +92,7 @@ export function Footer({ site }: { site: SiteContent }) {
           </div>
         </div>
 
-        <div className="mt-12 border-t border-[var(--hairline)] pt-6 text-xs opacity-55">
+        <div className="mt-12 border-t border-[var(--hairline)] pt-6 text-xs opacity-70">
           <p>
             © {new Date().getFullYear()} {SITE.fullName}. All rights reserved.
           </p>

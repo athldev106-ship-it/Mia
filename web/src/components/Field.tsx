@@ -29,7 +29,7 @@ export function Field({
         )}
       </label>
       {children}
-      {hint && !error && <p className="mt-1.5 text-xs opacity-55">{hint}</p>}
+      {hint && !error && <p className="mt-1.5 text-xs opacity-70">{hint}</p>}
       {error && (
         <p role="alert" className="mt-1.5 text-xs text-[var(--alert)]">
           {error}

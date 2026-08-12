@@ -133,7 +133,7 @@ export function SettingsForm({
 
       <fieldset disabled={!canEdit} className="space-y-4">
         <legend className="mb-2 text-sm font-medium">Ordering & social links</legend>
-        <p className="text-xs opacity-55">
+        <p className="text-xs opacity-70">
           Where the &ldquo;Order Online&rdquo; buttons send people. Leave a field blank to fall back
           to the built-in link.
         </p>
@@ -176,7 +176,7 @@ export function SettingsForm({
 
       <fieldset disabled={!canEdit} className="space-y-3">
         <legend className="mb-2 text-sm font-medium">Opening hours</legend>
-        <p className="text-xs opacity-55">
+        <p className="text-xs opacity-70">
           Free text, shown exactly as typed. Clear a row to drop that day.
         </p>
 
@@ -211,7 +211,7 @@ export function SettingsForm({
           />
           <span>
             Open for business
-            <span className="mt-0.5 block text-xs opacity-55">
+            <span className="mt-0.5 block text-xs opacity-70">
               Clear this on a day the cafe is unexpectedly shut, so the site stops inviting people
               over.
             </span>
