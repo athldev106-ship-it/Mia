@@ -2,10 +2,17 @@ import { NextResponse } from 'next/server';
 
 import { sendEnquiryEmail } from '@/lib/email';
 import { clientIp, rateLimit } from '@/lib/rate-limit';
-import { createAdminClient } from '@/lib/supabase/admin';
+import { createAdminClient, hasDatabase } from '@/lib/supabase/admin';
 import { enquirySchema } from '@/lib/validation';
 
 export async function POST(request: Request) {
+  if (!hasDatabase()) {
+    return NextResponse.json(
+      { error: 'The contact form is not switched on yet — please call or message us instead.' },
+      { status: 503 },
+    );
+  }
+
   const limit = rateLimit(`enquiry:${clientIp(request)}`, 5, 60_000);
   if (!limit.ok) {
     return NextResponse.json(

@@ -2,10 +2,19 @@ import { NextResponse } from 'next/server';
 
 import { sendReservationEmails } from '@/lib/email';
 import { clientIp, rateLimit } from '@/lib/rate-limit';
-import { createAdminClient } from '@/lib/supabase/admin';
+import { createAdminClient, hasDatabase } from '@/lib/supabase/admin';
 import { reservationSchema } from '@/lib/validation';
 
 export async function POST(request: Request) {
+  // A deployment without credentials cannot store anything. Say so and point
+  // the guest at the phone, rather than throwing a 500 at them.
+  if (!hasDatabase()) {
+    return NextResponse.json(
+      { error: 'Online booking is not switched on yet — please call us and we will book you in.' },
+      { status: 503 },
+    );
+  }
+
   const limit = rateLimit(`reservation:${clientIp(request)}`, 5, 60_000);
   if (!limit.ok) {
     return NextResponse.json(

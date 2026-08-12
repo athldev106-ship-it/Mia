@@ -1,10 +1,17 @@
 import { NextResponse } from 'next/server';
 
 import { clientIp, rateLimit } from '@/lib/rate-limit';
-import { createAdminClient } from '@/lib/supabase/admin';
+import { createAdminClient, hasDatabase } from '@/lib/supabase/admin';
 import { newsletterSchema } from '@/lib/validation';
 
 export async function POST(request: Request) {
+  if (!hasDatabase()) {
+    return NextResponse.json(
+      { error: 'Signups are not switched on yet — ask us at the counter for your discount.' },
+      { status: 503 },
+    );
+  }
+
   const limit = rateLimit(`newsletter:${clientIp(request)}`, 5, 60_000);
   if (!limit.ok) {
     return NextResponse.json(
