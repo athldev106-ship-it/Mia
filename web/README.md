@@ -141,7 +141,17 @@ palette reading as one green merely tinted light and dark.
 ## Performance notes
 
 Most of this cafe's customers arrive on mobile data, so page weight was
-measured rather than assumed. Two findings are worth not re-deriving.
+measured rather than assumed. Every public page is around **235 KB on the
+wire**, gzipped, including the ~13 KB of route prefetching Next does as you
+scroll. Vercel serves brotli, so production will be lower again.
+
+**Measure with `encodedDataLength` from CDP, not `Content-Length`.** Next
+sends HTML and RSC payloads chunked, with no `Content-Length` at all, so a
+naive tally silently falls back to the decoded size and overstates the page
+by roughly 2.7x. An early pass here reported 663 KB for a 244 KB page on
+exactly that mistake.
+
+Three findings are worth not re-deriving.
 
 **Font weights are pinned to what is actually drawn.** Headings never carry
 a font-weight utility, so the display face is only ever seen at 400, and
@@ -178,6 +188,16 @@ Two things to know if you touch it:
 
 If a self-hosted subsetted font is ever adopted for other reasons, cutting
 one file with `pyftsubset` makes all of this unnecessary.
+
+This was the single largest real saving on the site, because woff2 is
+already compressed — those 83 KB were 83 KB on the wire, unlike most of
+what a page weight tallies.
+
+**Route prefetching is left on deliberately.** Next fetches the RSC payload
+for every link scrolled into view, which sounds expensive and is not: about
+13 KB compressed for all five routes together. It buys instant navigation
+between pages for well under the cost of one photograph. Turn it off per
+link with `prefetch={false}` only if a route ever becomes genuinely heavy.
 
 ---
 
