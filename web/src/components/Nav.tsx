@@ -48,27 +48,31 @@ export function Nav({ name }: { name: string }) {
           scrolled || open ? 'glass glass-sheen' : 'border border-transparent'
         }`}
       >
+        {/* The mark and the wordmark are separate: LOGO supplies the mark
+            alone, so the name is always set in the site's own type rather
+            than baked into the image, where it would be unreadable at this
+            size. The image is decorative because the adjacent text already
+            names the cafe -- a screen reader should not hear it twice. */}
         <Link href="/" className="mr-auto flex items-center gap-2.5" aria-label={`${name} — home`}>
           {LOGO ? (
             <Image
               src={LOGO.src}
-              alt={name}
+              alt=""
+              aria-hidden
               width={LOGO.width}
               height={LOGO.height}
               priority
               className="h-8 w-auto"
             />
           ) : (
-            <>
-              <BowlMark />
-              <span
-                className="text-xl leading-none tracking-tight"
-                style={{ fontFamily: 'var(--font-display)' }}
-              >
-                {name}
-              </span>
-            </>
+            <BowlMark />
           )}
+          <span
+            className="text-xl leading-none tracking-tight"
+            style={{ fontFamily: 'var(--font-display)' }}
+          >
+            {name}
+          </span>
         </Link>
 
         <ul className="hidden items-center gap-1 lg:flex">

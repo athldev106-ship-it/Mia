@@ -8,7 +8,7 @@
  * To use a real asset: drop the file into `public/media/`, then point the
  * slot at it, e.g.
  *
- *   export const LOGO = { src: '/media/logo.svg', width: 132, height: 32 };
+ *   export const GALLERY_PHOTOS = [{ src: '/media/room.jpg', alt: 'The room', width: 1600, height: 1067 }];
  *
  * Photographs want a `width` and `height` so next/image can reserve the
  * space and avoid layout shift, plus an `alt` describing what is shown.
@@ -19,23 +19,23 @@ export type Logo = { src: string; width: number; height: number } | null;
 export type Photo = { src: string; alt: string; width?: number; height?: number };
 
 /**
- * Replaces the drawn bowl mark and wordmark in the nav when set.
+ * The mark shown in the nav, beside the wordmark set in the site's own
+ * type.
  *
- * The nav renders it at 32px tall and scales the width to match, so give
- * the real pixel dimensions of the file here and let CSS do the sizing.
+ * This points at the mark alone -- the icon discs and the bowl -- rather
+ * than the full circular badge. The badge carries its own "The LeanKafe"
+ * wordmark, which at the 30px the nav gives it would be an illegible
+ * smudge, and showing it beside the text wordmark would print the name
+ * twice. Both files are cuts of the same supplied artwork:
  *
- * The supplied logo is a circular badge with the wordmark inside it,
- * which is tall for a nav bar. Two options:
+ *   /media/logo.png        the full badge, on a transparent circle
+ *   /media/logo-mark.png   the mark alone, for small sizes
+ *   /media/logo-original.jpg  the file as supplied, kept as the source
  *
- *   - Full badge: works, but it will be small next to the nav links.
- *       export const LOGO = { src: '/media/logo.png', width: 512, height: 512 };
- *
- *   - Better: export a horizontal lockup (mark on the left, "The LeanKafe"
- *     beside it) and point at that instead. Roughly 4:1 reads best.
- *
- * A transparent PNG or, ideally, an SVG will look sharpest.
+ * Replace with an SVG if a vector version ever turns up; the raster is
+ * only as sharp as the 320px badge it was cut from.
  */
-export const LOGO: Logo = null;
+export const LOGO: Logo = { src: '/media/logo-mark.png', width: 160, height: 140 };
 
 /**
  * The interior shots that scroll past on the home and ambience pages.

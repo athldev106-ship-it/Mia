@@ -46,13 +46,14 @@ export const metadata: Metadata = {
   description: SITE.description,
   robots: { index: true, follow: true },
   /**
-   * Declared explicitly rather than left to file-convention discovery, so
-   * the SVG is offered first and /favicon.ico stays available for the
-   * browsers and crawlers that request it by that path regardless.
+   * Cut from the cafe's own logo rather than drawn to approximate it, so
+   * the sizes are raster. The large PNG is offered first, with
+   * /favicon.ico kept for the browsers and crawlers that ask for that
+   * path regardless of what is advertised here.
    */
   icons: {
     icon: [
-      { url: '/icon.svg', type: 'image/svg+xml' },
+      { url: '/icon.png', type: 'image/png', sizes: '512x512' },
       { url: '/favicon.ico', sizes: 'any' },
     ],
     apple: '/apple-icon.png',

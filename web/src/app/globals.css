@@ -10,19 +10,22 @@
    keeps true sage for fills, icons and the dark theme.
    ===================================================================== */
 @theme {
-  /* Straight from the logo. */
-  --color-forest: #22301f;
-  --color-sage: #9dba6e;
+  /* Sampled from the logo artwork itself. Note the two are not the same
+     hue: the sage is a warm yellow-green (hue 80), the ground a cooler
+     dark green (hue 136). Keeping that split is what makes the palette
+     read as the brand's rather than as one green tinted light and dark. */
+  --color-forest: #1f2a22;
+  --color-sage: #94a76f;
 
   /* Interface greens derived from the sage hue. */
-  --color-olive: #5d7a34;
-  --color-olive-deep: #46601f;
-  --color-forest-soft: #2f4029;
-  --color-sage-pale: #e6eed7;
+  --color-olive: #5c7231;
+  --color-olive-deep: #4c5e26;
+  --color-forest-soft: #2b3b2f;
+  --color-sage-pale: #e9efdc;
 
   --color-cream: #fbfcf8;
   --color-paper: #ffffff;
-  --color-ink: #1b241a;
+  --color-ink: #1b221d;
   --color-crema: #c8a97c;
   /* The accent is green, so errors need a colour of their own -- a green
      "something went wrong" reads as success. */
@@ -42,7 +45,7 @@
   --surface: var(--color-cream);
   --surface-raised: var(--color-paper);
   --text: var(--color-ink);
-  --text-muted: #55634f;
+  --text-muted: #5c6250;
   /* Sage itself is ~2.1:1 on white. This darkened sage clears 4.5:1 while
      staying recognisably the brand's green. */
   --accent: var(--color-olive-deep);
@@ -61,13 +64,13 @@
 /* Dark mode is the logo's own colourway: sage on forest. */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme='light']) {
-    --surface: #161f14;
+    --surface: #161d18;
     --surface-raised: var(--color-forest);
-    --text: #eef2e6;
-    --text-muted: #a8b89a;
+    --text: #eef1ea;
+    --text-muted: #b1b9a2;
     /* True sage, which only reads correctly on the dark ground. */
     --accent: var(--color-sage);
-    --accent-ink: #1a2416;
+    --accent-ink: #141c12;
     /* Lifted for legibility on the dark ground. */
     --alert: #ff8a7a;
     --hairline: color-mix(in srgb, #ffffff 14%, transparent);
@@ -83,12 +86,12 @@
 
 /* The viewer's theme toggle stamps data-theme and must win either way. */
 :root[data-theme='dark'] {
-  --surface: #161f14;
+  --surface: #161d18;
   --surface-raised: var(--color-forest);
-  --text: #eef2e6;
-  --text-muted: #a8b89a;
+  --text: #eef1ea;
+  --text-muted: #b1b9a2;
   --accent: var(--color-sage);
-  --accent-ink: #1a2416;
+  --accent-ink: #141c12;
   --alert: #ff8a7a;
   --hairline: color-mix(in srgb, #ffffff 14%, transparent);
 

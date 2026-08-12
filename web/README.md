@@ -86,8 +86,6 @@ are outstanding.
 2. Point the slots in `web/src/lib/media.ts` at them:
 
 ```ts
-export const LOGO = { src: '/media/logo.png', width: 512, height: 512 };
-
 export const INTERIOR_PHOTOS = [
   { src: '/media/counter.jpg', alt: 'The espresso counter' },
   // six or more reads best in the scrolling strip
@@ -101,15 +99,39 @@ export const HERO_MEDIA = { image: '/media/hero.jpg' };
 // or a clip: { video: '/media/hero.mp4', poster: '/media/hero.jpg' }
 ```
 
-The drawn bowl mark, the placeholder tiles and the gradient hero disappear
-automatically as each slot is filled.
+The placeholder tiles and the gradient hero disappear automatically as each
+slot is filled.
 
-**On the logo specifically.** The nav renders it 32px tall. The circular
-badge works but sits small next to the nav links, so a horizontal lockup —
-mark on the left, "The LeanKafe" beside it, roughly 4:1 — reads much better
-there. An SVG or transparent PNG will look sharpest. Until a file is set,
-the nav draws the three-discs-over-a-bowl mark in the site's own colours,
-and the favicon set uses the same shape.
+### The logo
+
+Already in place. The cafe supplied a circular badge as a JPEG on a white
+page; `public/media/` holds three cuts of it, none of them redrawn:
+
+| File | What it is | Used by |
+| --- | --- | --- |
+| `logo-original.jpg` | the file exactly as supplied | source of truth |
+| `logo.png` | the whole badge, masked to its circle | spare, for print or social profiles |
+| `logo-mark.png` | the icon discs and bowl, no wordmark | the nav, the favicon set, the share card |
+
+The nav pairs `logo-mark.png` with the cafe's name set in the site's own
+type, rather than using the full badge. The badge carries its own wordmark,
+which at the 30px the nav allows would be an illegible smudge — and showing
+it beside the text would print the name twice.
+
+Two things worth knowing:
+
+- **It is raster, and only as sharp as the 320px badge it came from.** That
+  is ample at nav and favicon sizes. If a vector original ever turns up,
+  drop it in and point `LOGO` at it — everything else follows.
+- The transparency was cut by flooding the background inward from the
+  border, so the forest green *inside* the icon discs survives while the
+  ground around them goes clear. Re-cutting it by keying out the colour
+  would hollow the icons.
+
+The brand colours in `globals.css` were sampled from this artwork:
+`#1f2a22` for the ground and `#94a76f` for the sage. They are deliberately
+different hues — 136 and 80 — and keeping that split is what stops the
+palette reading as one green merely tinted light and dark.
 
 ---
 
@@ -133,7 +155,7 @@ and the favicon set uses the same shape.
 - [ ] **Google reviews.** `src/lib/reviews.ts` quotes real public reviews.
       Republishing scraped Google review text is against Google's terms — move
       to the Google Places API or to testimonials the cafe collects itself.
-- [ ] Add real photography and the logo (see above).
+- [ ] Add real photography (see above). The logo is already in.
 
 ---
 

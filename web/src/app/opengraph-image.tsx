@@ -1,3 +1,6 @@
+import { readFile } from 'node:fs/promises';
+import { join } from 'node:path';
+
 import { ImageResponse } from 'next/og';
 
 import { SITE } from '@/lib/site';
@@ -24,7 +27,14 @@ const FOREST = '#22301f';
 const SAGE = '#9dba6e';
 const PALE = '#e6eed7';
 
-export default function OpengraphImage() {
+export default async function OpengraphImage() {
+  // The real mark, read off disk and inlined: next/og runs without a
+  // request origin at build time, so it cannot fetch /media/... over HTTP.
+  const markData = await readFile(
+    join(process.cwd(), 'public', 'media', 'logo-mark.png'),
+  );
+  const mark = `data:image/png;base64,${markData.toString('base64')}`;
+
   return new ImageResponse(
     (
       <div
@@ -53,13 +63,9 @@ export default function OpengraphImage() {
         />
 
         {/* The mark: three discs over a bowl, as in the logo. */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 24 }}>
-          <svg width="96" height="96" viewBox="0 0 32 32">
-            <circle cx="9.5" cy="8" r="2.5" fill={SAGE} />
-            <circle cx="16" cy="8" r="2.5" fill={SAGE} />
-            <circle cx="22.5" cy="8" r="2.5" fill={SAGE} />
-            <path d="M3.5 16.5h25v0.5A12.5 12.5 0 0 1 16 29.5 12.5 12.5 0 0 1 3.5 17Z" fill={SAGE} />
-          </svg>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 26 }}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={mark} alt="" width={124} height={109} />
           <div
             style={{
               display: 'flex',
