@@ -8,6 +8,11 @@ import { z } from 'zod';
  * as it is typed, instead of the guest waiting on a round trip to find
  * out. HTML anchors `pattern` implicitly, hence no ^ or $ here.
  *
+ * Spaces and hyphens are allowed between any two digits, not merely after
+ * a country code. People write their number the way it is printed, and
+ * the cafe prints its own as "099556 65594" -- a form that rejected the
+ * business's own phone format would be indefensible.
+ *
  * The hyphen in the character class must be escaped. Browsers compile
  * `pattern` with the `v` flag, under which a bare leading `-` in a class
  * is a syntax error -- and a `pattern` that fails to compile is dropped
@@ -17,11 +22,58 @@ import { z } from 'zod';
  * Server-side validation below is still the authority -- `pattern` is a
  * convenience for the person typing, not a check anyone has to pass.
  */
-export const PHONE_PATTERN = '(?:\\+?91[\\-\\s]?|0)?[6-9]\\d{9}';
+export const PHONE_PATTERN = '(?:(?:\\+?91|0)[\\-\\s]?)?[6-9](?:[\\-\\s]?\\d){9}';
 
 export const PHONE_HINT = 'Enter a valid 10-digit Indian mobile number';
 
-const phone = z.string().trim().regex(new RegExp(`^${PHONE_PATTERN}$`), PHONE_HINT);
+const PHONE_RE = new RegExp(`^${PHONE_PATTERN}$`);
+
+/**
+ * Says what is actually wrong with a phone number, or null if nothing is.
+ *
+ * `pattern` alone only ever gets the browser's "Please match the requested
+ * format", which tells someone mistyping their own number nothing at all.
+ * The same function runs in the browser and on the server, so a guest is
+ * told the same thing either way.
+ */
+export function describePhoneProblem(raw: string): string | null {
+  const value = raw.trim();
+  if (!value) return null; // Emptiness is the `required` attribute's business.
+  if (PHONE_RE.test(value)) return null;
+
+  const cleaned = value.replace(/[\s-]/g, '');
+  if (/[^\d+]/.test(cleaned)) {
+    return 'Use digits only — no letters or brackets.';
+  }
+
+  // Strip a country or trunk prefix only when doing so leaves exactly ten
+  // digits. Otherwise "9187654321" -- a real number that merely starts 91
+  // -- would be misread as a prefixed eight-digit one.
+  const digits = cleaned.replace(/^\+/, '');
+  let national = digits;
+  for (const prefix of ['91', '0']) {
+    if (digits.startsWith(prefix) && digits.length - prefix.length === 10) {
+      national = digits.slice(prefix.length);
+      break;
+    }
+  }
+
+  if (national.length !== 10) {
+    return `That is ${national.length} digit${national.length === 1 ? '' : 's'} — an Indian mobile number has 10.`;
+  }
+  if (!/^[6-9]/.test(national)) {
+    return 'Indian mobile numbers start with 6, 7, 8 or 9.';
+  }
+  return PHONE_HINT;
+}
+
+const phone = z
+  .string()
+  .trim()
+  .superRefine((value, ctx) => {
+    const problem = describePhoneProblem(value);
+    if (problem) ctx.addIssue({ code: z.ZodIssueCode.custom, message: problem });
+  });
 
 const name = z.string().trim().min(2, 'Name is too short').max(80);
 

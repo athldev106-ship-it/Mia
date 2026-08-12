@@ -3,7 +3,7 @@
 import { useState } from 'react';
 
 import { Field, Honeypot, controlClass } from '@/components/Field';
-import { PHONE_HINT, PHONE_PATTERN } from '@/lib/validation';
+import { PhoneInput } from '@/components/PhoneInput';
 
 type Status =
   | { state: 'idle' }
@@ -82,17 +82,7 @@ export function ReservationForm() {
           <input id="name" name="name" className={controlClass} required />
         </Field>
         <Field label="Mobile" htmlFor="phone" required>
-          <input
-            id="phone"
-            name="phone"
-            type="tel"
-            inputMode="tel"
-            placeholder="9XXXXXXXXX"
-            pattern={PHONE_PATTERN}
-            title={PHONE_HINT}
-            className={controlClass}
-            required
-          />
+          <PhoneInput required />
         </Field>
       </div>
 

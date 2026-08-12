@@ -3,7 +3,7 @@
 import { useState } from 'react';
 
 import { Field, Honeypot, controlClass } from '@/components/Field';
-import { PHONE_HINT, PHONE_PATTERN } from '@/lib/validation';
+import { PhoneInput } from '@/components/PhoneInput';
 
 type Status =
   | { state: 'idle' }
@@ -75,16 +75,7 @@ export function EnquiryForm() {
 
       <div className="grid gap-5 sm:grid-cols-2">
         <Field label="Mobile" htmlFor="phone">
-          <input
-            id="phone"
-            name="phone"
-            type="tel"
-            inputMode="tel"
-            placeholder="9XXXXXXXXX"
-            pattern={PHONE_PATTERN}
-            title={PHONE_HINT}
-            className={controlClass}
-          />
+          <PhoneInput />
         </Field>
         <Field label="What is this about?" htmlFor="type" required>
           <select id="type" name="type" defaultValue="general" className={controlClass} required>
