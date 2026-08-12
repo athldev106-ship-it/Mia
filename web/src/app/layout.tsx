@@ -13,16 +13,26 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://leankafe.example.co
  * fails on restricted networks -- and when it does, the page silently falls
  * back to Georgia, which is not the typography anyone signed off.
  */
+/**
+ * Only the weights the site actually renders are downloaded.
+ *
+ * Headings never carry a font-weight utility, so the display face is only
+ * ever drawn at 400; the body text uses 400 and `font-medium` (500) and
+ * nothing else. Declaring the other four weights cost every visitor four
+ * extra font files for glyphs no page asks for. If a heavier heading is
+ * wanted later, add the weight back here as well as in the markup --
+ * otherwise the browser will synthesise it and the result looks smeared.
+ */
 const display = Cormorant_Garamond({
   subsets: ['latin'],
-  weight: ['300', '400', '500', '600'],
+  weight: ['400'],
   variable: '--font-display-family',
   display: 'swap',
 });
 
 const sans = Inter({
   subsets: ['latin'],
-  weight: ['400', '500', '600'],
+  weight: ['400', '500'],
   variable: '--font-sans-family',
   display: 'swap',
 });
