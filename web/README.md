@@ -149,26 +149,35 @@ body text uses 400 and `font-medium`. Adding a heavier weight means adding
 it in `layout.tsx` *and* in the markup — otherwise the browser synthesises
 it and a synthesised serif bold looks smeared.
 
-**The ₹ sign costs 83 KB, and that is deliberate.** Prices are the only
-thing on the site using a character outside Latin-1, and `₹` (U+20B9) falls
-in Inter's *latin-ext* range, so any page showing a price downloads that
-subset for one glyph. It was investigated and left alone:
+**The ₹ sign used to cost 83 KB.** Prices are the only thing on the site
+using a character outside Latin-1, and `₹` (U+20B9) sits in Inter's
+*latin-ext* range — so every page showing a price downloaded that whole
+subset to draw one glyph.
 
-- `subsets: ['latin']` does not prevent it. That option only controls which
-  files are eagerly preloaded; it removes no `@font-face` or `unicode-range`
-  rule. next/font has no supported way to do this.
-- Overriding U+20B9 to a `local()` font saves the 83 KB but relies on
-  matching order between two same-named families that browsers do not treat
-  identically, and draws `₹` in a system face right beside Inter's
-  `tabular-nums` digits — visibly mismatched on every price.
-- Stripping the rule after build works and reuses next/font's own
-  metric-matched fallback, but depends on internal CSS shape and hashes, so
-  it breaks silently on a Next.js upgrade.
-- Writing "Rs." avoids it entirely and is a real brand downgrade.
+`subsets: ['latin']` does not prevent this: that option only decides which
+files are eagerly preloaded, and removes no `@font-face` or `unicode-range`
+rule. next/font offers no supported way to switch it off.
 
-Revisit only if Core Web Vitals actually regress, or if a self-hosted
-subsetted font is adopted anyway — at which point cutting one file with
-`pyftsubset` solves it for free.
+The fix is at the bottom of `globals.css`: two `@font-face` rules for
+family `Inter`, one per weight in use, covering `unicode-range: U+20B9`
+only, sourced entirely from `local()` system fonts. Where two faces of one
+family overlap, the last declared wins, so these take the rupee sign and
+Inter's latin-ext file is never requested. Verified: it disappears from the
+network panel on `/menu`, and the glyph still sits correctly beside the
+`tabular-nums` digits.
+
+Two things to know if you touch it:
+
+- **Declare the weights separately.** A single rule with a `400 500` range
+  does not win the match — next/font declares exact weights, and an exact
+  weight beats a range. That version silently did nothing.
+- **It degrades safely.** If a device has none of the listed system fonts,
+  the face has no usable source, the browser skips it and falls through to
+  Inter's latin-ext exactly as before. The worst case is the old 83 KB, not
+  a missing glyph.
+
+If a self-hosted subsetted font is ever adopted for other reasons, cutting
+one file with `pyftsubset` makes all of this unnecessary.
 
 ---
 

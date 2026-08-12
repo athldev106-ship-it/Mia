@@ -322,3 +322,35 @@ body {
     transform: none;
   }
 }
+
+/* =====================================================================
+   The rupee sign, without an 83 KB download.
+
+   ₹ is U+20B9, which sits inside Inter's latin-ext range -- so every page
+   showing a price fetched that whole subset for one glyph. next/font has
+   no option to drop the rule, so this declares a later face for the same
+   family covering only that codepoint, sourced from fonts already on the
+   device. When two @font-face rules of one family overlap, the last
+   declared wins, so this takes U+20B9 and Inter's latin-ext file is never
+   requested.
+
+   Everything else still resolves to Inter exactly as before: the range is
+   a single codepoint.
+   ===================================================================== */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Noto Sans'), local('Segoe UI'), local('Roboto'), local('Arial Unicode MS'),
+    local('DejaVu Sans'), local('Arial');
+  unicode-range: U+20B9;
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  src: local('Noto Sans'), local('Segoe UI'), local('Roboto'), local('Arial Unicode MS'),
+    local('DejaVu Sans'), local('Arial');
+  unicode-range: U+20B9;
+}
