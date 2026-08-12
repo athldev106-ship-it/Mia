@@ -51,7 +51,7 @@ export default async function AdminLoginPage({
       {notice && (
         <p
           role="alert"
-          className="mt-6 rounded-xl border border-[var(--hairline)] bg-[color-mix(in_srgb,var(--accent)_12%,transparent)] px-4 py-3 text-sm leading-relaxed"
+          className="mt-6 rounded-xl border border-[var(--hairline)] bg-[color-mix(in_srgb,var(--alert)_12%,transparent)] px-4 py-3 text-sm leading-relaxed"
         >
           {notice}
         </p>

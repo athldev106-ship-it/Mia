@@ -140,7 +140,7 @@ export function ReservationForm() {
       </Field>
 
       {status.state === 'error' && (
-        <p role="alert" className="text-sm text-[var(--accent)]">
+        <p role="alert" className="text-sm text-[var(--alert)]">
           {status.message}
         </p>
       )}

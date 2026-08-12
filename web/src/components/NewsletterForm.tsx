@@ -71,7 +71,7 @@ export function NewsletterForm() {
       </div>
 
       {status.state === 'error' && (
-        <p role="alert" className="mt-3 text-sm text-[var(--accent)]">
+        <p role="alert" className="mt-3 text-sm text-[var(--alert)]">
           {status.message}
         </p>
       )}

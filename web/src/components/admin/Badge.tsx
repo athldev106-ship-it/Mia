@@ -12,19 +12,19 @@ const TONE_STYLE: Record<Tone, { background: string; color: string; borderColor:
     borderColor: 'var(--hairline)',
   },
   good: {
-    background: 'color-mix(in srgb, var(--color-moss) 22%, transparent)',
-    color: 'color-mix(in srgb, var(--color-moss) 72%, var(--text))',
-    borderColor: 'color-mix(in srgb, var(--color-moss) 34%, transparent)',
+    background: 'color-mix(in srgb, var(--color-leaf) 22%, transparent)',
+    color: 'color-mix(in srgb, var(--color-leaf) 72%, var(--text))',
+    borderColor: 'color-mix(in srgb, var(--color-leaf) 34%, transparent)',
   },
   warn: {
-    background: 'color-mix(in srgb, var(--color-rattan) 24%, transparent)',
-    color: 'color-mix(in srgb, var(--color-rattan) 55%, var(--text))',
-    borderColor: 'color-mix(in srgb, var(--color-rattan) 36%, transparent)',
+    background: 'color-mix(in srgb, var(--color-crema) 30%, transparent)',
+    color: 'color-mix(in srgb, var(--color-crema) 55%, var(--text))',
+    borderColor: 'color-mix(in srgb, var(--color-crema) 42%, transparent)',
   },
   bad: {
-    background: 'color-mix(in srgb, var(--accent) 20%, transparent)',
-    color: 'color-mix(in srgb, var(--accent) 62%, var(--text))',
-    borderColor: 'color-mix(in srgb, var(--accent) 34%, transparent)',
+    background: 'color-mix(in srgb, var(--color-alert) 20%, transparent)',
+    color: 'color-mix(in srgb, var(--color-alert) 62%, var(--text))',
+    borderColor: 'color-mix(in srgb, var(--color-alert) 34%, transparent)',
   },
 };
 
