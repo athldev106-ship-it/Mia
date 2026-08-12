@@ -3,6 +3,7 @@
 import { useState } from 'react';
 
 import { Field, Honeypot, controlClass } from '@/components/Field';
+import { PHONE_HINT, PHONE_PATTERN } from '@/lib/validation';
 
 type Status =
   | { state: 'idle' }
@@ -80,6 +81,8 @@ export function EnquiryForm() {
             type="tel"
             inputMode="tel"
             placeholder="9XXXXXXXXX"
+            pattern={PHONE_PATTERN}
+            title={PHONE_HINT}
             className={controlClass}
           />
         </Field>
