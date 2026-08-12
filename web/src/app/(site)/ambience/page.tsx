@@ -121,7 +121,7 @@ export default async function AmbiencePage() {
                         sizes="(min-width: 640px) 50vw, 100vw"
                         className="object-cover"
                       />
-                      <figcaption className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/55 to-transparent px-4 pb-3 pt-10 text-sm text-white">
+                      <figcaption className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 via-black/45 to-transparent px-4 pb-3 pt-10 text-sm text-white">
                         {photo.alt}
                       </figcaption>
                     </figure>
@@ -135,7 +135,7 @@ export default async function AmbiencePage() {
                         className="absolute inset-0"
                         style={{ background: `linear-gradient(150deg, ${tile.from}, ${tile.to})` }}
                       />
-                      <figcaption className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/55 to-transparent px-4 pb-3 pt-10 text-sm text-white">
+                      <figcaption className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 via-black/45 to-transparent px-4 pb-3 pt-10 text-sm text-white">
                         {tile.label}
                       </figcaption>
                     </figure>

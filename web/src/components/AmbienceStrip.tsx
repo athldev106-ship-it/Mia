@@ -22,7 +22,7 @@ const PLACEHOLDERS = [
 ] as const;
 
 const TILE = 'relative h-56 w-72 shrink-0 overflow-hidden rounded-2xl border border-[var(--hairline)] sm:h-64 sm:w-96';
-const CAPTION = 'absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/55 to-transparent px-4 pb-3 pt-8 text-sm text-white';
+const CAPTION = 'absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 via-black/45 to-transparent px-4 pb-3 pt-8 text-sm text-white';
 
 export function AmbienceStrip() {
   const photos = INTERIOR_PHOTOS;
