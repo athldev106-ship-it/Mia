@@ -1,26 +1,24 @@
 @import 'tailwindcss';
 
 /* =====================================================================
-   The Verandah — design tokens.
+   LeanKafe — design tokens.
 
-   Palette and mood are taken from the walkthrough brief: earthy greens,
-   warm terracotta, natural wood, soft white. Dappled light over foliage
-   is the recurring motif, so surfaces are translucent and layered rather
-   than flat, and everything moves slowly.
+   A vibrant green-and-white coffee house: bright leaf greens against a
+   lot of white, with warm espresso browns kept for text and small
+   accents rather than surfaces. Panels are frosted glass so the page
+   reads as light passing through a bright room.
    ===================================================================== */
 @theme {
-  --color-forest: #16261c;
-  --color-forest-deep: #0d1712;
-  --color-moss: #3d5c45;
-  --color-fern: #6d9077;
-  --color-frond: #9dbca4;
-  --color-terracotta: #c4643c;
-  --color-clay: #a04a2a;
-  --color-wood: #6b4f33;
-  --color-rattan: #c9a227;
-  --color-sand: #e6dbc9;
-  --color-linen: #faf7f1;
-  --color-ink: #131810;
+  --color-leaf: #12b354;
+  --color-leaf-deep: #128040;
+  --color-leaf-dark: #0b5230;
+  --color-lime: #3ee87c;
+  --color-mint: #d2fbe0;
+  --color-espresso: #2d1b12;
+  --color-crema: #d1a173;
+  --color-cream: #fbfdfa;
+  --color-paper: #ffffff;
+  --color-ink: #0e2417;
 
   --font-display: var(--font-display-family), 'Iowan Old Style', Georgia, serif;
   --font-sans: var(--font-sans-family), ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
@@ -30,42 +28,39 @@
 }
 
 /* ---------------------------------------------------------------------
-   Light is the default: the verandah is a daylight space.
+   Light is the default: this is a bright, white-walled cafe.
    --------------------------------------------------------------------- */
 :root {
-  --surface: var(--color-linen);
-  --surface-raised: #ffffff;
+  --surface: var(--color-cream);
+  --surface-raised: var(--color-paper);
   --text: var(--color-ink);
-  --text-muted: #5c6357;
-  --accent: var(--color-clay);
+  --text-muted: #4b5f53;
+  --accent: var(--color-leaf-deep);
   --accent-ink: #ffffff;
-  --hairline: color-mix(in srgb, var(--color-forest) 12%, transparent);
+  --hairline: color-mix(in srgb, var(--color-leaf-dark) 14%, transparent);
 
-  --glass-bg: color-mix(in srgb, #ffffff 62%, transparent);
-  --glass-border: color-mix(in srgb, #ffffff 70%, transparent);
-  --glass-shadow: 0 1px 2px rgb(19 24 16 / 0.04), 0 12px 32px -12px rgb(19 24 16 / 0.18);
-  --glass-sheen: color-mix(in srgb, #ffffff 85%, transparent);
+  --glass-bg: color-mix(in srgb, #ffffff 68%, transparent);
+  --glass-border: color-mix(in srgb, #ffffff 75%, transparent);
+  --glass-shadow: 0 1px 2px rgb(20 38 27 / 0.04), 0 12px 32px -12px rgb(20 38 27 / 0.16);
+  --glass-sheen: color-mix(in srgb, #ffffff 88%, transparent);
 
-  color-scheme: light;
-}
-
-:root[data-theme='dark'],
-:root:not([data-theme='light']) {
   color-scheme: light;
 }
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme='light']) {
-    --surface: var(--color-forest-deep);
-    --surface-raised: var(--color-forest);
-    --text: #f2efe6;
-    --text-muted: #a8b2a1;
-    --accent: #e08a5f;
-    --accent-ink: #2a1409;
-    --hairline: color-mix(in srgb, #ffffff 12%, transparent);
+    --surface: #0b1710;
+    --surface-raised: #12241a;
+    --text: #eef7f1;
+    --text-muted: #9db8a8;
+    /* Lifted off the light-mode green: the deep leaf fails contrast on a
+       dark ground, and this is the colour every button sits on. */
+    --accent: var(--color-lime);
+    --accent-ink: #06210f;
+    --hairline: color-mix(in srgb, #ffffff 14%, transparent);
 
-    --glass-bg: color-mix(in srgb, #1d3126 55%, transparent);
-    --glass-border: color-mix(in srgb, #ffffff 14%, transparent);
+    --glass-bg: color-mix(in srgb, #16301f 58%, transparent);
+    --glass-border: color-mix(in srgb, #ffffff 15%, transparent);
     --glass-shadow: 0 1px 2px rgb(0 0 0 / 0.3), 0 16px 40px -16px rgb(0 0 0 / 0.6);
     --glass-sheen: color-mix(in srgb, #ffffff 22%, transparent);
 
@@ -75,16 +70,16 @@
 
 /* The viewer's theme toggle stamps data-theme and must win either way. */
 :root[data-theme='dark'] {
-  --surface: var(--color-forest-deep);
-  --surface-raised: var(--color-forest);
-  --text: #f2efe6;
-  --text-muted: #a8b2a1;
-  --accent: #e08a5f;
-  --accent-ink: #2a1409;
-  --hairline: color-mix(in srgb, #ffffff 12%, transparent);
+  --surface: #0b1710;
+  --surface-raised: #12241a;
+  --text: #eef7f1;
+  --text-muted: #9db8a8;
+  --accent: var(--color-lime);
+  --accent-ink: #06210f;
+  --hairline: color-mix(in srgb, #ffffff 14%, transparent);
 
-  --glass-bg: color-mix(in srgb, #1d3126 55%, transparent);
-  --glass-border: color-mix(in srgb, #ffffff 14%, transparent);
+  --glass-bg: color-mix(in srgb, #16301f 58%, transparent);
+  --glass-border: color-mix(in srgb, #ffffff 15%, transparent);
   --glass-shadow: 0 1px 2px rgb(0 0 0 / 0.3), 0 16px 40px -16px rgb(0 0 0 / 0.6);
   --glass-sheen: color-mix(in srgb, #ffffff 22%, transparent);
 
@@ -104,7 +99,7 @@ body {
 }
 
 ::selection {
-  background: color-mix(in srgb, var(--color-terracotta) 28%, transparent);
+  background: color-mix(in srgb, var(--color-lime) 45%, transparent);
 }
 
 :where(a, button, [tabindex]):focus-visible {
@@ -117,7 +112,7 @@ body {
    Liquid glass.
 
    A frosted pane plus a specular top edge, so panels read as glass held
-   over foliage rather than as flat translucent boxes.
+   over the room rather than as flat translucent boxes.
    ===================================================================== */
 @utility glass {
   position: relative;
@@ -158,8 +153,52 @@ body {
 }
 
 /* =====================================================================
-   Motion: the brief's "constant slow forward glide".
-   Sections drift up and settle as they enter view.
+   Tinted band.
+
+   Long stretches of near-white read as washed out, so alternating
+   sections sit on a soft mint wash that separates them without
+   introducing a second surface colour.
+   ===================================================================== */
+@utility tinted {
+  position: relative;
+  background:
+    radial-gradient(
+      70% 60% at 50% 0%,
+      color-mix(in srgb, var(--color-lime) 16%, transparent),
+      transparent 72%
+    ),
+    color-mix(in srgb, var(--color-mint) 45%, transparent);
+}
+
+:root[data-theme='dark'] .tinted,
+:root:not([data-theme='light']) .tinted {
+  background: transparent;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .tinted {
+    background:
+      radial-gradient(
+        70% 60% at 50% 0%,
+        color-mix(in srgb, var(--color-leaf) 14%, transparent),
+        transparent 72%
+      ),
+      color-mix(in srgb, var(--color-leaf-dark) 22%, transparent);
+  }
+}
+
+:root[data-theme='dark'] .tinted {
+  background:
+    radial-gradient(
+      70% 60% at 50% 0%,
+      color-mix(in srgb, var(--color-leaf) 14%, transparent),
+      transparent 72%
+    ),
+    color-mix(in srgb, var(--color-leaf-dark) 22%, transparent);
+}
+
+/* =====================================================================
+   Motion: sections drift up and settle as they enter view.
    ===================================================================== */
 /* Content is visible by default and only hidden once JavaScript has
    confirmed it can reveal it again. Without this guard, a failed or slow
@@ -182,7 +221,7 @@ body {
   transform: none;
 }
 
-/* Dappled light through leaves, as a slow ambient drift. */
+/* Sunlight moving across a bright room, as a slow ambient drift. */
 @keyframes dapple {
   0%,
   100% {
@@ -197,6 +236,57 @@ body {
 
 @utility dapple {
   animation: dapple 18s ease-in-out infinite;
+}
+
+/* Steam rising off a fresh cup, used on the hero mark. */
+@keyframes steam {
+  0% {
+    opacity: 0;
+    transform: translateY(2px) scaleX(0.9);
+  }
+  35% {
+    opacity: 0.7;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-14px) scaleX(1.25);
+  }
+}
+
+@utility steam {
+  animation: steam 3.4s ease-out infinite;
+}
+
+/* The live "open now" dot. */
+@keyframes pulse-dot {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.45;
+    transform: scale(0.82);
+  }
+}
+
+@utility pulse-dot {
+  animation: pulse-dot 2.4s ease-in-out infinite;
+}
+
+/* The ambience strip's continuous pan, standing in for a 360 sweep. */
+@keyframes pan-360 {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    /* The track renders its tiles twice, so half a loop is one full pass. */
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@utility pan-360 {
+  animation: pan-360 44s linear infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {

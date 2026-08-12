@@ -34,47 +34,11 @@ export const enquirySchema = z.object({
   company: z.string().max(0).optional(),
 });
 
-export const orderSchema = z.object({
-  customer_name: name,
-  customer_phone: phone,
-  customer_email: z.string().trim().email().max(120).optional().or(z.literal('')),
-  fulfilment: z.enum(['takeaway', 'delivery']),
-  address_line: z.string().trim().max(300).optional().or(z.literal('')),
-  address_landmark: z.string().trim().max(120).optional().or(z.literal('')),
-  address_pincode: z.string().trim().regex(/^\d{6}$/).optional().or(z.literal('')),
-  notes: z.string().trim().max(500).optional().or(z.literal('')),
-  // Only ids and quantities -- prices are always re-read from the database.
-  items: z
-    .array(
-      z.object({
-        menu_item_id: z.string().uuid(),
-        quantity: z.coerce.number().int().min(1).max(20),
-      }),
-    )
-    .min(1, 'Your cart is empty')
-    .max(40),
-  company: z.string().max(0).optional(),
-}).refine(
-  (order) => order.fulfilment !== 'delivery' || (!!order.address_line && !!order.address_pincode),
-  { message: 'Delivery orders need an address and pincode', path: ['address_line'] },
-);
-
-export type ReservationInput = z.infer<typeof reservationSchema>;
-export type EnquiryInput = z.infer<typeof enquirySchema>;
-export type OrderInput = z.infer<typeof orderSchema>;
-
-export const buffetBookingSchema = z.object({
-  session_id: z.string().uuid(),
-  // Plain calendar date in IST; the database validates the weekday and
-  // rejects dates in the past.
-  booking_date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Pick a date'),
-  adults: z.coerce.number().int().min(1).max(40),
-  children: z.coerce.number().int().min(0).max(40).default(0),
-  customer_name: name,
-  customer_phone: phone,
-  customer_email: z.string().trim().email().max(120).optional().or(z.literal('')),
-  notes: z.string().trim().max(500).optional().or(z.literal('')),
+export const newsletterSchema = z.object({
+  email: z.string().trim().toLowerCase().email('Enter a valid email address').max(120),
   company: z.string().max(0).optional(),
 });
 
-export type BuffetBookingInput = z.infer<typeof buffetBookingSchema>;
+export type ReservationInput = z.infer<typeof reservationSchema>;
+export type EnquiryInput = z.infer<typeof enquirySchema>;
+export type NewsletterInput = z.infer<typeof newsletterSchema>;

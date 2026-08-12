@@ -7,16 +7,17 @@ import { getSiteContent } from '@/lib/data';
 import { AGGREGATE } from '@/lib/reviews';
 import { SITE } from '@/lib/site';
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://theverandah.example.com';
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://leankafe.example.com';
 const GA_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
 
 export const metadata: Metadata = {
   keywords: [
-    'restaurant Koramangala',
-    'buffet Bengaluru',
-    'Sunday brunch Bangalore',
-    'Grand Mercure Bengaluru',
-    'all day dining Koramangala',
+    'cafe Koramangala',
+    'coffee shop Bengaluru',
+    'best coffee Koramangala 5th Block',
+    'bakery Bangalore',
+    'work friendly cafe Bengaluru',
+    'LeanKafe',
   ],
   openGraph: {
     type: 'website',
@@ -35,24 +36,25 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
   const site = await getSiteContent();
 
   /**
-   * Restaurant structured data, so Google can surface hours, location and
-   * rating directly in search and Maps. Built from the live settings so an
+   * Structured data, so Google can surface hours, location and rating
+   * directly in search and Maps. Built from the live settings so an
    * address or phone change in the dashboard reaches Google too.
    */
   const jsonLd = {
     '@context': 'https://schema.org',
-    '@type': 'Restaurant',
-    name: site.name,
+    '@type': 'CafeOrCoffeeShop',
+    name: SITE.fullName,
+    alternateName: SITE.name,
     description: SITE.description,
     url: siteUrl,
     telephone: site.phone,
-    servesCuisine: ['South Indian', 'Asian', 'Chinese', 'Continental'],
-    priceRange: '₹₹₹',
+    servesCuisine: ['Coffee', 'Bakery', 'Breakfast'],
+    priceRange: '₹₹',
     address: {
       '@type': 'PostalAddress',
       streetAddress: `${SITE.address.line}, ${SITE.address.locality}`,
       addressLocality: SITE.address.city,
-      addressRegion: 'Karnataka',
+      addressRegion: SITE.address.state,
       postalCode: SITE.address.pincode,
       addressCountry: 'IN',
     },
@@ -67,7 +69,7 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
         'Saturday',
         'Sunday',
       ],
-      opens: '06:30',
+      opens: '08:00',
       closes: '23:00',
     },
     aggregateRating: {
@@ -75,7 +77,7 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
       ratingValue: AGGREGATE.value,
       reviewCount: AGGREGATE.count,
     },
-    parentOrganization: { '@type': 'Hotel', name: SITE.parent },
+    sameAs: [site.instagramUrl, site.swiggyUrl, site.zomatoUrl],
   };
 
   return (
@@ -93,7 +95,7 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
         Skip to content
       </a>
 
-      <Nav phone={site.phone} phoneDisplay={site.phoneDisplay} name={site.name} />
+      <Nav name={site.name} />
       <main id="main">{children}</main>
       <Footer site={site} />
 

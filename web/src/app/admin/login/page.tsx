@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import { isConfigured } from '@/app/admin/_lib/session';
 import { LoginForm } from '@/components/admin/LoginForm';
 import { param, type SearchParams } from '@/lib/admin';
+import { SITE } from '@/lib/site';
 
 export const metadata: Metadata = {
   title: 'Staff sign in',
@@ -39,12 +40,12 @@ export default async function AdminLoginPage({
 
   return (
     <div className="mx-auto max-w-md pt-8">
-      <p className="text-xs uppercase tracking-[0.28em] opacity-50">The Verandah</p>
+      <p className="text-xs uppercase tracking-[0.28em] opacity-50">{SITE.name}</p>
       <h1 className="mt-3 text-4xl leading-tight" style={{ fontFamily: 'var(--font-display)' }}>
         Staff sign in
       </h1>
       <p className="mt-3 text-sm leading-relaxed opacity-70">
-        For the restaurant team. Bookings, orders and guest details live behind this door.
+        For the cafe team. Reservations, enquiries and the menu live behind this door.
       </p>
 
       {notice && (

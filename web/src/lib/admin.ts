@@ -6,20 +6,14 @@
  * widgets, so nothing server-only may be imported here.
  */
 
-import type {
-  BuffetBookingStatus,
-  EnquiryStatus,
-  OrderStatus,
-  PaymentStatus,
-  ReservationStatus,
-} from '@/lib/types';
+import type { EnquiryStatus, ReservationStatus } from '@/lib/types';
 
 export type Option<T extends string = string> = { value: T; label: string };
 
 /* ---------------------------------------------------------------------
    Status vocabularies. These mirror the CHECK constraints in
-   supabase/schema.sql and schema_buffet.sql -- if one drifts, Postgres
-   rejects the update rather than storing something the site cannot read.
+   supabase/schema.sql -- if one drifts, Postgres rejects the update
+   rather than storing something the site cannot read.
    --------------------------------------------------------------------- */
 
 export const RESERVATION_STATUSES: readonly Option<ReservationStatus>[] = [
@@ -30,34 +24,10 @@ export const RESERVATION_STATUSES: readonly Option<ReservationStatus>[] = [
   { value: 'no_show', label: 'No show' },
 ];
 
-export const BOOKING_STATUSES: readonly Option<BuffetBookingStatus>[] = [
-  { value: 'booked', label: 'Booked' },
-  { value: 'seated', label: 'Seated' },
-  { value: 'completed', label: 'Completed' },
-  { value: 'cancelled', label: 'Cancelled' },
-  { value: 'no_show', label: 'No show' },
-];
-
-export const ORDER_STATUSES: readonly Option<OrderStatus>[] = [
-  { value: 'placed', label: 'Placed' },
-  { value: 'accepted', label: 'Accepted' },
-  { value: 'preparing', label: 'Preparing' },
-  { value: 'ready', label: 'Ready' },
-  { value: 'completed', label: 'Completed' },
-  { value: 'cancelled', label: 'Cancelled' },
-];
-
 export const ENQUIRY_STATUSES: readonly Option<EnquiryStatus>[] = [
   { value: 'new', label: 'New' },
   { value: 'read', label: 'Read' },
   { value: 'closed', label: 'Closed' },
-];
-
-export const PAYMENT_STATUSES: readonly Option<PaymentStatus>[] = [
-  { value: 'pending', label: 'Pending' },
-  { value: 'paid', label: 'Paid' },
-  { value: 'failed', label: 'Failed' },
-  { value: 'refunded', label: 'Refunded' },
 ];
 
 export const ENQUIRY_TYPE_LABELS: Record<string, string> = {
@@ -93,24 +63,15 @@ export type Tone = 'neutral' | 'good' | 'warn' | 'bad';
 
 export function toneFor(value: string): Tone {
   switch (value) {
-    case 'paid':
     case 'confirmed':
-    case 'completed':
-    case 'ready':
     case 'closed':
       return 'good';
     case 'pending':
-    case 'placed':
     case 'new':
-    case 'booked':
-    case 'accepted':
-    case 'preparing':
     case 'seated':
       return 'warn';
     case 'cancelled':
     case 'no_show':
-    case 'failed':
-    case 'refunded':
       return 'bad';
     default:
       return 'neutral';

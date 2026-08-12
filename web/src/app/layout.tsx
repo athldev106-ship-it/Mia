@@ -5,7 +5,7 @@ import './globals.css';
 
 import { SITE } from '@/lib/site';
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://theverandah.example.com';
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://leankafe.example.com';
 
 /**
  * Self-hosted at build time. Fetching these from Google's CDN at runtime
@@ -40,11 +40,23 @@ const sans = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: `${SITE.name} — All-day dining in ${SITE.address.locality}, Bengaluru`,
+    default: `${SITE.name} — Coffee & bakery in ${SITE.address.locality}, Bengaluru`,
     template: `%s — ${SITE.name}`,
   },
   description: SITE.description,
   robots: { index: true, follow: true },
+  /**
+   * Declared explicitly rather than left to file-convention discovery, so
+   * the SVG is offered first and /favicon.ico stays available for the
+   * browsers and crawlers that request it by that path regardless.
+   */
+  icons: {
+    icon: [
+      { url: '/icon.svg', type: 'image/svg+xml' },
+      { url: '/favicon.ico', sizes: 'any' },
+    ],
+    apple: '/apple-icon.png',
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

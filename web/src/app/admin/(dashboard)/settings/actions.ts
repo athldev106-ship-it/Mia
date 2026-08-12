@@ -54,8 +54,11 @@ export async function updateSettings(
       phone: optionalText(formData, 'phone', 30),
       whatsapp: optionalText(formData, 'whatsapp', 30),
       email: optionalText(formData, 'email', 120),
+      instagram_url: optionalText(formData, 'instagram_url', 500),
+      swiggy_url: optionalText(formData, 'swiggy_url', 500),
+      zomato_url: optionalText(formData, 'zomato_url', 500),
       opening_hours: readOpeningHours(formData),
-      is_accepting_orders: checkbox(formData, 'is_accepting_orders'),
+      is_open: checkbox(formData, 'is_open'),
     });
 
     if (error) throw new AdminInputError('Could not save the settings.');

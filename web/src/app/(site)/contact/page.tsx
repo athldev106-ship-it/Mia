@@ -1,15 +1,26 @@
 import type { Metadata } from 'next';
 
 import { EnquiryForm } from '@/components/EnquiryForm';
+import { OpenStatus } from '@/components/OpenStatus';
 import { PageHeader } from '@/components/PageHeader';
 import { Reveal } from '@/components/Reveal';
 import { getSiteContent } from '@/lib/data';
-import { SITE } from '@/lib/site';
+import { SITE, fullAddress } from '@/lib/site';
 
 export const metadata: Metadata = {
-  title: 'Contact',
-  description: `Get in touch with ${SITE.name} at ${SITE.parent}, ${SITE.address.locality}, Bengaluru — enquiries, catering and private events.`,
+  title: 'Contact & location',
+  description: `Get in touch with ${SITE.name} in ${SITE.address.locality}, Bengaluru — hours, directions, catering and private hire.`,
 };
+
+const HOURS = [
+  { day: 'Monday', time: '8:00 AM – 11:00 PM' },
+  { day: 'Tuesday', time: '8:00 AM – 11:00 PM' },
+  { day: 'Wednesday', time: '8:00 AM – 11:00 PM' },
+  { day: 'Thursday', time: '8:00 AM – 11:00 PM' },
+  { day: 'Friday', time: '8:00 AM – 11:00 PM' },
+  { day: 'Saturday', time: '8:00 AM – 11:00 PM' },
+  { day: 'Sunday', time: '8:00 AM – 11:00 PM' },
+] as const;
 
 export default async function ContactPage() {
   const site = await getSiteContent();
@@ -18,8 +29,8 @@ export default async function ContactPage() {
     <>
       <PageHeader
         eyebrow="Say hello"
-        title="Get in touch"
-        intro="Catering, a private party, a large table, or simply a question about the menu — we would love to hear from you."
+        title="Find us, or write to us"
+        intro="Catering, a private morning, a large table, or simply a question about what is on the grinder — we would love to hear from you."
       />
 
       <section className="px-6 pb-24">
@@ -33,22 +44,40 @@ export default async function ContactPage() {
                 <address className="mt-3 not-italic leading-relaxed opacity-75">
                   {site.address}
                 </address>
-                <p className="mt-3 opacity-75">{site.hours}</p>
+                <div className="mt-4">
+                  <OpenStatus />
+                </div>
                 <a
                   href={site.mapsUrl}
                   target="_blank"
                   rel="noreferrer noopener"
-                  className="mt-4 inline-block underline underline-offset-4"
+                  className="mt-4 inline-block rounded-full bg-[var(--accent)] px-5 py-2.5 text-sm font-medium text-[var(--accent-ink)]"
                 >
                   Get directions
                 </a>
               </div>
             </Reveal>
 
-            <Reveal delay={80}>
+            <Reveal delay={60}>
               <div className="glass glass-sheen p-7">
                 <h2 className="text-xl" style={{ fontFamily: 'var(--font-display)' }}>
-                  Call
+                  Opening hours
+                </h2>
+                <dl className="mt-4 space-y-1.5 text-sm">
+                  {HOURS.map((entry) => (
+                    <div key={entry.day} className="flex justify-between gap-4">
+                      <dt className="opacity-75">{entry.day}</dt>
+                      <dd className="tabular-nums">{entry.time}</dd>
+                    </div>
+                  ))}
+                </dl>
+              </div>
+            </Reveal>
+
+            <Reveal delay={120}>
+              <div className="glass glass-sheen p-7">
+                <h2 className="text-xl" style={{ fontFamily: 'var(--font-display)' }}>
+                  Talk to us
                 </h2>
                 <a
                   href={`tel:${site.phone}`}
@@ -56,16 +85,45 @@ export default async function ContactPage() {
                 >
                   {site.phoneDisplay}
                 </a>
-                <p className="mt-3 text-sm opacity-65">
-                  {SITE.name} is the all-day dining restaurant at {SITE.parent}.
-                </p>
+                <a
+                  href={site.whatsappUrl}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  className="mt-3 block underline underline-offset-4"
+                >
+                  Message us on WhatsApp
+                </a>
+                <a
+                  href={site.instagramUrl}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  className="mt-2 block underline underline-offset-4"
+                >
+                  Follow us on Instagram
+                </a>
               </div>
             </Reveal>
           </div>
 
-          <Reveal delay={120}>
-            <EnquiryForm />
-          </Reveal>
+          <div className="space-y-5">
+            <Reveal delay={100}>
+              <EnquiryForm />
+            </Reveal>
+
+            <Reveal delay={160}>
+              <div className="glass glass-sheen overflow-hidden">
+                <iframe
+                  title={`Map showing ${SITE.name} in ${SITE.address.locality}`}
+                  src={`https://www.google.com/maps?q=${encodeURIComponent(fullAddress)}&output=embed`}
+                  width="100%"
+                  height="320"
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  className="block border-0"
+                />
+              </div>
+            </Reveal>
+          </div>
         </div>
       </section>
     </>

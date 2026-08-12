@@ -17,8 +17,11 @@ const BLANK = {
   phone: null,
   whatsapp: null,
   email: null,
+  instagram_url: null,
+  swiggy_url: null,
+  zomato_url: null,
   opening_hours: {},
-  is_accepting_orders: true,
+  is_open: true,
 };
 
 export default async function SettingsPage() {

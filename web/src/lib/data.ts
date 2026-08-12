@@ -1,10 +1,11 @@
 import { cache } from 'react';
 
 import { WEEKDAYS } from '@/lib/format';
-import { SITE, fullAddress } from '@/lib/site';
+import { FALLBACK_MENU } from '@/lib/menu-fallback';
+import { EXTERNAL_LINKS, SITE, fullAddress } from '@/lib/site';
 import { createAdminClient } from '@/lib/supabase/admin';
 
-import type { BuffetSession, MenuCategory, MenuItem } from '@/lib/types';
+import type { MenuCategoryWithItems, SiteContent } from '@/lib/types';
 
 /**
  * Read helpers for public pages.
@@ -18,20 +19,28 @@ function configured() {
   return Boolean(process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY);
 }
 
-export type MenuCategoryWithItems = MenuCategory & { items: MenuItem[] };
-
+/**
+ * The menu, from the database when there is one and from the built-in
+ * fallback when there is not -- a preview deploy with no credentials
+ * still shows a complete menu rather than an apology.
+ *
+ * A connected database always wins, including when staff have emptied a
+ * category on purpose: only a total absence of items falls back.
+ */
 export async function getMenu(): Promise<MenuCategoryWithItems[]> {
+  const fromDatabase = await readMenu();
+  const hasItems = fromDatabase.some((category) => category.items.length > 0);
+  return hasItems ? fromDatabase : FALLBACK_MENU;
+}
+
+async function readMenu(): Promise<MenuCategoryWithItems[]> {
   if (!configured()) return [];
 
   try {
     const supabase = createAdminClient();
 
     const [{ data: categories }, { data: items }] = await Promise.all([
-      supabase
-        .from('menu_categories')
-        .select('*')
-        .eq('is_active', true)
-        .order('sort_order'),
+      supabase.from('menu_categories').select('*').eq('is_active', true).order('sort_order'),
       supabase.from('menu_items').select('*').order('sort_order'),
     ]);
 
@@ -43,23 +52,6 @@ export async function getMenu(): Promise<MenuCategoryWithItems[]> {
     }));
   } catch (error) {
     console.error('[data] getMenu failed', error);
-    return [];
-  }
-}
-
-export async function getBuffetSessions(): Promise<BuffetSession[]> {
-  if (!configured()) return [];
-
-  try {
-    const supabase = createAdminClient();
-    const { data } = await supabase
-      .from('buffet_sessions')
-      .select('*')
-      .eq('is_active', true)
-      .order('sort_order');
-    return data ?? [];
-  } catch (error) {
-    console.error('[data] getBuffetSessions failed', error);
     return [];
   }
 }
@@ -76,18 +68,21 @@ export async function getBuffetSessions(): Promise<BuffetSession[]> {
  * cache() dedupes this to one query per request, however many components
  * ask for it.
  */
-export const getSiteContent = cache(async () => {
-  const fallback = {
+export const getSiteContent = cache(async (): Promise<SiteContent> => {
+  const fallback: SiteContent = {
     name: SITE.name,
     tagline: SITE.tagline,
     address: fullAddress,
-    mapsUrl: SITE.mapsUrl as string,
-    phone: SITE.phone as string,
-    phoneDisplay: SITE.phoneDisplay as string,
-    whatsapp: null as string | null,
-    email: null as string | null,
-    hours: SITE.hours as string,
-    isAcceptingOrders: true,
+    mapsUrl: SITE.mapsUrl,
+    phone: SITE.phone,
+    phoneDisplay: SITE.phoneDisplay,
+    whatsappUrl: EXTERNAL_LINKS.whatsapp,
+    instagramUrl: EXTERNAL_LINKS.instagram,
+    swiggyUrl: EXTERNAL_LINKS.swiggy,
+    zomatoUrl: EXTERNAL_LINKS.zomato,
+    email: null,
+    hours: SITE.hours,
+    isOpen: true,
   };
 
   if (!configured()) return fallback;
@@ -104,16 +99,29 @@ export const getSiteContent = cache(async () => {
       mapsUrl: data.google_maps_url || fallback.mapsUrl,
       phone: data.phone || fallback.phone,
       phoneDisplay: data.phone ? formatPhone(data.phone) : fallback.phoneDisplay,
-      whatsapp: data.whatsapp,
+      whatsappUrl: data.whatsapp ? whatsappLink(data.whatsapp) : fallback.whatsappUrl,
+      instagramUrl: data.instagram_url || fallback.instagramUrl,
+      swiggyUrl: data.swiggy_url || fallback.swiggyUrl,
+      zomatoUrl: data.zomato_url || fallback.zomatoUrl,
       email: data.email,
       hours: formatOpeningHours(data.opening_hours) ?? fallback.hours,
-      isAcceptingOrders: data.is_accepting_orders,
+      isOpen: data.is_open,
     };
   } catch (error) {
     console.error('[data] getSiteContent failed', error);
     return fallback;
   }
 });
+
+/** Builds a wa.me link from whatever shape the number was saved in. */
+function whatsappLink(number: string): string {
+  const digits = number.replace(/[^\d]/g, '');
+  // A bare 10-digit Indian mobile needs the country code wa.me requires.
+  const withCountry = digits.length === 10 ? `91${digits}` : digits;
+  return `https://wa.me/${withCountry}?text=${encodeURIComponent(
+    "Hi LeanKafe! I'd like to place an order.",
+  )}`;
+}
 
 /** "+918045121212" -> "+91 80 4512 1212"; anything unexpected is left alone. */
 function formatPhone(phone: string): string {

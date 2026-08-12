@@ -6,9 +6,6 @@
 export type ReservationStatus = 'pending' | 'confirmed' | 'seated' | 'cancelled' | 'no_show';
 export type EnquiryType = 'general' | 'catering' | 'events' | 'feedback';
 export type EnquiryStatus = 'new' | 'read' | 'closed';
-export type Fulfilment = 'takeaway' | 'delivery';
-export type OrderStatus = 'placed' | 'accepted' | 'preparing' | 'ready' | 'completed' | 'cancelled';
-export type PaymentStatus = 'pending' | 'paid' | 'failed' | 'refunded';
 
 export type MenuCategory = {
   id: string;
@@ -37,6 +34,8 @@ export type MenuItem = {
   updated_at: string;
 };
 
+export type MenuCategoryWithItems = MenuCategory & { items: MenuItem[] };
+
 export type Reservation = {
   id: string;
   name: string;
@@ -61,36 +60,10 @@ export type Enquiry = {
   created_at: string;
 };
 
-export type Order = {
+export type Subscriber = {
   id: string;
-  order_number: string;
-  customer_name: string;
-  customer_phone: string;
-  customer_email: string | null;
-  fulfilment: Fulfilment;
-  address_line: string | null;
-  address_landmark: string | null;
-  address_pincode: string | null;
-  subtotal_paise: number;
-  tax_paise: number;
-  delivery_fee_paise: number;
-  total_paise: number;
-  status: OrderStatus;
-  payment_status: PaymentStatus;
-  razorpay_order_id: string | null;
-  razorpay_payment_id: string | null;
-  notes: string | null;
+  email: string;
   created_at: string;
-  updated_at: string;
-};
-
-export type OrderItem = {
-  id: string;
-  order_id: string;
-  menu_item_id: string | null;
-  name_snapshot: string;
-  unit_price_paise: number;
-  quantity: number;
 };
 
 export type SiteSettings = {
@@ -102,9 +75,12 @@ export type SiteSettings = {
   phone: string | null;
   whatsapp: string | null;
   email: string | null;
+  instagram_url: string | null;
+  swiggy_url: string | null;
+  zomato_url: string | null;
   opening_hours: Record<string, string>;
   social: Record<string, string>;
-  is_accepting_orders: boolean;
+  is_open: boolean;
   updated_at: string;
 };
 
@@ -113,6 +89,28 @@ export type Profile = {
   full_name: string | null;
   role: 'admin' | 'staff';
   created_at: string;
+};
+
+/**
+ * What the public pages actually render: site_settings merged over the
+ * constants in lib/site.ts, with links already built. Produced by
+ * getSiteContent() and passed down from the layout.
+ */
+export type SiteContent = {
+  name: string;
+  tagline: string;
+  address: string;
+  mapsUrl: string;
+  phone: string;
+  phoneDisplay: string;
+  whatsappUrl: string;
+  instagramUrl: string;
+  swiggyUrl: string;
+  zomatoUrl: string;
+  email: string | null;
+  hours: string;
+  /** Cleared by staff when the cafe closes unexpectedly. */
+  isOpen: boolean;
 };
 
 type Table<Row, Insert = Partial<Row>> = {
@@ -130,34 +128,11 @@ export type Database = {
       menu_items: Table<MenuItem>;
       reservations: Table<Reservation>;
       enquiries: Table<Enquiry>;
-      orders: Table<Order>;
-      order_items: Table<OrderItem>;
+      subscribers: Table<Subscriber>;
       site_settings: Table<SiteSettings>;
-      buffet_sessions: Table<BuffetSession>;
-      buffet_bookings: Table<BuffetBooking>;
     };
     Views: { [_ in never]: never };
-    Functions: {
-      create_buffet_booking: {
-        Args: {
-          p_session_id: string;
-          p_date: string;
-          p_adults: number;
-          p_children: number;
-          p_name: string;
-          p_phone: string;
-          p_email: string | null;
-          p_notes: string | null;
-          p_booking_number: string;
-          p_gst_rate: number;
-        };
-        Returns: BuffetBooking;
-      };
-      buffet_covers_taken: {
-        Args: { p_session_id: string; p_date: string };
-        Returns: number;
-      };
-    };
+    Functions: { [_ in never]: never };
     Enums: { [_ in never]: never };
     CompositeTypes: { [_ in never]: never };
   };
@@ -171,43 +146,3 @@ export function formatINR(paise: number): string {
     maximumFractionDigits: paise % 100 === 0 ? 0 : 2,
   }).format(paise / 100);
 }
-
-export type BuffetBookingStatus = 'booked' | 'seated' | 'completed' | 'cancelled' | 'no_show';
-
-export type BuffetSession = {
-  id: string;
-  name: string;
-  description: string | null;
-  /** ISO weekday, 1 = Monday .. 7 = Sunday. Null means every day. */
-  day_of_week: number | null;
-  start_time: string;
-  end_time: string;
-  price_paise: number;
-  child_price_paise: number | null;
-  capacity: number;
-  is_active: boolean;
-  sort_order: number;
-  created_at: string;
-};
-
-export type BuffetBooking = {
-  id: string;
-  booking_number: string;
-  session_id: string;
-  booking_date: string;
-  adults: number;
-  children: number;
-  customer_name: string;
-  customer_phone: string;
-  customer_email: string | null;
-  notes: string | null;
-  subtotal_paise: number;
-  tax_paise: number;
-  total_paise: number;
-  status: BuffetBookingStatus;
-  payment_status: PaymentStatus;
-  razorpay_order_id: string | null;
-  razorpay_payment_id: string | null;
-  created_at: string;
-  updated_at: string;
-};

@@ -19,8 +19,11 @@ type Editable = Pick<
   | 'phone'
   | 'whatsapp'
   | 'email'
+  | 'instagram_url'
+  | 'swiggy_url'
+  | 'zomato_url'
   | 'opening_hours'
-  | 'is_accepting_orders'
+  | 'is_open'
 >;
 
 export function SettingsForm({
@@ -93,7 +96,7 @@ export function SettingsForm({
         </Field>
 
         <div className="grid gap-4 sm:grid-cols-3">
-          <Field label="Phone" htmlFor="phone" hint="As dialled, e.g. +918045121212">
+          <Field label="Phone" htmlFor="phone" hint="As dialled, e.g. +919955665594">
             <input
               id="phone"
               name="phone"
@@ -104,7 +107,7 @@ export function SettingsForm({
             />
           </Field>
 
-          <Field label="WhatsApp" htmlFor="whatsapp">
+          <Field label="WhatsApp" htmlFor="whatsapp" hint="Number only, e.g. 919955665594">
             <input
               id="whatsapp"
               name="whatsapp"
@@ -123,6 +126,49 @@ export function SettingsForm({
               defaultValue={settings.email ?? ''}
               className={adminControlClass}
               maxLength={120}
+            />
+          </Field>
+        </div>
+      </fieldset>
+
+      <fieldset disabled={!canEdit} className="space-y-4">
+        <legend className="mb-2 text-sm font-medium">Ordering & social links</legend>
+        <p className="text-xs opacity-55">
+          Where the &ldquo;Order Online&rdquo; buttons send people. Leave a field blank to fall back
+          to the built-in link.
+        </p>
+
+        <div className="grid gap-4 sm:grid-cols-3">
+          <Field label="Swiggy listing" htmlFor="swiggy_url">
+            <input
+              id="swiggy_url"
+              name="swiggy_url"
+              type="url"
+              defaultValue={settings.swiggy_url ?? ''}
+              className={adminControlClass}
+              maxLength={500}
+            />
+          </Field>
+
+          <Field label="Zomato listing" htmlFor="zomato_url">
+            <input
+              id="zomato_url"
+              name="zomato_url"
+              type="url"
+              defaultValue={settings.zomato_url ?? ''}
+              className={adminControlClass}
+              maxLength={500}
+            />
+          </Field>
+
+          <Field label="Instagram profile" htmlFor="instagram_url">
+            <input
+              id="instagram_url"
+              name="instagram_url"
+              type="url"
+              defaultValue={settings.instagram_url ?? ''}
+              className={adminControlClass}
+              maxLength={500}
             />
           </Field>
         </div>
@@ -155,18 +201,19 @@ export function SettingsForm({
       </fieldset>
 
       <fieldset disabled={!canEdit}>
-        <legend className="sr-only">Ordering</legend>
+        <legend className="sr-only">Trading</legend>
         <label className="flex items-start gap-3 rounded-xl border border-[var(--hairline)] p-4 text-sm">
           <input
             type="checkbox"
-            name="is_accepting_orders"
-            defaultChecked={settings.is_accepting_orders}
+            name="is_open"
+            defaultChecked={settings.is_open}
             className="mt-0.5 h-4 w-4 accent-[var(--accent)]"
           />
           <span>
-            Accepting online orders
+            Open for business
             <span className="mt-0.5 block text-xs opacity-55">
-              Turn this off to stop taking a la carte orders without touching the menu.
+              Clear this on a day the cafe is unexpectedly shut, so the site stops inviting people
+              over.
             </span>
           </span>
         </label>

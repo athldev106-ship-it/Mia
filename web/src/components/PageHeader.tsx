@@ -10,8 +10,8 @@ export function PageHeader({
   intro?: string;
 }) {
   return (
-    <section className="relative overflow-hidden px-6 pt-36 pb-14">
-      <Foliage className="opacity-60" />
+    <section className="tinted relative overflow-hidden px-6 pt-36 pb-14">
+      <Foliage className="opacity-70" />
       <div
         aria-hidden
         className="absolute inset-0"

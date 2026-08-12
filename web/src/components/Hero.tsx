@@ -1,52 +1,54 @@
+import Image from 'next/image';
 import Link from 'next/link';
 
 import { Foliage } from '@/components/Foliage';
-import { AGGREGATE } from '@/lib/reviews';
-import type { SiteContent } from '@/components/Footer';
+import { OpenStatus } from '@/components/OpenStatus';
+import { HERO_MEDIA } from '@/lib/media';
 import { SITE } from '@/lib/site';
 
-/**
- * Opening frame of the walkthrough: sunlit verandah, glass panel floating
- * over foliage.
- *
- * The cinematic background is wired but not yet fed. Drop the generated
- * walkthrough at public/media/verandah-walkthrough.mp4 with a still at
- * public/media/verandah-poster.jpg and set HAS_WALKTHROUGH to true; until
- * then the CSS foliage scene stands in, so the page is never waiting on an
- * asset that does not exist.
- */
-const HAS_WALKTHROUGH = false;
+import type { SiteContent } from '@/lib/types';
 
 export function Hero({ site }: { site: SiteContent }) {
   return (
     <section className="relative flex min-h-[92vh] items-center overflow-hidden px-6 pt-28 pb-16">
-      {HAS_WALKTHROUGH ? (
+      {/* The gradient wash stands in until real footage of the room exists. */}
+      {HERO_MEDIA.video ? (
         <video
           className="absolute inset-0 h-full w-full object-cover"
           autoPlay
           muted
           loop
           playsInline
-          // Autoplaying video is decorative here; it must never carry meaning.
+          // Decorative background; it must never carry meaning.
           aria-hidden
-          poster="/media/verandah-poster.jpg"
+          poster={HERO_MEDIA.poster}
         >
-          <source src="/media/verandah-walkthrough.mp4" type="video/mp4" />
+          <source src={HERO_MEDIA.video} type="video/mp4" />
         </video>
+      ) : HERO_MEDIA.image ? (
+        <Image
+          src={HERO_MEDIA.image}
+          alt=""
+          aria-hidden
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover"
+        />
       ) : (
         <div
           aria-hidden
           className="absolute inset-0"
           style={{
             background:
-              'radial-gradient(120% 90% at 75% 8%, color-mix(in srgb, var(--color-rattan) 34%, transparent), transparent 58%),' +
-              'linear-gradient(158deg, color-mix(in srgb, var(--color-moss) 58%, transparent) 0%, color-mix(in srgb, var(--color-frond) 34%, transparent) 38%, transparent 62%),' +
-              'linear-gradient(18deg, color-mix(in srgb, var(--color-wood) 40%, transparent), transparent 55%)',
+              'radial-gradient(90% 70% at 82% 2%, color-mix(in srgb, var(--color-lime) 72%, transparent), transparent 62%),' +
+              'radial-gradient(70% 60% at 8% 92%, color-mix(in srgb, var(--color-leaf) 46%, transparent), transparent 66%),' +
+              'linear-gradient(152deg, color-mix(in srgb, var(--color-leaf) 40%, transparent) 0%, color-mix(in srgb, var(--color-mint) 88%, transparent) 44%, transparent 72%)',
           }}
         />
       )}
 
-      <Foliage />
+      {!HERO_MEDIA.image && !HERO_MEDIA.video && <Foliage />}
 
       {/* Keeps the headline legible whichever backdrop is behind it. */}
       <div
@@ -61,47 +63,49 @@ export function Hero({ site }: { site: SiteContent }) {
       <div className="relative mx-auto w-full max-w-6xl">
         <div className="glass glass-sheen max-w-2xl p-8 sm:p-12">
           <p className="text-xs uppercase tracking-[0.28em] opacity-60">
-            All-day dining · {SITE.address.locality}
+            Coffee house · {SITE.address.locality}
           </p>
 
           <h1
-            className="mt-5 text-5xl leading-[1.05] tracking-tight sm:text-7xl"
+            className="mt-5 text-5xl leading-[1.05] tracking-tight sm:text-6xl md:text-7xl"
             style={{ fontFamily: 'var(--font-display)' }}
           >
-            {site.name}
+            Crafted Coffee &amp; Fresh Bakery Everyday
           </h1>
 
           <p className="mt-5 max-w-md text-base leading-relaxed opacity-80 sm:text-lg">
-            A sunlit verandah under hanging ferns, a green-walled room within, and an open kitchen
-            between them. {site.tagline}.
+            Small-batch espresso, slow cold brew, and bakery pulled warm from the oven all morning.
+            Bright room, fast Wi-Fi, and a seat you are welcome to keep.
           </p>
+
+          <div className="mt-7 flex flex-wrap items-center gap-x-5 gap-y-3">
+            <OpenStatus />
+          </div>
 
           <div className="mt-8 flex flex-wrap items-center gap-3">
             <Link
-              href="/buffet"
+              href="/menu"
               className="rounded-full bg-[var(--accent)] px-6 py-3 text-sm font-medium text-[var(--accent-ink)] transition-transform duration-300 hover:-translate-y-0.5"
             >
-              Book the buffet
+              Explore Menu
             </Link>
             <Link
-              href="/reserve"
+              href="/order"
               className="rounded-full border border-[var(--hairline)] px-6 py-3 text-sm transition-colors hover:bg-[var(--hairline)]"
             >
-              Reserve a table
+              Order Pickup
             </Link>
           </div>
 
           <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 border-t border-[var(--hairline)] pt-6 text-sm">
             <span className="flex items-center gap-2">
-              <span aria-hidden className="text-[var(--color-rattan)]">
+              <span aria-hidden className="text-[var(--color-leaf)]">
                 ★
               </span>
-              <span className="font-medium">{AGGREGATE.value}</span>
-              <span className="opacity-60">
-                on {AGGREGATE.source} · {AGGREGATE.count} reviews
-              </span>
+              <span className="font-medium">{SITE.rating.value}</span>
+              <span className="opacity-65">on Google · {SITE.rating.count} reviews</span>
             </span>
-            <span className="opacity-60">{site.hours}</span>
+            <span className="opacity-65">{SITE.priceRange}</span>
           </div>
         </div>
       </div>

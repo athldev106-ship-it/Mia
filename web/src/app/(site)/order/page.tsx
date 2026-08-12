@@ -1,70 +1,65 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 
-import { OrderBoard } from '@/components/cart/OrderBoard';
+import { OpenStatus } from '@/components/OpenStatus';
+import { OrderLinks } from '@/components/OrderLinks';
 import { PageHeader } from '@/components/PageHeader';
 import { Reveal } from '@/components/Reveal';
-import { getMenu } from '@/lib/data';
+import { getSiteContent } from '@/lib/data';
 import { SITE } from '@/lib/site';
 
 export const metadata: Metadata = {
   title: 'Order online',
-  description: `Order takeaway or delivery from ${SITE.name}, ${SITE.address.locality} — South Indian, Asian and Western plates, paid for online and cooked to order.`,
+  description: `Order coffee and bakery from ${SITE.name}, ${SITE.address.locality} — delivery on Swiggy and Zomato, or message us on WhatsApp for pickup.`,
 };
 
-// Same cadence as /menu: availability and prices change from the dashboard,
-// so the orderable list is re-read rather than baked into the build.
-export const revalidate = 300;
-
 export default async function OrderPage() {
-  const menu = await getMenu();
-  // Sold-out dishes stay on the page, greyed out and without an add button,
-  // exactly as on /menu -- a guest looking for one should see that it exists
-  // and is simply off today.
-  const categories = menu.filter((category) => category.items.length > 0);
+  const site = await getSiteContent();
 
   return (
     <>
       <PageHeader
-        eyebrow="Takeaway & delivery"
+        eyebrow="Delivery & pickup"
         title="Order online"
-        intro="Build your order, pay securely, and collect it from us or have it brought over. Everything is cooked once you order, so nothing sits under a lamp."
+        intro="We take orders through Swiggy and Zomato for delivery, and directly over WhatsApp or the phone for pickup. Everything is made once you order."
       />
 
-      {categories.length === 0 ? (
-        <section className="px-6 pb-24">
-          <div className="mx-auto max-w-4xl">
-            <Reveal>
-              <div className="glass glass-sheen p-10 text-center">
-                <h2 className="text-2xl" style={{ fontFamily: 'var(--font-display)' }}>
-                  Ordering opens soon
-                </h2>
-                <p className="mx-auto mt-4 max-w-md leading-relaxed opacity-75">
-                  We are putting our dishes and prices online so you can order and pay here. Until
-                  then, please call us — we will take your order over the phone and have it ready
-                  for you.
-                </p>
-                <div className="mt-7 flex flex-wrap justify-center gap-3">
-                  <a
-                    href={`tel:${SITE.phone}`}
-                    className="rounded-full bg-[var(--accent)] px-6 py-3 text-sm font-medium text-[var(--accent-ink)]"
-                  >
-                    Call {SITE.phoneDisplay}
-                  </a>
-                  <Link
-                    href="/menu"
-                    className="rounded-full border border-[var(--hairline)] px-6 py-3 text-sm"
-                  >
-                    See the menu
-                  </Link>
-                </div>
-              </div>
-            </Reveal>
-          </div>
-        </section>
-      ) : (
-        <OrderBoard categories={categories} />
-      )}
+      <section className="px-6 pb-24">
+        <div className="mx-auto max-w-4xl">
+          <Reveal>
+            <div className="glass glass-sheen mb-8 flex flex-wrap items-center justify-between gap-4 px-6 py-5">
+              <OpenStatus />
+              <Link href="/menu" className="text-sm underline underline-offset-4 opacity-75">
+                See what we are serving
+              </Link>
+            </div>
+          </Reveal>
+
+          <Reveal delay={80}>
+            <OrderLinks site={site} />
+          </Reveal>
+
+          <Reveal delay={160}>
+            <div className="glass glass-sheen mt-8 p-7">
+              <h2 className="text-xl" style={{ fontFamily: 'var(--font-display)' }}>
+                Picking up?
+              </h2>
+              <p className="mt-3 leading-relaxed opacity-75">
+                We are at {site.address}. Message us when you set off and we will time your coffee
+                so it is still hot when you get here.
+              </p>
+              <a
+                href={site.mapsUrl}
+                target="_blank"
+                rel="noreferrer noopener"
+                className="mt-5 inline-block rounded-full border border-[var(--hairline)] px-5 py-2.5 text-sm transition-colors hover:bg-[var(--hairline)]"
+              >
+                Get directions
+              </a>
+            </div>
+          </Reveal>
+        </div>
+      </section>
     </>
   );
 }
