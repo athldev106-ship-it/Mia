@@ -3,7 +3,7 @@
 import { useCallback } from 'react';
 
 import { controlClass } from '@/components/Field';
-import { PHONE_HINT, PHONE_PATTERN, describePhoneProblem } from '@/lib/validation';
+import { PHONE_HINT, PHONE_PATTERN, describePhoneProblem } from '@/lib/phone';
 
 /**
  * A phone field that says what is wrong with the number.

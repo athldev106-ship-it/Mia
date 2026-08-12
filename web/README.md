@@ -105,13 +105,16 @@ slot is filled.
 ### The logo
 
 Already in place. The cafe supplied a circular badge as a JPEG on a white
-page; `public/media/` holds three cuts of it, none of them redrawn:
+page; `public/media/` holds two cuts of it, neither redrawn:
 
 | File | What it is | Used by |
 | --- | --- | --- |
 | `logo-original.jpg` | the file exactly as supplied | source of truth |
-| `logo.png` | the whole badge, masked to its circle | spare, for print or social profiles |
 | `logo-mark.png` | the icon discs and bowl, no wordmark | the nav, the favicon set, the share card |
+
+A third cut — the whole badge masked to its circle — was dropped: nothing
+referenced it, and it was 150 KB sitting in every deploy. Recut it from
+`logo-original.jpg` if a print or social-profile asset is ever wanted.
 
 The nav pairs `logo-mark.png` with the cafe's name set in the site's own
 type, rather than using the full badge. The badge carries its own wordmark,
@@ -132,6 +135,40 @@ The brand colours in `globals.css` were sampled from this artwork:
 `#1f2a22` for the ground and `#94a76f` for the sage. They are deliberately
 different hues — 136 and 80 — and keeping that split is what stops the
 palette reading as one green merely tinted light and dark.
+
+---
+
+## Performance notes
+
+Most of this cafe's customers arrive on mobile data, so page weight was
+measured rather than assumed. Two findings are worth not re-deriving.
+
+**Font weights are pinned to what is actually drawn.** Headings never carry
+a font-weight utility, so the display face is only ever seen at 400, and
+body text uses 400 and `font-medium`. Adding a heavier weight means adding
+it in `layout.tsx` *and* in the markup — otherwise the browser synthesises
+it and a synthesised serif bold looks smeared.
+
+**The ₹ sign costs 83 KB, and that is deliberate.** Prices are the only
+thing on the site using a character outside Latin-1, and `₹` (U+20B9) falls
+in Inter's *latin-ext* range, so any page showing a price downloads that
+subset for one glyph. It was investigated and left alone:
+
+- `subsets: ['latin']` does not prevent it. That option only controls which
+  files are eagerly preloaded; it removes no `@font-face` or `unicode-range`
+  rule. next/font has no supported way to do this.
+- Overriding U+20B9 to a `local()` font saves the 83 KB but relies on
+  matching order between two same-named families that browsers do not treat
+  identically, and draws `₹` in a system face right beside Inter's
+  `tabular-nums` digits — visibly mismatched on every price.
+- Stripping the rule after build works and reuses next/font's own
+  metric-matched fallback, but depends on internal CSS shape and hashes, so
+  it breaks silently on a Next.js upgrade.
+- Writing "Rs." avoids it entirely and is a real brand downgrade.
+
+Revisit only if Core Web Vitals actually regress, or if a self-hosted
+subsetted font is adopted anyway — at which point cutting one file with
+`pyftsubset` solves it for free.
 
 ---
 
