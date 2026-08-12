@@ -53,7 +53,7 @@ export function MenuBoard({ categories }: { categories: MenuCategoryWithItems[] 
 
               <ul className="mt-7 grid gap-3 sm:grid-cols-2">
                 {category.items.map((item) => (
-                  <MenuCard key={item.id} item={item} />
+                  <MenuCard key={item.id} item={item} slug={category.slug} />
                 ))}
               </ul>
             </section>
@@ -91,21 +91,21 @@ function FilterTab({
   );
 }
 
-function MenuCard({ item }: { item: MenuItem }) {
+function MenuCard({ item, slug }: { item: MenuItem; slug: string }) {
   return (
     <li
       className={`glass glass-sheen flex gap-4 p-5 transition-transform duration-300 hover:-translate-y-0.5 ${
         item.is_available ? '' : 'opacity-55'
       }`}
     >
-      <ItemThumb name={item.name} />
+      <ItemThumb name={item.name} slug={slug} />
 
       <div className="min-w-0 flex-1">
         <div className="flex flex-wrap items-center gap-2">
           <VegMark isVeg={item.is_veg} />
           <h3 className="font-medium">{item.name}</h3>
           {item.is_featured && (
-            <span className="rounded-full bg-[color-mix(in_srgb,var(--color-lime)_28%,transparent)] px-2 py-0.5 text-[11px] font-medium">
+            <span className="rounded-full bg-[color-mix(in_srgb,var(--color-sage)_40%,transparent)] px-2 py-0.5 text-[11px] font-medium">
               Popular
             </span>
           )}
@@ -142,31 +142,55 @@ function MenuCard({ item }: { item: MenuItem }) {
 /**
  * Stands in for a dish photo until the cafe's own photography arrives.
  * The gradient is derived from the name so each item keeps the same
- * colour across renders instead of flickering between them.
+ * colour across renders instead of flickering between them, and the mark
+ * follows the category so a bowl does not get drawn as a coffee cup.
  */
-function ItemThumb({ name }: { name: string }) {
+function ItemThumb({ name, slug }: { name: string; slug: string }) {
   let hash = 0;
   for (let i = 0; i < name.length; i += 1) hash = (hash * 31 + name.charCodeAt(i)) % 360;
-  const hue = 100 + (hash % 60); // Held inside the green half of the wheel.
+  // Held inside the sage/olive band so the grid stays on-brand.
+  const hue = 78 + (hash % 34);
+  const isDrink = slug === 'coffee' || slug === 'cold-drinks';
 
   return (
     <span
       aria-hidden
       className="hidden h-16 w-16 shrink-0 items-center justify-center rounded-xl sm:flex"
       style={{
-        background: `linear-gradient(145deg, hsl(${hue} 55% 62%), hsl(${hue + 25} 70% 82%))`,
+        background: `linear-gradient(145deg, hsl(${hue} 34% 52%), hsl(${hue + 14} 46% 78%))`,
       }}
     >
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" className="text-white/85">
-        <path d="M4 10h12a3 3 0 0 1 0 6h-1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-        <path
-          d="M4 10v5a4 4 0 0 0 4 4h3a4 4 0 0 0 4-4v-5"
-          stroke="currentColor"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-        />
-      </svg>
+      {isDrink ? <CupMark /> : <BowlMark />}
     </span>
+  );
+}
+
+/** Echoes the bowl in the logo. */
+function BowlMark() {
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="text-white/90">
+      <path
+        d="M3.5 11h17a8.5 8.5 0 0 1-8.5 8.5A8.5 8.5 0 0 1 3.5 11Z"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinejoin="round"
+      />
+      <path d="M8 8c.6-1.2 0-2-.4-2.8M12 8c.6-1.2 0-2-.4-2.8" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function CupMark() {
+  return (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" className="text-white/90">
+      <path d="M4 10h12a3 3 0 0 1 0 6h-1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      <path
+        d="M4 10v5a4 4 0 0 0 4 4h3a4 4 0 0 0 4-4v-5"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+      />
+    </svg>
   );
 }
 

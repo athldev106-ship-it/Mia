@@ -12,9 +12,9 @@ const TONE_STYLE: Record<Tone, { background: string; color: string; borderColor:
     borderColor: 'var(--hairline)',
   },
   good: {
-    background: 'color-mix(in srgb, var(--color-leaf) 22%, transparent)',
-    color: 'color-mix(in srgb, var(--color-leaf) 72%, var(--text))',
-    borderColor: 'color-mix(in srgb, var(--color-leaf) 34%, transparent)',
+    background: 'color-mix(in srgb, var(--color-olive) 22%, transparent)',
+    color: 'color-mix(in srgb, var(--color-olive) 72%, var(--text))',
+    borderColor: 'color-mix(in srgb, var(--color-olive) 34%, transparent)',
   },
   warn: {
     background: 'color-mix(in srgb, var(--color-crema) 30%, transparent)',

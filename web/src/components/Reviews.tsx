@@ -4,7 +4,7 @@ import { SITE } from '@/lib/site';
 
 function Stars({ rating }: { rating: number }) {
   return (
-    <span className="text-[var(--color-leaf)]" aria-label={`${rating} out of 5 stars`} role="img">
+    <span className="text-[var(--color-olive)]" aria-label={`${rating} out of 5 stars`} role="img">
       <span aria-hidden>{'★'.repeat(rating)}</span>
       <span aria-hidden className="opacity-25">
         {'★'.repeat(5 - rating)}

@@ -11,34 +11,34 @@ import { SITE } from '@/lib/site';
 
 export const metadata: Metadata = {
   title: 'Ambience & our story',
-  description: `Inside ${SITE.name}, ${SITE.address.locality} — ethically sourced beans roasted locally, fast Wi-Fi, and a bright room built for staying a while.`,
+  description: `Inside ${SITE.name}, ${SITE.address.locality} — a healthy kitchen with weighed portions and honest macros, proper coffee, fast Wi-Fi and a bright room built for staying a while.`,
 };
 
 const VALUES = [
   {
-    title: 'Beans we can name',
-    body: 'Single-estate lots from Chikmagalur and Coorg, bought through growers we have actually met and paid above the commodity rate. The bag on the shelf tells you the farm and the harvest.',
+    title: 'Weighed, not guessed',
+    body: 'Every bowl is built to a spec on a scale, so the protein number on the menu is the number on your plate. Ask us for the full breakdown on anything and we will give it to you.',
   },
   {
-    title: 'Roasted down the road',
-    body: 'Small batches, roasted locally every week rather than shipped in months ahead. Nothing is on the grinder more than fourteen days past its roast date.',
+    title: 'Cooked to order',
+    body: 'Nothing sits in a warmer waiting for you. Proteins go on the grill when the ticket lands, greens are dressed at the last moment, and the bowl reaches you the way it left the pass.',
+  },
+  {
+    title: 'Bought fresh, daily',
+    body: 'Produce comes in each morning and is prepped the same day. We would rather run out of something at nine than serve you yesterday.',
   },
   {
     title: 'A room for staying',
     body: 'Fast Wi-Fi, plug sockets at most tables, and no one hovering over your cup. Come for twenty minutes or the whole afternoon.',
   },
-  {
-    title: 'Baked each morning',
-    body: 'Croissants laminated overnight, cakes and bakes out of the oven before we open. What does not sell goes to staff and neighbours, not into tomorrow.',
-  },
 ] as const;
 
 /** Placeholder tiles, used until GALLERY_PHOTOS in lib/media.ts is filled in. */
 const GALLERY = [
-  { label: 'The espresso bar', from: '#16a34a', to: '#4ade80' },
-  { label: 'Window seating', from: '#dcfce7', to: '#4ade80' },
-  { label: 'Bakery case', from: '#c8a27a', to: '#dcfce7' },
-  { label: 'Communal table', from: '#15803d', to: '#16a34a' },
+  { label: 'The open kitchen', from: '#46601f', to: '#9dba6e' },
+  { label: 'Window seating', from: '#e6eed7', to: '#9dba6e' },
+  { label: 'The cold counter', from: '#c8a97c', to: '#e6eed7' },
+  { label: 'Communal table', from: '#22301f', to: '#5d7a34' },
 ] as const;
 
 /** The first tile leads at double width and height; the rest sit in one cell. */
@@ -55,8 +55,8 @@ export default async function AmbiencePage() {
     <>
       <PageHeader
         eyebrow="Ambience & story"
-        title="A bright room and a short supply chain"
-        intro="We are a small coffee house in Koramangala with a simple idea: buy good beans honestly, roast them close by, bake in the morning, and give people somewhere pleasant to sit."
+        title="Eating well should not be a compromise"
+        intro="We are a small kitchen in Koramangala with a simple idea: cook food that is genuinely good for you, make it taste like something you would choose anyway, and be straight about what is in it."
       />
 
       {/* ---- The 360-style pan through the room ---- */}

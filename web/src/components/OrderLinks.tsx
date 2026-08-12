@@ -46,7 +46,7 @@ const CHANNELS: Channel[] = [
     name: 'Call the cafe',
     blurb: 'Talk to the counter and we will have it ready for you.',
     href: (site) => `tel:${site.phone}`,
-    tint: 'var(--color-leaf)',
+    tint: 'var(--color-olive)',
     icon: <PhoneIcon />,
   },
 ];

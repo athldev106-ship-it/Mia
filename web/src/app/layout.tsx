@@ -40,7 +40,7 @@ const sans = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: `${SITE.name} — Coffee & bakery in ${SITE.address.locality}, Bengaluru`,
+    default: `${SITE.name} — Healthy food & coffee in ${SITE.address.locality}, Bengaluru`,
     template: `%s — ${SITE.name}`,
   },
   description: SITE.description,

@@ -41,9 +41,9 @@ export function Hero({ site }: { site: SiteContent }) {
           className="absolute inset-0"
           style={{
             background:
-              'radial-gradient(90% 70% at 82% 2%, color-mix(in srgb, var(--color-lime) 72%, transparent), transparent 62%),' +
-              'radial-gradient(70% 60% at 8% 92%, color-mix(in srgb, var(--color-leaf) 46%, transparent), transparent 66%),' +
-              'linear-gradient(152deg, color-mix(in srgb, var(--color-leaf) 40%, transparent) 0%, color-mix(in srgb, var(--color-mint) 88%, transparent) 44%, transparent 72%)',
+              'radial-gradient(90% 70% at 82% 2%, color-mix(in srgb, var(--color-sage) 85%, transparent), transparent 62%),' +
+              'radial-gradient(70% 60% at 8% 92%, color-mix(in srgb, var(--color-olive) 38%, transparent), transparent 66%),' +
+              'linear-gradient(152deg, color-mix(in srgb, var(--color-olive) 34%, transparent) 0%, color-mix(in srgb, var(--color-sage-pale) 92%, transparent) 44%, transparent 72%)',
           }}
         />
       )}
@@ -63,19 +63,19 @@ export function Hero({ site }: { site: SiteContent }) {
       <div className="relative mx-auto w-full max-w-6xl">
         <div className="glass glass-sheen max-w-2xl p-8 sm:p-12">
           <p className="text-xs uppercase tracking-[0.28em] opacity-60">
-            Coffee house · {SITE.address.locality}
+            Healthy kitchen &amp; coffee · {SITE.address.locality}
           </p>
 
           <h1
             className="mt-5 text-5xl leading-[1.05] tracking-tight sm:text-6xl md:text-7xl"
             style={{ fontFamily: 'var(--font-display)' }}
           >
-            Crafted Coffee &amp; Fresh Bakery Everyday
+            Great Food Crafted Daily
           </h1>
 
           <p className="mt-5 max-w-md text-base leading-relaxed opacity-80 sm:text-lg">
-            Small-batch espresso, slow cold brew, and bakery pulled warm from the oven all morning.
-            Bright room, fast Wi-Fi, and a seat you are welcome to keep.
+            Grain bowls, high-protein plates and clean breakfasts, cooked to order and portioned
+            honestly. Proper coffee alongside, and a bright room you are welcome to sit in.
           </p>
 
           <div className="mt-7 flex flex-wrap items-center gap-x-5 gap-y-3">
@@ -99,7 +99,7 @@ export function Hero({ site }: { site: SiteContent }) {
 
           <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 border-t border-[var(--hairline)] pt-6 text-sm">
             <span className="flex items-center gap-2">
-              <span aria-hidden className="text-[var(--color-leaf)]">
+              <span aria-hidden className="text-[var(--color-olive)]">
                 ★
               </span>
               <span className="font-medium">{SITE.rating.value}</span>

@@ -1,9 +1,16 @@
-# LeanKafe
+# The LeanKafe
 
-Website for **The LeanKafe & The Coffee Society**, Koramangala 5th Block, Bengaluru.
+Website for **The LeanKafe & The Coffee Society**, Koramangala 5th Block,
+Bengaluru — a healthy kitchen and coffee house.
 
 Next.js (App Router) + Tailwind CSS v4, with an optional Supabase backend for
 reservations, enquiries, the newsletter list and a staff dashboard.
+
+Design follows the logo: a deep forest green ground with a sage-green bowl.
+Sage is too light to carry text on white, so the interface uses a darkened
+sage for anything that must be legible and keeps true sage for fills, icons
+and the dark theme. The homepage's three pillars mirror the logo's grain,
+strength and heart marks.
 
 ---
 
@@ -79,7 +86,7 @@ are outstanding.
 2. Point the slots in `web/src/lib/media.ts` at them:
 
 ```ts
-export const LOGO = { src: '/media/logo.svg', width: 132, height: 32 };
+export const LOGO = { src: '/media/logo.png', width: 512, height: 512 };
 
 export const INTERIOR_PHOTOS = [
   { src: '/media/counter.jpg', alt: 'The espresso counter' },
@@ -94,17 +101,28 @@ export const HERO_MEDIA = { image: '/media/hero.jpg' };
 // or a clip: { video: '/media/hero.mp4', poster: '/media/hero.jpg' }
 ```
 
-The drawn cup mark, the placeholder tiles and the gradient hero disappear
+The drawn bowl mark, the placeholder tiles and the gradient hero disappear
 automatically as each slot is filled.
+
+**On the logo specifically.** The nav renders it 32px tall. The circular
+badge works but sits small next to the nav links, so a horizontal lockup —
+mark on the left, "The LeanKafe" beside it, roughly 4:1 — reads much better
+there. An SVG or transparent PNG will look sharpest. Until a file is set,
+the nav draws the three-discs-over-a-bowl mark in the site's own colours,
+and the favicon set uses the same shape.
 
 ---
 
 ## Before this goes live
 
-- [ ] **Menu prices are placeholders.** They sit inside the listing's published
-      ₹200–400-for-two band but are not the cafe's real menu. Replace them in
-      `supabase/seed.sql` and `src/lib/menu-fallback.ts`, or edit them in
-      `/admin/menu` once Supabase is connected.
+- [ ] **The whole menu is a placeholder.** Dishes, prices and the "High
+      protein" tags are written to match the healthy-kitchen positioning and
+      the listing's ₹200–400-for-two band, but none of it is the cafe's real
+      menu and no macro has been measured. Replace it in `supabase/seed.sql`
+      and `src/lib/menu-fallback.ts`, or edit it in `/admin/menu` once
+      Supabase is connected. Publishing invented nutrition claims as fact
+      would mislead anyone ordering for dietary reasons — this one matters
+      more than the others on this list.
 - [ ] **Confirm the opening time.** Only the 11 PM close is published; 8 AM is
       assumed. It appears in `src/lib/site.ts` (`SITE.hours` and
       `OPENING_HOURS`), `supabase/seed.sql` and `src/app/(site)/contact/page.tsx`.

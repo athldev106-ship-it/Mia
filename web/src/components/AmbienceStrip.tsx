@@ -13,12 +13,12 @@ import { INTERIOR_PHOTOS } from '@/lib/media';
  */
 
 const PLACEHOLDERS = [
-  { label: 'The counter', from: '#16a34a', to: '#4ade80' },
-  { label: 'Window seats', from: '#4ade80', to: '#dcfce7' },
-  { label: 'The roastery wall', from: '#0f5132', to: '#16a34a' },
-  { label: 'Communal table', from: '#c8a27a', to: '#dcfce7' },
-  { label: 'Bakery case', from: '#15803d', to: '#4ade80' },
-  { label: 'The courtyard', from: '#4ade80', to: '#16a34a' },
+  { label: 'The pass', from: '#46601f', to: '#9dba6e' },
+  { label: 'Window seats', from: '#9dba6e', to: '#e6eed7' },
+  { label: 'The open kitchen', from: '#22301f', to: '#5d7a34' },
+  { label: 'Communal table', from: '#c8a97c', to: '#e6eed7' },
+  { label: 'The cold counter', from: '#46601f', to: '#9dba6e' },
+  { label: 'The courtyard', from: '#9dba6e', to: '#5d7a34' },
 ] as const;
 
 const TILE = 'relative h-56 w-72 shrink-0 overflow-hidden rounded-2xl border border-[var(--hairline)] sm:h-64 sm:w-96';

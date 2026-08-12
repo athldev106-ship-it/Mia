@@ -9,7 +9,7 @@ import { SITE } from '@/lib/site';
 
 export const metadata: Metadata = {
   title: 'Reserve a table',
-  description: `Reserve a table at ${SITE.name}, ${SITE.address.locality}, Bengaluru. Open daily for coffee, bakery and all-day breakfast.`,
+  description: `Reserve a table at ${SITE.name}, ${SITE.address.locality}, Bengaluru. Open daily for grain bowls, all-day breakfast and coffee.`,
 };
 
 export default async function ReservePage() {

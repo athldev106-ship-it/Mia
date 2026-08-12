@@ -4,11 +4,12 @@
  * before that row is read, and for build-time metadata.
  */
 export const SITE = {
-  name: 'LeanKafe',
+  name: 'The LeanKafe',
   fullName: 'The LeanKafe & The Coffee Society',
-  tagline: 'Crafted coffee and fresh bakery, every day',
+  /** From the logo. Keep these two in step with the artwork. */
+  tagline: 'Great food crafted daily',
   description:
-    'A boutique coffee house in Koramangala 5th Block, Bengaluru. Small-batch espresso, cold brew, and bakery baked through the morning, served in a bright green-and-white room built for staying a while.',
+    'A healthy kitchen and coffee house in Koramangala 5th Block, Bengaluru. Grain bowls, high-protein plates and clean breakfasts, cooked to order and counted honestly — with proper coffee alongside.',
   address: {
     line: 'No 310/8, Guava Garden, KHB Colony',
     locality: 'Koramangala 5th Block',
@@ -57,6 +58,29 @@ export const EXTERNAL_LINKS = {
     "Hi LeanKafe! I'd like to place an order.",
   )}`,
 } as const;
+
+/**
+ * The three marks above the bowl in the logo -- grain, strength, heart --
+ * used as the site's recurring pillars so the page and the artwork say the
+ * same thing.
+ */
+export const PILLARS = [
+  {
+    key: 'grain',
+    title: 'Whole grains, not white filler',
+    body: 'Millets, brown rice, oats and quinoa carry the plate. Slow carbohydrate that leaves you working rather than napping.',
+  },
+  {
+    key: 'protein',
+    title: 'Protein you can count',
+    body: 'Every bowl is built to a real protein number, weighed on the line. Grilled chicken, eggs, paneer, tofu and legumes, portioned the same way every time.',
+  },
+  {
+    key: 'heart',
+    title: 'Cooked the way it should be',
+    body: 'Grilled, steamed and tossed. Cold-pressed oils used sparingly, nothing deep-fried, and no cream hiding in the dressing.',
+  },
+] as const;
 
 /** The ordering page, which the nav promotes to a button rather than a link. */
 export const ORDER_HREF = '/order';

@@ -60,7 +60,7 @@ export function Nav({ name }: { name: string }) {
             />
           ) : (
             <>
-              <CupMark />
+              <BowlMark />
               <span
                 className="text-xl leading-none tracking-tight"
                 style={{ fontFamily: 'var(--font-display)' }}
@@ -153,36 +153,19 @@ export function Nav({ name }: { name: string }) {
   );
 }
 
-/** The wordmark's cup, with steam that only shows when motion is welcome. */
-function CupMark() {
+/**
+ * The logo's mark in miniature: three discs over a bowl. Stands in until
+ * a real logo file is set in lib/media.ts.
+ */
+function BowlMark() {
   return (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden className="shrink-0">
+    <svg width="26" height="26" viewBox="0 0 32 32" fill="none" aria-hidden className="shrink-0">
+      <circle cx="9.5" cy="8" r="2.5" fill="var(--accent)" />
+      <circle cx="16" cy="8" r="2.5" fill="var(--accent)" />
+      <circle cx="22.5" cy="8" r="2.5" fill="var(--accent)" />
       <path
-        d="M4 10h12a3 3 0 0 1 0 6h-1"
-        stroke="var(--accent)"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-      />
-      <path
-        d="M4 10v5a4 4 0 0 0 4 4h3a4 4 0 0 0 4-4v-5"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-      />
-      <path
-        className="steam"
-        d="M8 7c.6-1.1 0-1.8-.4-2.5"
-        stroke="var(--accent)"
-        strokeWidth="1.3"
-        strokeLinecap="round"
-      />
-      <path
-        className="steam"
-        d="M12 7c.6-1.1 0-1.8-.4-2.5"
-        stroke="var(--accent)"
-        strokeWidth="1.3"
-        strokeLinecap="round"
-        style={{ animationDelay: '-1.5s' }}
+        d="M3.5 16.5h25v0.5A12.5 12.5 0 0 1 16 29.5 12.5 12.5 0 0 1 3.5 17Z"
+        fill="var(--accent)"
       />
     </svg>
   );

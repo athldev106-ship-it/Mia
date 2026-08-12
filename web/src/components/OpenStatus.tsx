@@ -114,7 +114,7 @@ export function OpenStatus({ className = '' }: { className?: string }) {
         <span
           aria-hidden
           className={`pulse-dot h-2 w-2 rounded-full ${
-            status.open ? 'bg-[var(--color-leaf)]' : 'bg-[var(--color-crema)]'
+            status.open ? 'bg-[var(--color-olive)]' : 'bg-[var(--color-crema)]'
           }`}
         />
         {status.open ? 'Open now' : 'Closed'}

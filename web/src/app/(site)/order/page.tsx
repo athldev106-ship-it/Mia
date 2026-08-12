@@ -10,7 +10,7 @@ import { SITE } from '@/lib/site';
 
 export const metadata: Metadata = {
   title: 'Order online',
-  description: `Order coffee and bakery from ${SITE.name}, ${SITE.address.locality} — delivery on Swiggy and Zomato, or message us on WhatsApp for pickup.`,
+  description: `Order grain bowls, breakfast and coffee from ${SITE.name}, ${SITE.address.locality} — delivery on Swiggy and Zomato, or message us on WhatsApp for pickup.`,
 };
 
 export default async function OrderPage() {

@@ -18,7 +18,23 @@ export type Logo = { src: string; width: number; height: number } | null;
 
 export type Photo = { src: string; alt: string; width?: number; height?: number };
 
-/** Replaces the drawn cup mark and wordmark in the nav when set. */
+/**
+ * Replaces the drawn bowl mark and wordmark in the nav when set.
+ *
+ * The nav renders it at 32px tall and scales the width to match, so give
+ * the real pixel dimensions of the file here and let CSS do the sizing.
+ *
+ * The supplied logo is a circular badge with the wordmark inside it,
+ * which is tall for a nav bar. Two options:
+ *
+ *   - Full badge: works, but it will be small next to the nav links.
+ *       export const LOGO = { src: '/media/logo.png', width: 512, height: 512 };
+ *
+ *   - Better: export a horizontal lockup (mark on the left, "The LeanKafe"
+ *     beside it) and point at that instead. Roughly 4:1 reads best.
+ *
+ * A transparent PNG or, ideally, an SVG will look sharpest.
+ */
 export const LOGO: Logo = null;
 
 /**

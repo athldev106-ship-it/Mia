@@ -4,48 +4,32 @@ import { AmbienceStrip } from '@/components/AmbienceStrip';
 import { Foliage } from '@/components/Foliage';
 import { Hero } from '@/components/Hero';
 import { OrderLinks } from '@/components/OrderLinks';
+import { PillarIcon } from '@/components/PillarIcon';
 import { Reveal } from '@/components/Reveal';
 import { Reviews } from '@/components/Reviews';
 import { getSiteContent } from '@/lib/data';
+import { PILLARS } from '@/lib/site';
 
 const HIGHLIGHTS = [
   {
-    name: 'Filter & Pour-Over',
-    note: 'Single-estate Chikmagalur, bloomed slow',
-    price: '₹180',
+    name: 'Grilled Chicken Bowl',
+    note: 'Brown rice, greens, 42g protein',
+    price: '₹320',
   },
   {
-    name: 'Cardamom Latte',
-    note: 'Double shot, steamed milk, green cardamom',
-    price: '₹250',
+    name: 'Paneer Millet Bowl',
+    note: 'Foxtail millet, tossed paneer, 28g protein',
+    price: '₹290',
   },
   {
-    name: 'Overnight Cold Brew',
-    note: 'Eighteen hours, served over a big cube',
-    price: '₹220',
+    name: 'Egg White Breakfast',
+    note: 'Five whites, sourdough, avocado',
+    price: '₹260',
   },
   {
-    name: 'Butter Croissant',
-    note: 'Laminated overnight, baked at six',
-    price: '₹160',
-  },
-] as const;
-
-const PROMISES = [
-  {
-    eyebrow: 'Sourcing',
-    title: 'Beans bought honestly, from growers we know',
-    body: 'Single-estate lots from Chikmagalur and Coorg, paid for above the commodity rate. Every bag on the shelf names the farm and the harvest it came from.',
-  },
-  {
-    eyebrow: 'Roasting',
-    title: 'Small batches, roasted close to home',
-    body: 'We roast weekly rather than shipping in months ahead, and nothing stays on the grinder more than fourteen days past its roast date. It is the difference you taste first.',
-  },
-  {
-    eyebrow: 'The room',
-    title: 'Fast Wi-Fi, real plug sockets, no hovering',
-    body: 'Come for twenty minutes or the whole afternoon. There are sockets at most tables, the Wi-Fi holds up to a video call, and nobody will clear your cup to move you along.',
+    name: 'Cold Brew',
+    note: 'Eighteen hours, no sugar',
+    price: '₹190',
   },
 ] as const;
 
@@ -56,36 +40,44 @@ export default async function HomePage() {
     <>
       <Hero site={site} />
 
-      {/* ---- What we stand for ---- */}
+      {/* ---- The three pillars from the logo ---- */}
       <section className="relative px-6 py-24">
         <Foliage className="opacity-40" />
-        <div className="relative mx-auto max-w-6xl space-y-6">
-          {PROMISES.map((promise, index) => (
-            <Reveal key={promise.title} delay={index * 80}>
-              <article
-                className={`glass glass-sheen max-w-2xl p-8 sm:p-10 ${
-                  index % 2 === 1 ? 'ml-auto' : ''
-                }`}
-              >
-                <p className="text-xs uppercase tracking-[0.28em] opacity-55">{promise.eyebrow}</p>
-                <h2
-                  className="mt-4 text-3xl leading-tight sm:text-4xl"
-                  style={{ fontFamily: 'var(--font-display)' }}
-                >
-                  {promise.title}
-                </h2>
-                <p className="mt-4 leading-relaxed opacity-80">{promise.body}</p>
-              </article>
-            </Reveal>
-          ))}
+        <div className="relative mx-auto max-w-6xl">
+          <Reveal>
+            <p className="text-xs uppercase tracking-[0.28em] opacity-55">What lean means here</p>
+            <h2
+              className="mt-4 max-w-xl text-4xl leading-tight sm:text-5xl"
+              style={{ fontFamily: 'var(--font-display)' }}
+            >
+              Food that does something for you
+            </h2>
+          </Reveal>
+
+          <div className="mt-12 grid gap-5 md:grid-cols-3">
+            {PILLARS.map((pillar, index) => (
+              <Reveal key={pillar.key} delay={index * 90}>
+                <article className="glass glass-sheen flex h-full flex-col p-7">
+                  <PillarIcon name={pillar.key} />
+                  <h3
+                    className="mt-5 text-xl leading-snug"
+                    style={{ fontFamily: 'var(--font-display)' }}
+                  >
+                    {pillar.title}
+                  </h3>
+                  <p className="mt-3 leading-relaxed opacity-75">{pillar.body}</p>
+                </article>
+              </Reveal>
+            ))}
+          </div>
         </div>
       </section>
 
-      {/* ---- From the bar ---- */}
+      {/* ---- From the kitchen ---- */}
       <section className="tinted relative px-6 py-24">
         <div className="mx-auto max-w-6xl">
           <Reveal>
-            <p className="text-xs uppercase tracking-[0.28em] opacity-55">From the bar</p>
+            <p className="text-xs uppercase tracking-[0.28em] opacity-55">From the kitchen</p>
             <h2
               className="mt-4 max-w-lg text-4xl leading-tight sm:text-5xl"
               style={{ fontFamily: 'var(--font-display)' }}
@@ -137,7 +129,7 @@ export default async function HomePage() {
         <Reveal delay={100}>
           <p className="mx-auto mt-6 max-w-6xl px-6 text-center">
             <Link href="/ambience" className="text-sm underline underline-offset-4 opacity-75">
-              More about the room and where our beans come from
+              More about the room and how we cook
             </Link>
           </p>
         </Reveal>

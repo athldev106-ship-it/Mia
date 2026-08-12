@@ -1,8 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
-  <rect width="32" height="32" rx="7" fill="#15803d" />
-  <circle cx="21.5" cy="18" r="3.4" fill="none" stroke="#ffffff" stroke-width="2.1" />
-  <path d="M6 15.4h14v1.1a7 7 0 0 1-14 0z" fill="#ffffff" />
-  <rect x="4.5" y="24.4" width="17" height="1.8" rx="0.9" fill="#ffffff" />
-  <path d="M10 11.5c.5-.8.75-1.6 0-2.5-.75-.9-.5-1.7 0-2.5" fill="none" stroke="#4ade80" stroke-width="1.7" stroke-linecap="round" />
-  <path d="M15.5 11.5c-.5-.8-.75-1.6 0-2.5.75-.9.5-1.7 0-2.5" fill="none" stroke="#4ade80" stroke-width="1.7" stroke-linecap="round" />
+  <rect width="32" height="32" rx="7" fill="#22301f" />
+  <!-- The three marks above the bowl, as in the logo. -->
+  <circle cx="9" cy="8.5" r="3.1" fill="#9dba6e" />
+  <circle cx="16" cy="8.5" r="3.1" fill="#9dba6e" />
+  <circle cx="23" cy="8.5" r="3.1" fill="#9dba6e" />
+  <!-- The bowl, with the logo's sweeping tail to the right. -->
+  <path d="M4.5 15h23a11.5 11.5 0 0 1-11.5 11.5A11.5 11.5 0 0 1 4.5 15Z" fill="#9dba6e" />
+  <path d="M25.5 15c1.6 4.4.4 8.4-3.1 11.2 1-3.6 1.2-7.3.6-11.2z" fill="#9dba6e" />
 </svg>

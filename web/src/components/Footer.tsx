@@ -22,8 +22,8 @@ export function Footer({ site }: { site: SiteContent }) {
               Get 10% off your first order
             </h2>
             <p className="mt-3 text-sm leading-relaxed opacity-75">
-              One email a month: new single origins, seasonal bakes, and the odd invitation to a
-              cupping. No more than that.
+              One email a month: new bowls on the menu, what is good this season, and the occasional
+              thing worth knowing about eating well. No more than that.
             </p>
           </div>
           <NewsletterForm />

@@ -3,22 +3,27 @@
 /* =====================================================================
    LeanKafe — design tokens.
 
-   A vibrant green-and-white coffee house: bright leaf greens against a
-   lot of white, with warm espresso browns kept for text and small
-   accents rather than surfaces. Panels are frosted glass so the page
-   reads as light passing through a bright room.
+   Taken from the logo: a deep forest green ground with a sage-green
+   bowl and wordmark. Sage is the brand's signal colour but is far too
+   light to carry text or buttons on white, so the interface uses a
+   darkened sage (--color-olive) for anything that must be legible, and
+   keeps true sage for fills, icons and the dark theme.
    ===================================================================== */
 @theme {
-  --color-leaf: #12b354;
-  --color-leaf-deep: #128040;
-  --color-leaf-dark: #0b5230;
-  --color-lime: #3ee87c;
-  --color-mint: #d2fbe0;
-  --color-espresso: #2d1b12;
-  --color-crema: #d1a173;
-  --color-cream: #fbfdfa;
+  /* Straight from the logo. */
+  --color-forest: #22301f;
+  --color-sage: #9dba6e;
+
+  /* Interface greens derived from the sage hue. */
+  --color-olive: #5d7a34;
+  --color-olive-deep: #46601f;
+  --color-forest-soft: #2f4029;
+  --color-sage-pale: #e6eed7;
+
+  --color-cream: #fbfcf8;
   --color-paper: #ffffff;
-  --color-ink: #0e2417;
+  --color-ink: #1b241a;
+  --color-crema: #c8a97c;
   /* The accent is green, so errors need a colour of their own -- a green
      "something went wrong" reads as success. */
   --color-alert: #c0392b;
@@ -37,35 +42,37 @@
   --surface: var(--color-cream);
   --surface-raised: var(--color-paper);
   --text: var(--color-ink);
-  --text-muted: #4b5f53;
-  --accent: var(--color-leaf-deep);
+  --text-muted: #55634f;
+  /* Sage itself is ~2.1:1 on white. This darkened sage clears 4.5:1 while
+     staying recognisably the brand's green. */
+  --accent: var(--color-olive-deep);
   --accent-ink: #ffffff;
   --alert: var(--color-alert);
-  --hairline: color-mix(in srgb, var(--color-leaf-dark) 14%, transparent);
+  --hairline: color-mix(in srgb, var(--color-forest) 16%, transparent);
 
   --glass-bg: color-mix(in srgb, #ffffff 68%, transparent);
   --glass-border: color-mix(in srgb, #ffffff 75%, transparent);
-  --glass-shadow: 0 1px 2px rgb(20 38 27 / 0.04), 0 12px 32px -12px rgb(20 38 27 / 0.16);
+  --glass-shadow: 0 1px 2px rgb(34 48 31 / 0.05), 0 12px 32px -12px rgb(34 48 31 / 0.18);
   --glass-sheen: color-mix(in srgb, #ffffff 88%, transparent);
 
   color-scheme: light;
 }
 
+/* Dark mode is the logo's own colourway: sage on forest. */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme='light']) {
-    --surface: #0b1710;
-    --surface-raised: #12241a;
-    --text: #eef7f1;
-    --text-muted: #9db8a8;
-    /* Lifted off the light-mode green: the deep leaf fails contrast on a
-       dark ground, and this is the colour every button sits on. */
-    --accent: var(--color-lime);
-    --accent-ink: #06210f;
+    --surface: #161f14;
+    --surface-raised: var(--color-forest);
+    --text: #eef2e6;
+    --text-muted: #a8b89a;
+    /* True sage, which only reads correctly on the dark ground. */
+    --accent: var(--color-sage);
+    --accent-ink: #1a2416;
     /* Lifted for legibility on the dark ground. */
     --alert: #ff8a7a;
     --hairline: color-mix(in srgb, #ffffff 14%, transparent);
 
-    --glass-bg: color-mix(in srgb, #16301f 58%, transparent);
+    --glass-bg: color-mix(in srgb, var(--color-forest-soft) 62%, transparent);
     --glass-border: color-mix(in srgb, #ffffff 15%, transparent);
     --glass-shadow: 0 1px 2px rgb(0 0 0 / 0.3), 0 16px 40px -16px rgb(0 0 0 / 0.6);
     --glass-sheen: color-mix(in srgb, #ffffff 22%, transparent);
@@ -76,16 +83,16 @@
 
 /* The viewer's theme toggle stamps data-theme and must win either way. */
 :root[data-theme='dark'] {
-  --surface: #0b1710;
-  --surface-raised: #12241a;
-  --text: #eef7f1;
-  --text-muted: #9db8a8;
-  --accent: var(--color-lime);
-  --accent-ink: #06210f;
+  --surface: #161f14;
+  --surface-raised: var(--color-forest);
+  --text: #eef2e6;
+  --text-muted: #a8b89a;
+  --accent: var(--color-sage);
+  --accent-ink: #1a2416;
   --alert: #ff8a7a;
   --hairline: color-mix(in srgb, #ffffff 14%, transparent);
 
-  --glass-bg: color-mix(in srgb, #16301f 58%, transparent);
+  --glass-bg: color-mix(in srgb, var(--color-forest-soft) 62%, transparent);
   --glass-border: color-mix(in srgb, #ffffff 15%, transparent);
   --glass-shadow: 0 1px 2px rgb(0 0 0 / 0.3), 0 16px 40px -16px rgb(0 0 0 / 0.6);
   --glass-sheen: color-mix(in srgb, #ffffff 22%, transparent);
@@ -106,7 +113,7 @@ body {
 }
 
 ::selection {
-  background: color-mix(in srgb, var(--color-lime) 45%, transparent);
+  background: color-mix(in srgb, var(--color-sage) 55%, transparent);
 }
 
 :where(a, button, [tabindex]):focus-visible {
@@ -171,10 +178,10 @@ body {
   background:
     radial-gradient(
       70% 60% at 50% 0%,
-      color-mix(in srgb, var(--color-lime) 16%, transparent),
+      color-mix(in srgb, var(--color-sage) 24%, transparent),
       transparent 72%
     ),
-    color-mix(in srgb, var(--color-mint) 45%, transparent);
+    color-mix(in srgb, var(--color-sage-pale) 55%, transparent);
 }
 
 :root[data-theme='dark'] .tinted,
@@ -187,10 +194,10 @@ body {
     background:
       radial-gradient(
         70% 60% at 50% 0%,
-        color-mix(in srgb, var(--color-leaf) 14%, transparent),
+        color-mix(in srgb, var(--color-sage) 12%, transparent),
         transparent 72%
       ),
-      color-mix(in srgb, var(--color-leaf-dark) 22%, transparent);
+      color-mix(in srgb, var(--color-forest-soft) 45%, transparent);
   }
 }
 
@@ -198,10 +205,10 @@ body {
   background:
     radial-gradient(
       70% 60% at 50% 0%,
-      color-mix(in srgb, var(--color-leaf) 14%, transparent),
+      color-mix(in srgb, var(--color-sage) 12%, transparent),
       transparent 72%
     ),
-    color-mix(in srgb, var(--color-leaf-dark) 22%, transparent);
+    color-mix(in srgb, var(--color-forest-soft) 45%, transparent);
 }
 
 /* =====================================================================

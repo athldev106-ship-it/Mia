@@ -9,7 +9,7 @@ import { SITE } from '@/lib/site';
 
 export const metadata: Metadata = {
   title: 'Menu',
-  description: `The full menu at ${SITE.name}, ${SITE.address.locality} — espresso, cold brew, artisanal bakery and all-day breakfast.`,
+  description: `The full menu at ${SITE.name}, ${SITE.address.locality} — grain bowls, high-protein plates, clean breakfasts, salads and proper coffee.`,
 };
 
 // The menu changes from the dashboard, so re-read it periodically rather
@@ -23,9 +23,9 @@ export default async function MenuPage() {
   return (
     <>
       <PageHeader
-        eyebrow="Coffee, bakery & breakfast"
+        eyebrow="Bowls, breakfast & coffee"
         title="The menu"
-        intro="Espresso and filter from beans roasted this week, cold brew steeped overnight, and bakery out of the oven before we open."
+        intro="A whole grain, a real protein and as many vegetables as we can fit — built to order, weighed on the line. Coffee pulled fresh alongside."
       />
 
       <section className="px-6 pb-24">
@@ -49,7 +49,7 @@ export default async function MenuPage() {
             </div>
             <p className="mt-8 text-center text-xs opacity-60">
               All prices in ₹ and inclusive of taxes. Please tell us about any allergies — several
-              bakes contain nuts.
+              dishes contain nuts. Ask us for the full macro breakdown on anything on this menu.
             </p>
           </Reveal>
         </div>
