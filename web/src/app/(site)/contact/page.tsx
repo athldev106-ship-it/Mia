@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import { EnquiryForm } from '@/components/EnquiryForm';
 import { OpenStatus } from '@/components/OpenStatus';
 import { PageHeader } from '@/components/PageHeader';
+import { LocationMap } from '@/components/LocationMap';
 import { Reveal } from '@/components/Reveal';
 import { getSiteContent } from '@/lib/data';
 import { SITE, fullAddress } from '@/lib/site';
@@ -56,6 +57,10 @@ export default async function ContactPage() {
                   Get directions
                 </a>
               </div>
+            </Reveal>
+
+            <Reveal delay={40}>
+              <LocationMap />
             </Reveal>
 
             <Reveal delay={60}>
