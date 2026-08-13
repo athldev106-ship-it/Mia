@@ -2,11 +2,20 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 import { Foliage } from '@/components/Foliage';
+import { HeroScene } from '@/components/HeroScene';
 import { OpenStatus } from '@/components/OpenStatus';
 import { HERO_MEDIA } from '@/lib/media';
 import { SITE } from '@/lib/site';
 
 import type { SiteContent } from '@/lib/types';
+
+/**
+ * HeroScene is a client component whose markup is an empty div; the whole
+ * scene is built in an effect, and Three.js itself is imported inside that
+ * effect. So the library lands in its own chunk, fetched only by a visitor
+ * on this page whose device qualifies -- never in a shared bundle, and
+ * never on /menu or anywhere else.
+ */
 
 export function Hero({ site }: { site: SiteContent }) {
   return (
@@ -48,7 +57,12 @@ export function Hero({ site }: { site: SiteContent }) {
         />
       )}
 
-      {!HERO_MEDIA.image && !HERO_MEDIA.video && <Foliage />}
+      {!HERO_MEDIA.image && !HERO_MEDIA.video && (
+        <>
+          <Foliage />
+          <HeroScene />
+        </>
+      )}
 
       {/* Keeps the headline legible whichever backdrop is behind it. */}
       <div
