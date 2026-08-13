@@ -58,6 +58,11 @@ export const INTERIOR_PHOTOS: Photo[] = [
   { src: '/media/smoothie-chia.jpg', alt: 'A berry smoothie bowl and a chia pudding', width: 1005, height: 285 },
   { src: '/media/coffee-lineup.jpg', alt: 'Espresso, cold brew, cappuccino and an iced latte', width: 1005, height: 249 },
   { src: '/media/salad-soup.jpg', alt: 'Watermelon and feta salad with roasted pumpkin soup', width: 1005, height: 270 },
+  // Smaller than the rest: this one sits in a column on its menu page
+  // rather than running the full width. Worth including anyway -- the Ube
+  // collection is the bar's house speciality, and it is the only thing in
+  // the set that is not green.
+  { src: '/media/ube.jpg', alt: 'An iced ube latte beside an ube cheesecake latte', width: 478, height: 217 },
 ];
 
 /**

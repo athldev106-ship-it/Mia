@@ -199,6 +199,36 @@ for every link scrolled into view, which sounds expensive and is not: about
 between pages for well under the cost of one photograph. Turn it off per
 link with `prefetch={false}` only if a route ever becomes genuinely heavy.
 
+**The 3D hero is gated, and must stay gated.** `components/HeroScene.tsx`
+draws the bowl with Three.js, which is 185 KB — most of a page again. It is
+never in a shared chunk, because the `import('three')` sits inside the
+effect rather than at the top of the file. Move that import to the top and
+every route on the site pays for it.
+
+| | on the wire | 3D loads |
+| --- | --- | --- |
+| mobile | 252 KB | no |
+| desktop, reduced-motion | 279 KB | no |
+| desktop, motion allowed | 464 KB | yes |
+
+It also declines below four CPU cores, stops rendering when the hero leaves
+the viewport or the tab is hidden, and leaves the gradient in place if
+anything throws. The gradient is a complete hero on its own; the bowl is a
+bonus for machines that can afford it. Most of this cafe's customers are on
+a phone and never download it.
+
+Two things that cost an afternoon and are easy to repeat:
+
+- `renderer.setSize(w, h, false)` suppresses the canvas's inline style, so
+  the element displays at its raw buffer width — roughly 3000px on a 2x
+  screen — and the scene renders enormous and cropped. Keep the buffer
+  retina-sized and let CSS scale it: the component sets `width`/`height` to
+  100% explicitly.
+- Do not position the model clear of the headline by offsetting it in world
+  space and re-aiming the camera; that fights itself at every viewport. The
+  model sits at the origin and the *canvas element* occupies the right half,
+  which CSS gets right at any width.
+
 ---
 
 ## Before this goes live
