@@ -65,8 +65,7 @@ export default async function AmbiencePage() {
           <AmbienceStrip />
         </Reveal>
         <p className="mx-auto mt-4 max-w-6xl px-6 text-center text-xs opacity-70">
-          A continuous pass through the room. Swap these tiles for the cafe&rsquo;s own 360°
-          photography when it is shot.
+          Shot for the menu, in the cafe&rsquo;s own kitchen.
         </p>
       </section>
 
@@ -105,7 +104,7 @@ export default async function AmbiencePage() {
               className="max-w-lg text-3xl leading-tight sm:text-4xl"
               style={{ fontFamily: 'var(--font-display)' }}
             >
-              Around the cafe
+              Off the pass
             </h2>
           </Reveal>
 

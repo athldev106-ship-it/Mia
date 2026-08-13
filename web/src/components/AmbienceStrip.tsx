@@ -3,13 +3,13 @@ import Image from 'next/image';
 import { INTERIOR_PHOTOS } from '@/lib/media';
 
 /**
- * A continuous horizontal pan across the room, standing in for a 360°
- * sweep.
+ * A slow, continuous horizontal pan across the cafe's own photography.
  *
- * Real photographs are used as soon as INTERIOR_PHOTOS in lib/media.ts is
- * filled in; until then the tiles are CSS scenes, so this ships nothing
- * and cannot break on a slow connection. The track renders its tiles
- * twice either way -- the loop relies on the second copy to have no seam.
+ * Photographs are used as soon as INTERIOR_PHOTOS in lib/media.ts is
+ * filled in; the CSS scenes below stand in until then, so the strip ships
+ * nothing and cannot break on a slow connection. The track renders its
+ * tiles twice either way -- the loop relies on the second copy to have no
+ * seam.
  */
 
 const PLACEHOLDERS = [

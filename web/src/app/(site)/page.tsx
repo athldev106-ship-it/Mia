@@ -121,7 +121,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ---- A pass through the room ---- */}
+      {/* ---- A pass along the pass ---- */}
       <section className="py-8">
         <Reveal>
           <AmbienceStrip />
@@ -129,7 +129,7 @@ export default async function HomePage() {
         <Reveal delay={100}>
           <p className="mx-auto mt-6 max-w-6xl px-6 text-center">
             <Link href="/ambience" className="text-sm underline underline-offset-4 opacity-75">
-              More about the room and how we cook
+              More about how we cook, and the room we do it in
             </Link>
           </p>
         </Reveal>
