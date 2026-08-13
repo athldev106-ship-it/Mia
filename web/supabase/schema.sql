@@ -48,6 +48,9 @@ create table if not exists public.menu_categories (
   name        text not null,
   slug        text not null unique,
   description text,
+  -- Which half of the business: the kitchen (The LeanKafe) or the bar
+  -- (The Coffee Society). The printed menu separates them, so the site does.
+  brand       text not null default 'kitchen' check (brand in ('kitchen', 'coffee')),
   sort_order  integer not null default 0,
   is_active   boolean not null default true,
   created_at  timestamptz not null default now()
@@ -59,9 +62,14 @@ create table if not exists public.menu_items (
   name         text not null,
   description  text,
   price_paise  integer not null check (price_paise >= 0),
+  -- Second price where the card prints "veg / non-veg"; price_paise is the
+  -- vegetarian build. Null for anything sold at a single price.
+  price_nonveg_paise integer check (price_nonveg_paise >= 0),
   image_url    text,
   is_veg       boolean not null default true,
   spice_level  smallint not null default 0 check (spice_level between 0 and 3),
+  -- Codes as printed on the card: D G E N Se So Co.
+  allergens    text[] not null default '{}',
   tags         text[] not null default '{}',
   is_available boolean not null default true,
   is_featured  boolean not null default false,

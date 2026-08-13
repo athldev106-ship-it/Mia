@@ -7,15 +7,41 @@ export type ReservationStatus = 'pending' | 'confirmed' | 'seated' | 'cancelled'
 export type EnquiryType = 'general' | 'catering' | 'events' | 'feedback';
 export type EnquiryStatus = 'new' | 'read' | 'closed';
 
+/**
+ * The business trades as two brands under one roof: the kitchen is The
+ * LeanKafe, the bar is The Coffee Society, and the printed menu gives each
+ * its own logo and section. Categories carry which side they belong to so
+ * the menu page can keep that division.
+ */
+export type MenuBrand = 'kitchen' | 'coffee';
+
 export type MenuCategory = {
   id: string;
   name: string;
   slug: string;
   description: string | null;
+  brand: MenuBrand;
   sort_order: number;
   is_active: boolean;
   created_at: string;
 };
+
+/**
+ * Allergen codes, exactly as the printed menu prints them. Kept short
+ * because that is what a guest is matching against the key at the foot of
+ * the card; ALLERGENS below carries the words.
+ */
+export const ALLERGENS = {
+  D: 'Dairy',
+  G: 'Gluten',
+  E: 'Egg',
+  N: 'Tree nuts',
+  Se: 'Sesame',
+  So: 'Soy',
+  Co: 'Coconut',
+} as const;
+
+export type AllergenCode = keyof typeof ALLERGENS;
 
 export type MenuItem = {
   id: string;
@@ -23,9 +49,16 @@ export type MenuItem = {
   name: string;
   description: string | null;
   price_paise: number;
+  /**
+   * Second price for dishes the kitchen sells at two, where the card
+   * prints "₹249 / ₹269" -- the first is the vegetarian build. Null for
+   * everything sold at a single price.
+   */
+  price_nonveg_paise: number | null;
   image_url: string | null;
   is_veg: boolean;
   spice_level: number;
+  allergens: AllergenCode[];
   tags: string[];
   is_available: boolean;
   is_featured: boolean;

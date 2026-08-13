@@ -12,24 +12,24 @@ import { PILLARS } from '@/lib/site';
 
 const HIGHLIGHTS = [
   {
-    name: 'Grilled Chicken Bowl',
-    note: 'Brown rice, greens, 42g protein',
-    price: '₹320',
+    name: 'Build Your Own',
+    note: 'Bowl or burrito, four steps, entirely yours',
+    price: '₹279',
   },
   {
-    name: 'Paneer Millet Bowl',
-    note: 'Foxtail millet, tossed paneer, 28g protein',
-    price: '₹290',
+    name: 'Grilled Chicken & Hummus',
+    note: 'Pan-fried chicken, whole wheat tortilla or sourdough',
+    price: '₹289',
   },
   {
-    name: 'Egg White Breakfast',
-    note: 'Five whites, sourdough, avocado',
-    price: '₹260',
+    name: 'Triple Berry Smoothie Bowl',
+    note: 'Berries, low-fat milk and overnight oats',
+    price: '₹289',
   },
   {
-    name: 'Cold Brew',
-    note: 'Eighteen hours, no sugar',
-    price: '₹190',
+    name: 'Ube Latte',
+    note: 'The Coffee Society house speciality',
+    price: '₹387',
   },
 ] as const;
 
@@ -77,7 +77,7 @@ export default async function HomePage() {
       <section className="tinted relative px-6 py-24">
         <div className="mx-auto max-w-6xl">
           <Reveal>
-            <p className="text-xs uppercase tracking-[0.28em] opacity-70">From the kitchen</p>
+            <p className="text-xs uppercase tracking-[0.28em] opacity-70">From both counters</p>
             <h2
               className="mt-4 max-w-lg text-4xl leading-tight sm:text-5xl"
               style={{ fontFamily: 'var(--font-display)' }}

@@ -9,7 +9,7 @@ export const SITE = {
   /** From the logo. Keep these two in step with the artwork. */
   tagline: 'Great food crafted daily',
   description:
-    'A healthy kitchen and coffee house in Koramangala 5th Block, Bengaluru. Grain bowls, high-protein plates and clean breakfasts, cooked to order and counted honestly — with proper coffee alongside.',
+    'A healthy kitchen and speciality coffee bar in Koramangala 5th Block, Bengaluru. All-day breakfast, pastas, salads, soups, wraps, smoothie bowls and build-your-own bowls and burritos — with single-origin espresso, matcha and the Ube collection from The Coffee Society.',
   address: {
     line: 'No 310/8, Guava Garden, KHB Colony',
     locality: 'Koramangala 5th Block',

@@ -9,7 +9,7 @@ import { SITE } from '@/lib/site';
 
 export const metadata: Metadata = {
   title: 'Menu',
-  description: `The full menu at ${SITE.name}, ${SITE.address.locality} — grain bowls, high-protein plates, clean breakfasts, salads and proper coffee.`,
+  description: `The full menu at ${SITE.fullName}, ${SITE.address.locality} — all-day breakfast, pastas, salads, wraps, smoothie bowls and build-your-own, with single-origin espresso from The Coffee Society.`,
 };
 
 // The menu changes from the dashboard, so re-read it periodically rather
@@ -23,9 +23,9 @@ export default async function MenuPage() {
   return (
     <>
       <PageHeader
-        eyebrow="Bowls, breakfast & coffee"
+        eyebrow="Nine chapters, two kitchens"
         title="The menu"
-        intro="A whole grain, a real protein and as many vegetables as we can fit — built to order, weighed on the line. Coffee pulled fresh alongside."
+        intro="Breakfast served all day, pastas, salads, soups, wraps and bowls you build yourself — and a full bar of single-origin espresso from The Coffee Society next to it."
       />
 
       <section className="px-6 pb-24">
@@ -48,8 +48,7 @@ export default async function MenuPage() {
               </Link>
             </div>
             <p className="mt-8 text-center text-xs opacity-70">
-              All prices in ₹ and inclusive of taxes. Please tell us about any allergies — several
-              dishes contain nuts. Ask us for the full macro breakdown on anything on this menu.
+              All prices in ₹ and inclusive of taxes.
             </p>
           </Reveal>
         </div>

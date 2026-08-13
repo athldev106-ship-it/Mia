@@ -4,16 +4,13 @@
 -- Contact details and the address come from the cafe's public Google
 -- listing.
 --
--- MENU ITEMS AND PRICES BELOW ARE PLACEHOLDERS. They are written to match
--- the cafe's healthy-kitchen positioning and its published ₹200-400-for-two
--- band, but they are not the real menu, and the "High protein" tags are
--- illustrative rather than measured. Replace them from the actual menu card
--- before launch, or edit them in the staff dashboard at /admin/menu --
--- publishing invented nutrition claims as fact would mislead anyone
--- ordering for dietary reasons.
+-- The menu below is the cafe's real card, transcribed from the printed
+-- menu: nine kitchen chapters and the five Coffee Society sections, with
+-- allergen codes and the veg / non-veg pasta pricing as printed.
 --
--- Keep this file in step with src/lib/menu-fallback.ts, which is what the
--- site shows when no database is connected.
+-- It is generated from src/lib/menu-fallback.ts rather than typed twice --
+-- that module is what the site falls back to with no database attached, and
+-- the two must agree. Regenerate rather than hand-editing this half.
 --
 -- Run after schema.sql. Safe to re-run.
 -- =====================================================================
@@ -58,58 +55,123 @@ on conflict (id) do update set
   updated_at      = now();
 
 -- ---------------------------------------------------------------------
--- Menu categories. Food leads; coffee supports.
+-- Menu categories, in the order the printed card runs them.
 -- ---------------------------------------------------------------------
-insert into public.menu_categories (name, slug, description, sort_order) values
-  ('Signature Bowls', 'signature-bowls', 'A whole grain, a protein, and as many vegetables as we can fit. Built to order.', 1),
-  ('Breakfast',       'breakfast',       'Served from open until 12:30, every day.',                                        2),
-  ('Salads & Sides',  'salads-sides',    'Lighter plates, and the things that go beside them.',                             3),
-  ('Coffee',          'coffee',          'Pulled on a double basket. Sugar is on the counter, never in the cup.',           4),
-  ('Cold Drinks',     'cold-drinks',     'Cold brew, shakes and coolers. No syrups, no concentrates.',                      5)
-on conflict (slug) do nothing;
+insert into public.menu_categories (name, slug, description, brand, sort_order) values
+  ('Breakfast', 'breakfast', 'Served all day.', 'kitchen', 1),
+  ('Pastas', 'pastas', 'Grilled chicken, smoked chicken or herb paneer. Priced veg / non-veg.', 'kitchen', 2),
+  ('Smoothie Bowls', 'smoothie-bowls', 'Built on yogurt and oats. Add mass gainer or protein powder to any bowl.', 'kitchen', 3),
+  ('Chia Pudding', 'chia-pudding', 'Soaked overnight, topped with seeds.', 'kitchen', 4),
+  ('Salads', 'salads', 'Add grilled chicken or herb paneer.', 'kitchen', 5),
+  ('Soups', 'soups', 'Served with a sourdough cracker.', 'kitchen', 6),
+  ('Wraps & Sandwiches', 'wraps-sandwiches', 'Whole wheat tortilla or sourdough.', 'kitchen', 7),
+  ('Shakes', 'shakes', 'Low-fat milk. Add mass gainer or protein.', 'kitchen', 8),
+  ('Black', 'black', 'Espresso based, no milk.', 'coffee', 9),
+  ('White', 'white', 'Espresso and milk. All contain dairy.', 'coffee', 10),
+  ('Filter', 'filter', 'Traditional and manual brews.', 'coffee', 11),
+  ('Green', 'green', 'Matcha and infused teas. All contain dairy.', 'coffee', 12),
+  ('Purple', 'purple', 'House speciality — the Ube collection. All contain dairy.', 'coffee', 13)
+on conflict (slug) do update set
+  name        = excluded.name,
+  description = excluded.description,
+  brand       = excluded.brand,
+  sort_order  = excluded.sort_order;
 
 -- ---------------------------------------------------------------------
--- Menu items. PLACEHOLDER CONTENT -- see the header note above.
+-- Menu items.
 -- ---------------------------------------------------------------------
 insert into public.menu_items
-  (category_id, name, description, price_paise, is_veg, tags, is_featured, sort_order)
-select c.id, v.name, v.description, v.price_paise, v.is_veg, v.tags, v.is_featured, v.sort_order
+  (category_id, name, description, price_paise, price_nonveg_paise,
+   is_veg, allergens, is_featured, sort_order)
+select c.id, v.name, v.description, v.price_paise, v.price_nonveg_paise,
+       v.is_veg, v.allergens, v.is_featured, v.sort_order
 from (values
-  -- Signature Bowls
-  ('signature-bowls', 'Grilled Chicken Bowl',     'Brown rice, grilled chicken, charred broccoli, beans and a lemon-herb dressing.',        32000, false, '{"High protein","Gluten free"}'::text[], true,  1),
-  ('signature-bowls', 'Paneer Millet Bowl',       'Foxtail millet, tossed paneer, roast pumpkin, spinach and a mint yoghurt drizzle.',      29000, true,  '{"High protein"}'::text[],               true,  2),
-  ('signature-bowls', 'Tofu Buddha Bowl',         'Quinoa, sesame tofu, edamame, red cabbage, cucumber and a ginger-soy dressing.',         30000, true,  '{"Vegan","High protein"}'::text[],       false, 3),
-  ('signature-bowls', 'Rajma Grain Bowl',         'Brown rice, slow-cooked rajma, kachumber and a coriander chutney.',                      25000, true,  '{"Vegan","Gluten free"}'::text[],        false, 4),
-  ('signature-bowls', 'Chicken Tikka Salad Bowl', 'No grain, all greens: chicken tikka, romaine, peppers, olives and a yoghurt dressing.',  31000, false, '{"Low carb","High protein"}'::text[],    false, 5),
-
-  -- Breakfast
-  ('breakfast', 'Egg White Scramble',         'Five whites, spinach and tomato, on toasted sourdough with avocado.',      26000, false, '{"High protein"}'::text[],                  true,  1),
-  ('breakfast', 'Masala Oats Bowl',           'Steel-cut oats cooked savoury with vegetables, topped with a soft-boiled egg.', 22000, false, '{}'::text[],                            false, 2),
-  ('breakfast', 'Overnight Oats',             'Rolled oats soaked in almond milk, chia, banana and toasted seeds.',       21000, true,  '{"Vegan","Contains nuts"}'::text[],         false, 3),
-  ('breakfast', 'Greek Yoghurt & Berry Bowl', 'Thick set yoghurt, seasonal fruit, house granola and a spoon of honey.',   24000, true,  '{"High protein","Contains nuts"}'::text[],  false, 4),
-  ('breakfast', 'Millet Upma',                'Little millet, curry leaf, vegetables and roasted cashew.',                19000, true,  '{"Vegan","Contains nuts"}'::text[],         false, 5),
-
-  -- Salads & Sides
-  ('salads-sides', 'House Greens',             'Seasonal leaves, cucumber, cherry tomato and a cold-pressed olive oil vinaigrette.', 18000, true,  '{"Vegan","Gluten free"}'::text[],     false, 1),
-  ('salads-sides', 'Sprout & Chickpea Chaat',  'Moong sprouts, chickpeas, onion, pomegranate and chaat masala.',                     17000, true,  '{"Vegan","High protein"}'::text[],    false, 2),
-  ('salads-sides', 'Grilled Chicken Breast',   'A plain 150g breast to add to anything on the menu.',                                16000, false, '{"High protein","Low carb"}'::text[], false, 3),
-  ('salads-sides', 'Sweet Potato Wedges',      'Roasted, not fried, with smoked paprika.',                                           15000, true,  '{"Vegan","Gluten free"}'::text[],     false, 4),
-  ('salads-sides', 'Two Boiled Eggs',          'Simple as that.',                                                                     8000, false, '{"High protein","Low carb"}'::text[], false, 5),
-
-  -- Coffee
-  ('coffee', 'Espresso',           'A short double on our house blend.',                                  15000, true, '{"Vegan"}'::text[],                  false, 1),
-  ('coffee', 'Americano',          'Double shot, hot water, nothing else.',                               17000, true, '{"Vegan"}'::text[],                  false, 2),
-  ('coffee', 'Flat White',         'Double ristretto under a thin layer of microfoam.',                    22000, true, '{}'::text[],                         false, 3),
-  ('coffee', 'Oat Milk Cappuccino','Our cappuccino, built on barista oat milk.',                           24000, true, '{"Vegan"}'::text[],                  false, 4),
-  ('coffee', 'Filter Pour-Over',   'Single-estate Chikmagalur, bloomed slow. Ask what is on today.',       18000, true, '{"Vegan","Single origin"}'::text[],  false, 5),
-
-  -- Cold Drinks
-  ('cold-drinks', 'Cold Brew',           'Eighteen-hour steep, served long over ice. Unsweetened.',              19000, true, '{"Vegan"}'::text[],                        true,  1),
-  ('cold-drinks', 'Whey Protein Shake',  'One scoop, banana and almond milk. Chocolate or vanilla.',             26000, true, '{"High protein","Contains nuts"}'::text[], false, 2),
-  ('cold-drinks', 'Green Detox Cooler',  'Cucumber, green apple, spinach, mint and lime, pressed to order.',     22000, true, '{"Vegan","Gluten free"}'::text[],          false, 3),
-  ('cold-drinks', 'Iced Matcha Latte',   'Ceremonial-grade matcha, whisked and poured over milk.',               28000, true, '{}'::text[],                               false, 4),
-  ('cold-drinks', 'Lime & Mint Soda',    'Fresh lime, mint and soda. No sugar unless you ask.',                  14000, true, '{"Vegan","Gluten free"}'::text[],          false, 5)
-) as v(slug, name, description, price_paise, is_veg, tags, is_featured, sort_order)
+  ('breakfast', 'Eggs Your Way', 'Sunny side, scrambled or over easy — add cheese, or make it a mushroom omelette.', 10900, null, false, '{"E","D"}'::text[], false, 1),
+  ('breakfast', 'Classic Cream Cheese Toast', 'House-made cream cheese on sourdough.', 11900, null, true, '{"D","G"}'::text[], false, 2),
+  ('breakfast', 'Guacamole Toast', 'Creamy Mexican-style avocado dip on sourdough.', 19900, null, true, '{"G"}'::text[], true, 3),
+  ('breakfast', 'Mediterranean Hummus Toast', 'House hummus on sourdough.', 19900, null, true, '{"G","Se"}'::text[], false, 4),
+  ('breakfast', 'Island Muesli Bowl', 'Rolled oats with grains, nuts, fresh fruit and low-fat milk.', 13900, null, true, '{"G","N","D"}'::text[], false, 5),
+  ('breakfast', 'Overnight Oats, Banana & Papaya', 'Rolled oats soaked in low-fat milk, topped with fresh fruit.', 13900, null, true, '{"G","D"}'::text[], false, 6),
+  ('pastas', 'Pesto Penne', 'Subtle basil and cream sauce.', 24900, 26900, true, '{"G","D","N"}'::text[], false, 1),
+  ('pastas', 'Arrabiata Spirali', 'Fiery tomato sauce.', 24900, 26900, true, '{"G"}'::text[], false, 2),
+  ('pastas', 'Al Funghi Spaghetti', 'House mushroom and cream sauce.', 24900, 26900, true, '{"G","D"}'::text[], false, 3),
+  ('pastas', 'Alfredo Macaroni', 'Simple, creamy cheese sauce.', 24900, 26900, true, '{"G","D"}'::text[], false, 4),
+  ('smoothie-bowls', 'Triple Berry', 'Strawberry, blueberry and raspberry with low-fat milk and overnight oats.', 28900, null, true, '{"D","G"}'::text[], true, 1),
+  ('smoothie-bowls', 'Fresh Coconut Chill', 'Chunks of tender coconut blended with low-fat milk.', 28900, null, true, '{"D","Co"}'::text[], false, 2),
+  ('smoothie-bowls', 'Tropical Mango', 'Alphonso mango and tender coconut with low-fat milk.', 28900, null, true, '{"D","Co"}'::text[], false, 3),
+  ('smoothie-bowls', 'Citrus Glow', 'Fresh carrot purée and orange nectar with overnight oats.', 26900, null, true, '{"G","D"}'::text[], false, 4),
+  ('chia-pudding', 'Oats & Date Chia Crunch', 'Chia and low-fat milk with oats, pumpkin seeds and dates.', 14900, null, true, '{"D","G"}'::text[], false, 1),
+  ('chia-pudding', 'Kiwi Chia Crunch', 'Chia and low-fat milk with diced kiwi and pumpkin seeds.', 14900, null, true, '{"D"}'::text[], false, 2),
+  ('chia-pudding', 'Fig & Guava Super Bowl', 'Chia and guava nectar with figs and pumpkin seeds.', 14900, null, true, '{}'::text[], false, 3),
+  ('chia-pudding', 'Tropical Chia Crunch', 'Chia and low-fat milk with papaya and pumpkin seeds.', 14900, null, true, '{"D"}'::text[], false, 4),
+  ('salads', 'House Salad', 'Romaine, white onion and black olives — house cream cheese dressing or honey mustard.', 23900, null, true, '{"D"}'::text[], false, 1),
+  ('salads', 'Watermelon & Feta', 'Seedless watermelon, feta and fresh mint.', 21900, null, true, '{"D"}'::text[], false, 2),
+  ('salads', 'Egg Salad', 'Whole egg or egg white, your choice.', 21900, null, false, '{"E"}'::text[], false, 3),
+  ('salads', 'Kidney Bean & Corn', 'Kidney beans, chickpea and sweet corn with honey mustard vinaigrette.', 17900, null, true, '{}'::text[], false, 4),
+  ('soups', 'Roasted Pumpkin', 'Pumpkin purée with low-fat milk and coconut milk.', 17900, null, true, '{"D","Co","G"}'::text[], false, 1),
+  ('soups', 'Creamy Broccoli', 'Broccoli purée with low-fat milk and coconut milk.', 17900, null, true, '{"D","Co","G"}'::text[], false, 2),
+  ('soups', 'Smokey Mexican Bean', 'Warm tomato bisque with fibre-rich beans.', 17900, null, true, '{"G"}'::text[], false, 3),
+  ('wraps-sandwiches', 'Grilled Chicken & Hummus', 'Pan-fried chicken with a generous spread of hummus.', 28900, null, false, '{"G","Se"}'::text[], true, 1),
+  ('wraps-sandwiches', 'Chicken Pesto', 'Pan-fried chicken with subtly flavoured basil sauce.', 29900, null, false, '{"G","D","N"}'::text[], false, 2),
+  ('wraps-sandwiches', 'Teriyaki Glazed Chicken', 'Glossy savoury-sweet teriyaki with honey mustard.', 28900, null, false, '{"G","So"}'::text[], false, 3),
+  ('wraps-sandwiches', 'Zesty Chicken', 'Fiery aromatic chicken with delicate house cream cheese.', 28900, null, false, '{"G","D"}'::text[], false, 4),
+  ('wraps-sandwiches', 'Zesty Paneer & Hummus', 'Fiery aromatic paneer with a generous spread of hummus.', 25900, null, true, '{"G","D","Se"}'::text[], false, 5),
+  ('wraps-sandwiches', 'Herb Paneer & Hummus', 'Paneer tossed in a herb blend with hummus.', 25900, null, true, '{"G","D","Se"}'::text[], false, 6),
+  ('wraps-sandwiches', 'Grilled Paneer & Pesto', 'Pan-fried paneer with a light basil sauce.', 25900, null, true, '{"G","D","N"}'::text[], false, 7),
+  ('wraps-sandwiches', 'Mushroom & Onion Al Funghi', 'Stir-fried mushroom and onion with mushroom pâté.', 25900, null, true, '{"G","D"}'::text[], false, 8),
+  ('shakes', 'Figs & Dates', null, 23900, null, true, '{"D"}'::text[], false, 1),
+  ('shakes', 'Mixed Berry', null, 23900, null, true, '{"D"}'::text[], false, 2),
+  ('shakes', 'Avocado', null, 23900, null, true, '{"D"}'::text[], false, 3),
+  ('shakes', 'Carrot & Orange', null, 23900, null, true, '{"D"}'::text[], false, 4),
+  ('shakes', 'Peanut Butter', 'Peanut butter, sweet or salted.', 23900, null, true, '{"D","N"}'::text[], false, 5),
+  ('shakes', 'Lychee', null, 23900, null, true, '{"D"}'::text[], false, 6),
+  ('shakes', 'Mango & Coconut', null, 23900, null, true, '{"D","Co"}'::text[], false, 7),
+  ('black', 'Espresso', null, 13200, null, true, '{}'::text[], false, 1),
+  ('black', 'Espresso Doppio', null, 18000, null, true, '{}'::text[], false, 2),
+  ('black', 'Iced Espresso', null, 16900, null, true, '{}'::text[], false, 3),
+  ('black', 'Long Black, Hot', null, 18000, null, true, '{}'::text[], false, 4),
+  ('black', 'Long Black, Iced', null, 18000, null, true, '{}'::text[], false, 5),
+  ('black', 'Americano, Hot', null, 18000, null, true, '{}'::text[], false, 6),
+  ('black', 'Americano, Iced', null, 18000, null, true, '{}'::text[], false, 7),
+  ('black', 'Cold Brew Black', null, 24100, null, true, '{}'::text[], true, 8),
+  ('black', 'Coconut Cold Brew', null, 27100, null, true, '{"Co"}'::text[], false, 9),
+  ('black', 'Cold Brew & Diet Coke', null, 25600, null, true, '{}'::text[], false, 10),
+  ('black', 'Cold Brew & Ginger Ale', null, 27100, null, true, '{}'::text[], false, 11),
+  ('white', 'Cappuccino, Hot', null, 27100, null, true, '{"D"}'::text[], false, 1),
+  ('white', 'Cappuccino, Iced', null, 25600, null, true, '{"D"}'::text[], false, 2),
+  ('white', 'Latte, Hot', null, 21100, null, true, '{"D"}'::text[], false, 3),
+  ('white', 'Latte, Iced', null, 24100, null, true, '{"D"}'::text[], false, 4),
+  ('white', 'Flat White', null, 27100, null, true, '{"D"}'::text[], false, 5),
+  ('white', 'Cortado', null, 24100, null, true, '{"D"}'::text[], false, 6),
+  ('white', 'Mocha', null, 24100, null, true, '{"D"}'::text[], false, 7),
+  ('white', 'Iced Mocha', null, 27100, null, true, '{"D"}'::text[], false, 8),
+  ('white', 'Caramel Macchiato', null, 26300, null, true, '{"D"}'::text[], false, 9),
+  ('white', 'Iced Caramel Macchiato', null, 26300, null, true, '{"D"}'::text[], false, 10),
+  ('white', 'Vietnamese Coffee', null, 27100, null, true, '{"D"}'::text[], false, 11),
+  ('white', 'Spanish Latte', null, 27100, null, true, '{"D"}'::text[], false, 12),
+  ('white', 'Iced Spanish Latte', null, 23700, null, true, '{"D"}'::text[], false, 13),
+  ('filter', 'Pour Over, Hot', null, 24100, null, true, '{}'::text[], false, 1),
+  ('filter', 'Pour Over, Iced', null, 24100, null, true, '{}'::text[], false, 2),
+  ('filter', 'Chemex, Hot', null, 24100, null, true, '{}'::text[], false, 3),
+  ('filter', 'Chemex, Iced', null, 24100, null, true, '{}'::text[], false, 4),
+  ('filter', 'Aeropress', null, 24100, null, true, '{}'::text[], false, 5),
+  ('filter', 'Siphon', null, 24100, null, true, '{}'::text[], false, 6),
+  ('filter', 'Indian Filter Coffee', null, 19500, null, true, '{"D"}'::text[], false, 7),
+  ('green', 'Matcha Latte', null, 25400, null, true, '{"D"}'::text[], false, 1),
+  ('green', 'Iced Matcha', null, 25600, null, true, '{"D"}'::text[], false, 2),
+  ('green', 'Matcha Frappé', null, 26800, null, true, '{"D"}'::text[], false, 3),
+  ('green', 'Coconut Matcha', null, 25900, null, true, '{"D","Co"}'::text[], false, 4),
+  ('purple', 'Ube Latte', null, 38700, null, true, '{"D"}'::text[], true, 1),
+  ('purple', 'Ube Iced Latte', null, 37700, null, true, '{"D"}'::text[], false, 2),
+  ('purple', 'Ube Iced Espresso', null, 34500, null, true, '{"D"}'::text[], false, 3),
+  ('purple', 'Ube Coconut Cloud', null, 36500, null, true, '{"D","Co"}'::text[], false, 4),
+  ('purple', 'Ube Cheesecake Latte', null, 41000, null, true, '{"D"}'::text[], false, 5),
+  ('purple', 'Ube Iced Matcha', null, 41000, null, true, '{"D"}'::text[], false, 6),
+  ('purple', 'Cherry Ube Refresher', null, 37600, null, true, '{"D"}'::text[], false, 7),
+  ('purple', 'Ube Iced Chocolate', null, 35600, null, true, '{"D"}'::text[], false, 8),
+  ('purple', 'Ube Frappé', null, 31000, null, true, '{"D"}'::text[], false, 9)
+) as v(slug, name, description, price_paise, price_nonveg_paise,
+       is_veg, allergens, is_featured, sort_order)
 join public.menu_categories c on c.slug = v.slug
 where not exists (
   select 1 from public.menu_items m where m.name = v.name and m.category_id = c.id

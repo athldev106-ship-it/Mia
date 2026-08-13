@@ -13,12 +13,14 @@ const GA_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
 export const metadata: Metadata = {
   keywords: [
     'healthy food Koramangala',
-    'high protein meals Bengaluru',
+    'build your own bowl Bengaluru',
     'salad bowls Koramangala 5th Block',
     'healthy cafe Bangalore',
-    'diet food delivery Bengaluru',
-    'work friendly cafe Koramangala',
+    'speciality coffee Koramangala',
+    'ube latte Bengaluru',
+    'matcha Koramangala',
     'The LeanKafe',
+    'The Coffee Society',
   ],
   openGraph: {
     type: 'website',
@@ -49,7 +51,7 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
     description: SITE.description,
     url: siteUrl,
     telephone: site.phone,
-    servesCuisine: ['Healthy', 'Salad', 'Breakfast', 'Coffee'],
+    servesCuisine: ['Healthy', 'Salad', 'Breakfast', 'Italian', 'Coffee'],
     priceRange: '₹₹',
     address: {
       '@type': 'PostalAddress',
