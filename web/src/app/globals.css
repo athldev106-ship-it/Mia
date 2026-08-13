@@ -1,0 +1,356 @@
+@import 'tailwindcss';
+
+/* =====================================================================
+   LeanKafe — design tokens.
+
+   Taken from the logo: a deep forest green ground with a sage-green
+   bowl and wordmark. Sage is the brand's signal colour but is far too
+   light to carry text or buttons on white, so the interface uses a
+   darkened sage (--color-olive) for anything that must be legible, and
+   keeps true sage for fills, icons and the dark theme.
+   ===================================================================== */
+@theme {
+  /* Sampled from the logo artwork itself. Note the two are not the same
+     hue: the sage is a warm yellow-green (hue 80), the ground a cooler
+     dark green (hue 136). Keeping that split is what makes the palette
+     read as the brand's rather than as one green tinted light and dark. */
+  --color-forest: #1f2a22;
+  --color-sage: #94a76f;
+
+  /* Interface greens derived from the sage hue. */
+  --color-olive: #5c7231;
+  --color-olive-deep: #4c5e26;
+  --color-forest-soft: #2b3b2f;
+  --color-sage-pale: #e9efdc;
+
+  --color-cream: #fbfcf8;
+  --color-paper: #ffffff;
+  --color-ink: #1b221d;
+  --color-crema: #c8a97c;
+  /* The accent is green, so errors need a colour of their own -- a green
+     "something went wrong" reads as success. */
+  --color-alert: #c0392b;
+
+  --font-display: var(--font-display-family), 'Iowan Old Style', Georgia, serif;
+  --font-sans: var(--font-sans-family), ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+
+  --radius-glass: 1.25rem;
+  --ease-glide: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+/* ---------------------------------------------------------------------
+   Light is the default: this is a bright, white-walled cafe.
+   --------------------------------------------------------------------- */
+:root {
+  --surface: var(--color-cream);
+  --surface-raised: var(--color-paper);
+  --text: var(--color-ink);
+  --text-muted: #5c6250;
+  /* Sage itself is ~2.1:1 on white. This darkened sage clears 4.5:1 while
+     staying recognisably the brand's green. */
+  --accent: var(--color-olive-deep);
+  --accent-ink: #ffffff;
+  --alert: var(--color-alert);
+  --hairline: color-mix(in srgb, var(--color-forest) 16%, transparent);
+
+  --glass-bg: color-mix(in srgb, #ffffff 68%, transparent);
+  --glass-border: color-mix(in srgb, #ffffff 75%, transparent);
+  --glass-shadow: 0 1px 2px rgb(34 48 31 / 0.05), 0 12px 32px -12px rgb(34 48 31 / 0.18);
+  --glass-sheen: color-mix(in srgb, #ffffff 88%, transparent);
+
+  color-scheme: light;
+}
+
+/* Dark mode is the logo's own colourway: sage on forest. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --surface: #161d18;
+    --surface-raised: var(--color-forest);
+    --text: #eef1ea;
+    --text-muted: #b1b9a2;
+    /* True sage, which only reads correctly on the dark ground. */
+    --accent: var(--color-sage);
+    --accent-ink: #141c12;
+    /* Lifted for legibility on the dark ground. */
+    --alert: #ff8a7a;
+    --hairline: color-mix(in srgb, #ffffff 14%, transparent);
+
+    --glass-bg: color-mix(in srgb, var(--color-forest-soft) 62%, transparent);
+    --glass-border: color-mix(in srgb, #ffffff 15%, transparent);
+    --glass-shadow: 0 1px 2px rgb(0 0 0 / 0.3), 0 16px 40px -16px rgb(0 0 0 / 0.6);
+    --glass-sheen: color-mix(in srgb, #ffffff 22%, transparent);
+
+    color-scheme: dark;
+  }
+}
+
+/* The viewer's theme toggle stamps data-theme and must win either way. */
+:root[data-theme='dark'] {
+  --surface: #161d18;
+  --surface-raised: var(--color-forest);
+  --text: #eef1ea;
+  --text-muted: #b1b9a2;
+  --accent: var(--color-sage);
+  --accent-ink: #141c12;
+  --alert: #ff8a7a;
+  --hairline: color-mix(in srgb, #ffffff 14%, transparent);
+
+  --glass-bg: color-mix(in srgb, var(--color-forest-soft) 62%, transparent);
+  --glass-border: color-mix(in srgb, #ffffff 15%, transparent);
+  --glass-shadow: 0 1px 2px rgb(0 0 0 / 0.3), 0 16px 40px -16px rgb(0 0 0 / 0.6);
+  --glass-sheen: color-mix(in srgb, #ffffff 22%, transparent);
+
+  color-scheme: dark;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--surface);
+  color: var(--text);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--color-sage) 55%, transparent);
+}
+
+:where(a, button, [tabindex]):focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* =====================================================================
+   Liquid glass.
+
+   A frosted pane plus a specular top edge, so panels read as glass held
+   over the room rather than as flat translucent boxes.
+   ===================================================================== */
+@utility glass {
+  position: relative;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-glass);
+  box-shadow: var(--glass-shadow);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  isolation: isolate;
+}
+
+/* The highlight that sells the material: a bright hairline along the top. */
+@utility glass-sheen {
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding-top: 1px;
+    background: linear-gradient(to bottom, var(--glass-sheen), transparent 42%);
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    z-index: -1;
+  }
+}
+
+/* Where backdrop-filter is unsupported, fall back to an opaque panel so
+   text never lands on unreadable transparency. */
+@supports not (backdrop-filter: blur(1px)) {
+  .glass {
+    background: var(--surface-raised);
+  }
+}
+
+/* =====================================================================
+   Tinted band.
+
+   Long stretches of near-white read as washed out, so alternating
+   sections sit on a soft mint wash that separates them without
+   introducing a second surface colour.
+   ===================================================================== */
+@utility tinted {
+  position: relative;
+  background:
+    radial-gradient(
+      70% 60% at 50% 0%,
+      color-mix(in srgb, var(--color-sage) 24%, transparent),
+      transparent 72%
+    ),
+    color-mix(in srgb, var(--color-sage-pale) 55%, transparent);
+}
+
+:root[data-theme='dark'] .tinted,
+:root:not([data-theme='light']) .tinted {
+  background: transparent;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .tinted {
+    background:
+      radial-gradient(
+        70% 60% at 50% 0%,
+        color-mix(in srgb, var(--color-sage) 12%, transparent),
+        transparent 72%
+      ),
+      color-mix(in srgb, var(--color-forest-soft) 45%, transparent);
+  }
+}
+
+:root[data-theme='dark'] .tinted {
+  background:
+    radial-gradient(
+      70% 60% at 50% 0%,
+      color-mix(in srgb, var(--color-sage) 12%, transparent),
+      transparent 72%
+    ),
+    color-mix(in srgb, var(--color-forest-soft) 45%, transparent);
+}
+
+/* =====================================================================
+   Motion: sections drift up and settle as they enter view.
+   ===================================================================== */
+/* Content is visible by default and only hidden once JavaScript has
+   confirmed it can reveal it again. Without this guard, a failed or slow
+   bundle -- or a crawler that does not run scripts -- would be served a
+   blank page, since the animation's start state is opacity 0. */
+.reveal {
+  opacity: 1;
+}
+
+[data-js] .reveal {
+  opacity: 0;
+  transform: translate3d(0, 24px, 0);
+  transition:
+    opacity 0.9s var(--ease-glide),
+    transform 0.9s var(--ease-glide);
+}
+
+[data-js] .reveal-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* Sunlight moving across a bright room, as a slow ambient drift. */
+@keyframes dapple {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 0.5;
+  }
+  50% {
+    transform: translate3d(2%, -1.5%, 0) scale(1.06);
+    opacity: 0.75;
+  }
+}
+
+@utility dapple {
+  animation: dapple 18s ease-in-out infinite;
+}
+
+/* Steam rising off a fresh cup, used on the hero mark. */
+@keyframes steam {
+  0% {
+    opacity: 0;
+    transform: translateY(2px) scaleX(0.9);
+  }
+  35% {
+    opacity: 0.7;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-14px) scaleX(1.25);
+  }
+}
+
+@utility steam {
+  animation: steam 3.4s ease-out infinite;
+}
+
+/* The live "open now" dot. */
+@keyframes pulse-dot {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.45;
+    transform: scale(0.82);
+  }
+}
+
+@utility pulse-dot {
+  animation: pulse-dot 2.4s ease-in-out infinite;
+}
+
+/* The ambience strip's continuous pan, standing in for a 360 sweep. */
+@keyframes pan-360 {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    /* The track renders its tiles twice, so half a loop is one full pass. */
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@utility pan-360 {
+  animation: pan-360 44s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  [data-js] .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* =====================================================================
+   The rupee sign, without an 83 KB download.
+
+   ₹ is U+20B9, which sits inside Inter's latin-ext range -- so every page
+   showing a price fetched that whole subset for one glyph. next/font has
+   no option to drop the rule, so this declares a later face for the same
+   family covering only that codepoint, sourced from fonts already on the
+   device. When two @font-face rules of one family overlap, the last
+   declared wins, so this takes U+20B9 and Inter's latin-ext file is never
+   requested.
+
+   Everything else still resolves to Inter exactly as before: the range is
+   a single codepoint.
+   ===================================================================== */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Noto Sans'), local('Segoe UI'), local('Roboto'), local('Arial Unicode MS'),
+    local('DejaVu Sans'), local('Arial');
+  unicode-range: U+20B9;
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  src: local('Noto Sans'), local('Segoe UI'), local('Roboto'), local('Arial Unicode MS'),
+    local('DejaVu Sans'), local('Arial');
+  unicode-range: U+20B9;
+}
