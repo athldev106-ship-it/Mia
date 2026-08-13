@@ -72,7 +72,17 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en-IN" className={`${display.variable} ${sans.variable}`}>
+    <html
+      lang="en-IN"
+      className={`${display.variable} ${sans.variable}`}
+      // The script below adds data-js to this element before React
+      // hydrates, which React then reports as a server/client mismatch.
+      // The divergence is the entire point, and React leaves the
+      // attribute alone rather than patching it out -- this just stops it
+      // logging an error about a thing that is working as designed. It
+      // applies to this element only, not to anything nested inside it.
+      suppressHydrationWarning
+    >
       <head>
         {/* Marks the document as scripted before first paint, which is what
             switches the scroll reveals on. Content stays visible for anyone

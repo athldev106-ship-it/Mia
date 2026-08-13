@@ -211,11 +211,34 @@ every route on the site pays for it.
 | desktop, reduced-motion | 279 KB | no |
 | desktop, motion allowed | 464 KB | yes |
 
-It also declines below four CPU cores, stops rendering when the hero leaves
-the viewport or the tab is hidden, and leaves the gradient in place if
-anything throws. The gradient is a complete hero on its own; the bowl is a
-bonus for machines that can afford it. Most of this cafe's customers are on
-a phone and never download it.
+It also declines below four CPU cores, **declines when WebGL is rasterised
+in software** (SwiftShader on Chromium, llvmpipe on Mesa — a machine can
+report plenty of cores and still have no usable GPU, and software WebGL
+runs this at a few frames a second while heating the device for a
+decoration), stops rendering when the hero leaves the viewport or the tab
+is hidden, and leaves the gradient in place if anything throws. The
+gradient is a complete hero on its own; the bowl is a bonus for machines
+that can afford it. Most of this cafe's customers are on a phone and never
+download it.
+
+**Add `?force3d` to any URL to override the capability gates** and watch
+the scene on a machine that would otherwise decline — a CI browser, or a
+laptop with no discrete GPU. It exists because the gates are good enough to
+lock the scene out of every automated browser, which would leave a
+regression in it invisible to the verification sweep. It deliberately does
+*not* override `prefers-reduced-motion`: that one is a stated preference
+rather than a guess about the hardware.
+
+Two details in the gate that are load-bearing:
+
+- **The driver is probed before `import('three')`, not after.** Ordering it
+  the other way downloads 185 KB on exactly the machines least able to
+  afford it and then throws it away.
+- **The probe releases its own context** via `WEBGL_lose_context`. It
+  spends a real WebGL context to read the driver string, browsers cap live
+  contexts (Chromium at about 16) and silently drop the oldest past that,
+  so leaving it to the collector would eventually cost the actual scene its
+  context.
 
 Two things that cost an afternoon and are easy to repeat:
 

@@ -26,6 +26,43 @@ import { useEffect, useRef, useState } from 'react';
  * Anything that throws leaves `ready` false, and the caller keeps showing
  * the gradient. A failed decoration must never take the page with it.
  */
+/**
+ * Whether this machine has a GPU worth rendering on.
+ *
+ * A device can report plenty of cores and still have no usable GPU, in
+ * which case the browser quietly rasterises WebGL in software --
+ * SwiftShader on Chromium, llvmpipe on Mesa. That runs this scene at a
+ * few frames a second and heats the device for a decoration.
+ *
+ * Probed with a throwaway canvas rather than through Three.js, so the
+ * answer is known before deciding whether to fetch 185 KB. Fails open: if
+ * the extension is unavailable -- Firefox hides it behind a pref, Safari
+ * masks it -- the string is empty, nothing matches, and the scene runs.
+ */
+function hasUsableGpu(): boolean {
+  try {
+    const canvas = document.createElement('canvas');
+    const gl = canvas.getContext('webgl') ?? canvas.getContext('experimental-webgl');
+    if (!gl || !('getExtension' in gl)) return false;
+    const ctx = gl as WebGLRenderingContext;
+    try {
+      const info = ctx.getExtension('WEBGL_debug_renderer_info');
+      if (!info) return true;
+      const driver = String(ctx.getParameter(info.UNMASKED_RENDERER_WEBGL));
+      return !/swiftshader|llvmpipe|software|basic render/i.test(driver);
+    } finally {
+      // Hand the context back rather than waiting for the collector.
+      // Browsers cap live WebGL contexts -- Chromium at about 16 -- and
+      // drop the oldest silently when you go over. Dropping the probe's
+      // context on the floor would spend one of those on every mount and
+      // could eventually cost the real scene its own.
+      ctx.getExtension('WEBGL_lose_context')?.loseContext();
+    }
+  } catch {
+    return false;
+  }
+}
+
 export function HeroScene() {
   const mountRef = useRef<HTMLDivElement>(null);
   const [ready, setReady] = useState(false);
@@ -34,11 +71,23 @@ export function HeroScene() {
     const mount = mountRef.current;
     if (!mount) return;
 
-    // Cheap disqualifiers first, before the library is even fetched.
+    // Every disqualifier runs before the library is fetched. Downloading
+    // 185 KB and then deciding not to use it is the worst of both.
+    //
+    // ?force3d overrides the capability gates so the scene can be seen and
+    // screenshotted on a machine that would otherwise decline -- a CI
+    // browser on software WebGL, or a laptop with no discrete GPU.
+    // Reduced-motion is deliberately not overridable: that one is a
+    // stated preference rather than a guess about the hardware.
+    const forced = new URLSearchParams(window.location.search).has('force3d');
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const small = window.matchMedia('(max-width: 767px)').matches;
-    const weak = (navigator.hardwareConcurrency ?? 8) < 4;
-    if (reduced || small || weak) return;
+    if (reduced) return;
+    if (!forced) {
+      const small = window.matchMedia('(max-width: 767px)').matches;
+      const weak = (navigator.hardwareConcurrency ?? 8) < 4;
+      if (small || weak) return;
+      if (!hasUsableGpu()) return;
+    }
 
     let disposed = false;
     let cleanup: (() => void) | undefined;
